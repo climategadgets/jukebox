@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.sf.jukebox</groupId>
+  <artifactId>jukebox-master</artifactId>
+  <packaging>pom</packaging>
+  <version>6.0-RC</version>
+  <name>jukebox-master</name>
+  <url>http://jukebox4.sourceforge.net/</url>
+  <issueManagement>
+      <system>SourceForge Tracker</system>
+      <url>http://sourceforge.net/tracker/?group_id=3021</url>
+  </issueManagement>
+  <inceptionYear>1995</inceptionYear>
+  <developers>
+      <developer>
+          <email>vt@freehold.crocodile.org</email>
+          <name>Vadim Tkachenko</name>
+      </developer>
+  </developers>
+  <licenses>
+      <license>
+          <name>LGPL</name>
+      </license>
+  </licenses>
+  <scm>
+      <connection>https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</connection>
+      <url>http://jukebox4.svn.sourceforge.net/viewvc/jukebox4/</url>
+  </scm>
+  <modules>
+      <module>../jukebox-common</module>
+      <module>../jukebox-sem</module>
+      <module>../jukebox-jmx</module>
+      <module>../jukebox-service</module>
+      <module>../jukebox-datastream</module>
+  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
