@@ -33,5 +33,6 @@
       <module>../jukebox-jmx</module>
       <module>../jukebox-service</module>
       <module>../jukebox-datastream</module>
+      <module>../jukebox-fsm</module>
   </modules>
 </project>
