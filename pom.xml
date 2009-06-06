@@ -24,7 +24,7 @@
       </license>
   </licenses>
   <scm>
-      <connection>https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</connection>
+      <connection>scm:svn:https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</connection>
       <url>http://jukebox4.svn.sourceforge.net/viewvc/jukebox4/</url>
   </scm>
   <modules>
