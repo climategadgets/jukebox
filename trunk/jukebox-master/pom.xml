@@ -4,7 +4,7 @@
   <groupId>net.sf.jukebox</groupId>
   <artifactId>jukebox-master</artifactId>
   <packaging>pom</packaging>
-  <version>6.0-RC1</version>
+  <version>6.0-RC2</version>
   <name>jukebox-master</name>
   <url>http://jukebox4.sourceforge.net/</url>
   <issueManagement>
