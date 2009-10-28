@@ -11,6 +11,7 @@ import net.sf.jukebox.datastream.signal.model.DataSink;
 import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.logger.LogAware;
 import net.sf.jukebox.service.Messenger;
+import net.sf.jukebox.util.CollectionSynchronizer;
 
 /**
  * A data source. An entity capable of producing a {@link DataSample data sample}.
@@ -64,10 +65,7 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
 
         try {
             
-            // VT: FIXME: Move CollectionSynchronizer into jukebox-common
-
-            //Set<DataSink<E>> copy = new CollectionSynchronizer<DataSink<E>>().copy(consumerSet);
-            Set<DataSink<E>> copy = new HashSet<DataSink<E>>(consumerSet);
+            Set<DataSink<E>> copy = new CollectionSynchronizer<DataSink<E>>().copy(consumerSet);
 
             for (Iterator<DataSink<E>> i = copy.iterator(); i.hasNext();) {
                 
