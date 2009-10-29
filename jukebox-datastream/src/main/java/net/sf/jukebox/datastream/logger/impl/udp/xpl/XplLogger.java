@@ -1,7 +1,10 @@
 package net.sf.jukebox.datastream.logger.impl.udp.xpl;
 
+import java.util.Set;
+
 import net.sf.jukebox.datastream.logger.impl.udp.UdpLogger;
 import net.sf.jukebox.datastream.signal.model.DataSample;
+import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.jmx.JmxDescriptor;
 
 /**
@@ -13,8 +16,23 @@ import net.sf.jukebox.jmx.JmxDescriptor;
  */
 public class XplLogger<E extends Number> extends UdpLogger<E> {
 
+    /**
+     * Create an instance with no listeners.
+     * 
+     * @param port Port to bind to.
+     */
     public XplLogger(int port) {
-	super(port);
+        this(null, port);
+    }
+
+    /**
+     * Create an instance listening to given data sources.
+     * 
+     * @param producers Data sources to listen to.
+     * @param port Port to bind to.
+     */
+    public XplLogger(Set<DataSource<E>> producers, int port) {
+        super(producers, port);
     }
 
     /**

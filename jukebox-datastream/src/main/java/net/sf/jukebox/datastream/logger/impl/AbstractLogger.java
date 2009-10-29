@@ -2,9 +2,12 @@ package net.sf.jukebox.datastream.logger.impl;
 
 import net.sf.jukebox.datastream.logger.model.DataLogger;
 import net.sf.jukebox.datastream.signal.model.DataSample;
+import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.service.PassiveService;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -20,6 +23,22 @@ public abstract class AbstractLogger<E extends Number> extends PassiveService im
    * Signature to name mapping.
    */
   protected final SortedMap<String, String> signature2name = new TreeMap<String, String>();
+
+  /**
+   * Create an instance listening to given data sources.
+   * 
+   * @param producers Data sources to listen to.
+   */
+  public AbstractLogger(Set<DataSource<E>> producers) {
+      
+      if (producers != null) {
+      
+          for (Iterator<DataSource<E>> i = producers.iterator(); i.hasNext(); ) {
+
+              i.next().addConsumer(this);
+          }
+      }
+  }
 
   /**
    * {@inheritDoc}

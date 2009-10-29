@@ -1,6 +1,7 @@
 package net.sf.jukebox.datastream.logger.impl.rrd;
 
 import net.sf.jukebox.datastream.signal.model.DataSample;
+import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.conf.ConfigurableProperty;
 import net.sf.jukebox.jmx.JmxDescriptor;
 import org.apache.log4j.NDC;
@@ -9,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Set;
 
 /**
  * <a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/">RRDTool</a> data logger.
@@ -24,15 +26,27 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
     private File rrdtool;
 
     /**
-     * Create an instance.
+     * Create an instance with no listeners.
      * 
      * @param rrdBase Base directory for RRD database files.
      * @param rrdtool Location of {@code rrdtool} binary.
      */
     public RrdLogger(File rrdBase, File rrdtool) {
-	super(rrdBase);
 
-	setRrdtool(rrdtool);
+	this(null, rrdBase, rrdtool);
+    }
+
+    /**
+     * Create an instance listening to given data sources.
+     * 
+     * @param producers Data sources to listen to.
+     * @param rrdBase Base directory for RRD database files.
+     * @param rrdtool Location of {@code rrdtool} binary.
+     */
+    public RrdLogger(Set<DataSource<E>> producers, File rrdBase, File rrdtool) {
+        super(producers, rrdBase);
+
+        setRrdtool(rrdtool);
     }
 
     @ConfigurableProperty(

@@ -9,9 +9,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import net.sf.jukebox.conf.ConfigurableProperty;
 import net.sf.jukebox.datastream.logger.impl.AbstractLogger;
+import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.jmx.JmxAttribute;
 
 import org.apache.log4j.NDC;
@@ -42,13 +44,25 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
     private File rrdBase;
     
     /**
-     * Create an instance.
+     * Create an instance with no listeners.
      * 
      * @param rrdBase Base directory for RRD database files.
      */
     public AbstractRrdLogger(File rrdBase) {
 	
-	setRrdBase(rrdBase);
+	this(null, rrdBase);
+    }
+
+    /**
+     * Create an instance listening to given data sources.
+     * 
+     * @param producers Data sources to listen to.
+     * @param rrdBase Base directory for RRD database files.
+     */
+    public AbstractRrdLogger(Set<DataSource<E>> producers, File rrdBase) {
+        super(producers);
+        
+        setRrdBase(rrdBase);
     }
 
     @ConfigurableProperty(
