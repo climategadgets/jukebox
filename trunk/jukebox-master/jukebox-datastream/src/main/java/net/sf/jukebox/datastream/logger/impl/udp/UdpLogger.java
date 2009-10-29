@@ -3,6 +3,7 @@ package net.sf.jukebox.datastream.logger.impl.udp;
 import net.sf.jukebox.util.network.HostHelper;
 import net.sf.jukebox.datastream.logger.impl.AbstractLogger;
 import net.sf.jukebox.datastream.signal.model.DataSample;
+import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.conf.ConfigurableProperty;
 import net.sf.jukebox.jmx.JmxAttribute;
 
@@ -61,17 +62,29 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
     private final Set<InetAddress> unsupported = new HashSet<InetAddress>();
 
     /**
-     * Create an instance.
+     * Create an instance with no listeners.
      * 
      * @param port Port to bind to.
      */
     public UdpLogger(int port) {
 	
-	// VT: FIXME: not good enough, no checks. setPort() would be a better option,
-	// but it's not yet implemented.
-	this.port = port;
+	this(null, port);
     }
     
+    /**
+     * Create an instance listening to given data sources.
+     * 
+     * @param producers Data sources to listen to.
+     * @param port Port to bind to.
+     */
+    public UdpLogger(Set<DataSource<E>> producers, int port) {
+        super(producers);
+        
+        // VT: FIXME: not good enough, no checks. setPort() would be a better option,
+        // but it's not yet implemented.
+        this.port = port;
+    }
+
     /**
      * Get the default port to broadcast on.
      * 

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -13,6 +14,7 @@ import org.apache.log4j.NDC;
 import net.sf.jukebox.conf.ConfigurableProperty;
 import net.sf.jukebox.datastream.logger.impl.AbstractLogger;
 import net.sf.jukebox.datastream.signal.model.DataSample;
+import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.jmx.JmxAttribute;
 import net.sf.jukebox.jmx.JmxDescriptor;
 
@@ -46,13 +48,25 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
     private final SortedMap<String, File> signature2file = new TreeMap<String, File>();
 
     /**
-     * Create an instance.
+     * Create an instance with no listeners.
      * 
      * @param baseDir Base directory for trace files.
      */
     public TraceLogger(File baseDir) {
 	
-	setTraceBase(baseDir);
+	this(null, baseDir);
+    }
+
+    /**
+     * Create an instance listening to given data sources.
+     * 
+     * @param producers Data sources to listen to.
+     * @param baseDir Base directory for trace files.
+     */
+    public TraceLogger(Set<DataSource<E>> producers, File baseDir) {
+        super(producers);
+        
+        setTraceBase(baseDir);
     }
 
     @ConfigurableProperty(propertyName = "traceBase", description = "Base directory for trace files")
