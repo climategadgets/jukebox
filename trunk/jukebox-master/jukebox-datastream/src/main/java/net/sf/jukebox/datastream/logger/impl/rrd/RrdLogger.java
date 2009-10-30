@@ -179,10 +179,10 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
      * constraints.
      */
     private void checkSignature(String ignored) {
-
-	// VT: FIXME: What are the restrictions? I thought it was 16 characters
-	// - no, doesn't seem to be...
-	// But I know for sure that it doesn't take 32
+        
+        if (ignored.length() >= 20) {
+            throw new IllegalArgumentException("Signature longer than 19 characters will blow up RRD");
+        }
     }
 
     /**
