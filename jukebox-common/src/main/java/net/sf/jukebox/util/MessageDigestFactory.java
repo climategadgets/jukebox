@@ -7,11 +7,34 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * A simple utility class to produce an SHA message digest of a message.
+ * A simple utility class to produce a message digest of a message.
  * 
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2001-2009
  */
 public class MessageDigestFactory {
+
+    /**
+     * Produce an MD5 message digest.
+     * 
+     * @param message Message to get MD5 digest for.
+     * @return A string representation of the message digest.
+     * @throws NoSuchAlgorithmException if by some miracle SHA algorithm is not
+     * available.
+     */
+    public String getMD5(String message) {
+
+        try {
+            
+            return getDigest(MessageDigest.getInstance("MD5"), message);
+            
+        } catch (NoSuchAlgorithmException ex) {
+            
+            // Can't afford to throw a checked exception,
+            // and this is a pretty rare, but pretty severe problem,
+            // it's OK to fast fail here
+            throw new IllegalStateException("Can't create a MD5 message disgest", ex);
+        }
+    }
 
     /**
      * Produce an SHA message digest.
@@ -25,31 +48,8 @@ public class MessageDigestFactory {
 
         try {
             
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            MessageDigest sha = MessageDigest.getInstance("SHA");
-            DigestOutputStream dos = new DigestOutputStream(baos, sha);
-            PrintWriter pw = new PrintWriter(dos);
-
-            pw.print(message);
-            pw.flush();
-
-            byte md[] = dos.getMessageDigest().digest();
-
-            StringBuffer sb = new StringBuffer();
-
-            for (int offset = 0; offset < md.length; offset++) {
-
-                byte b = md[offset];
-
-                if ((b & 0xF0) == 0) {
-
-                    sb.append("0");
-                }
-
-                sb.append(Integer.toHexString(b & 0xFF));
-            }
-
-            return sb.toString();
+            return getDigest(MessageDigest.getInstance("SHA"), message);
+            
         } catch (NoSuchAlgorithmException ex) {
             
             // Can't afford to throw a checked exception,
@@ -57,5 +57,41 @@ public class MessageDigestFactory {
             // it's OK to fast fail here
             throw new IllegalStateException("Can't create a SHA message disgest", ex);
         }
+    }
+
+    /**
+     * Produce a message digest with a given algorithm instance.
+     * 
+     * @param md MessageDigest instance to use.
+     * @param message Message to get message digest for.
+     * @return A string representation of the message digest.
+     * @throws NoSuchAlgorithmException if by some miracle the algorithm is not available.
+     */
+    public String getDigest(MessageDigest md, String message) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DigestOutputStream dos = new DigestOutputStream(baos, md);
+        PrintWriter pw = new PrintWriter(dos);
+
+        pw.print(message);
+        pw.flush();
+
+        byte digest[] = dos.getMessageDigest().digest();
+
+        StringBuffer sb = new StringBuffer();
+
+        for (int offset = 0; offset < digest.length; offset++) {
+
+            byte b = digest[offset];
+
+            if ((b & 0xF0) == 0) {
+
+                sb.append("0");
+            }
+
+            sb.append(Integer.toHexString(b & 0xFF));
+        }
+
+        return sb.toString();
     }
 }
