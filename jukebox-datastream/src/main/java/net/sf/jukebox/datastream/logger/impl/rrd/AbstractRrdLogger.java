@@ -286,4 +286,15 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
      */
     @JmxAttribute(description = "Human readable description")
     public abstract String getDescription();
+
+    @Override
+    public String toString() {
+        
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("RrdLogger(base=").append(getRrdBase()).append(")");
+        
+        return sb.toString();
+        
+    }
 }
