@@ -126,8 +126,7 @@ public final class DataSample<E> {
         // Default date resolution is not good enough for some applications
         sb.append(dateFormat.format(new Date(timestamp)));
         
-        sb.append(", ");
-        sb.append("source(").append(sourceName).append("), ");
+        sb.append("#").append(sourceName).append("#");
         sb.append("sig(").append(signature).append("), ");
 
         sb.append("sample(").append(sample);
