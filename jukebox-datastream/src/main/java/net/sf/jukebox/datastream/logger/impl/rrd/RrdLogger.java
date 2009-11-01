@@ -358,7 +358,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
     public JmxDescriptor getJmxDescriptor() {
 
 	JmxDescriptor d = super.getJmxDescriptor();
-	return new JmxDescriptor("DZ", d.name, d.instance,
+	return new JmxDescriptor("jukebox", d.name, d.instance,
 		"RRD logger using rrdtool");
     }
 

@@ -116,7 +116,7 @@ public class XplLogger<E extends Number> extends UdpLogger<E> {
     public JmxDescriptor getJmxDescriptor() {
 
 	JmxDescriptor d = super.getJmxDescriptor();
-	return new JmxDescriptor("DZ", d.name, d.instance,
+	return new JmxDescriptor("jukebox", d.name, d.instance,
 		"Broadcasts sensor readings via xPL protocol");
     }
 }
