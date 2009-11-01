@@ -9,14 +9,14 @@ package net.sf.jukebox.jmx;
  * Whether or not the specific <strong>instance</strong> of an object that <strong>can</strong> be exposed
  * <strong>will</strong> be exposed depends on the return value of {@link #getJmxDescriptor()}.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2008
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2009
  */
 public interface JmxAware {
 
-  /**
-   * Get the JMX descriptor.
-   *
-   * @return The descriptor, or {@code null} if this specific instance of the object doesn't need to be exposed.
-   */
-  JmxDescriptor getJmxDescriptor();
+    /**
+     * Get the JMX descriptor.
+     *
+     * @return The descriptor, or {@code null} if this specific instance of the object doesn't need to be exposed.
+     */
+    JmxDescriptor getJmxDescriptor();
 }
