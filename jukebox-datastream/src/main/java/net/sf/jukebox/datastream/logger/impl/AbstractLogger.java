@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.log4j.NDC;
+
 /**
  * Common implementation base for different data loggers.
  * @param <E> Data type to log.
@@ -44,33 +46,40 @@ public abstract class AbstractLogger<E extends Number> extends PassiveService im
    * {@inheritDoc}
    */
   public final void consume(DataSample<E> sample) {
-
-    if (isKnownChannel(sample.signature)) {
-
-      consume(sample.signature, sample);
-
-    } else {
-
-      // This means that we haven't heard about this signal before
+      
+      NDC.push("consume");
 
       try {
 
-        createChannel(sample.sourceName, sample.signature, sample.timestamp);
+          if (isKnownChannel(sample.signature)) {
 
-        logger.info("Created a channel for (" + sample.sourceName + "), sig " + sample.signature);
+              consume(sample.signature, sample);
 
-        // If we were able to create a channel, we're here
+          } else {
 
-        consume(sample.signature, sample);
+              // This means that we haven't heard about this signal before
 
-      } catch (Throwable t) {
+              try {
 
-        // This most probably means we weren't able to create the
-        // channel
+                  createChannel(sample.sourceName, sample.signature, sample.timestamp);
 
-        logger.warn("Unable to create a channel for '" + sample.sourceName + "' (" + sample.signature + ")", t);
+                  logger.info("Created a channel for (" + sample.sourceName + "), sig " + sample.signature);
+
+                  // If we were able to create a channel, we're here
+
+                  consume(sample.signature, sample);
+
+              } catch (Throwable t) {
+
+                  // This most probably means we weren't able to create the
+                  // channel
+
+                  logger.warn("Unable to create a channel for '" + sample.sourceName + "' (" + sample.signature + ")", t);
+              }
+          }
+      } finally {
+          NDC.pop();
       }
-    }
   }
 
   /**
