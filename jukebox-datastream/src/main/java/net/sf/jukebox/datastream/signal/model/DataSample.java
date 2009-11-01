@@ -1,5 +1,6 @@
 package net.sf.jukebox.datastream.signal.model;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +12,14 @@ import java.util.Date;
  * @param <E> Data type of the sample.
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2008
  */
-public final class DataSample<E> {
+public final class DataSample<E> implements Serializable {
+
+    /**
+     * Serial version ID.
+     * 
+     * This class is unlikely to be serialized beyond JMX, so default value should work fine.
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Date format used to print the timestamp in {@link #toString()}.
