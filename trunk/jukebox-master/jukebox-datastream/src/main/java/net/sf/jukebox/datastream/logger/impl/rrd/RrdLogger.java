@@ -97,6 +97,8 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 		File rrdFile = new File(getRrdBase(), signature + ".rrd");
 
 		if (!rrdFile.exists()) {
+		    
+		    logger.info("Creating " + rrdFile);
 
 		    // Have to create it. Let's put together a command line for
 		    // this
