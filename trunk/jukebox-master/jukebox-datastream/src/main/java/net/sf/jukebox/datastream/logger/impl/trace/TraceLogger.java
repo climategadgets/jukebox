@@ -248,6 +248,6 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
     public JmxDescriptor getJmxDescriptor() {
 
 	JmxDescriptor d = super.getJmxDescriptor();
-	return new JmxDescriptor("DZ", d.name, d.instance, "Trace file logger");
+	return new JmxDescriptor("jukebox", d.name, d.instance, "Trace file logger");
     }
 }
