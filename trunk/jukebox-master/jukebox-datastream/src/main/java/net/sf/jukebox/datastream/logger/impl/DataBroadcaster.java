@@ -89,7 +89,7 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
 
                 } else {
                     
-                    NDC.push("consume(" + dataSink + ")");
+                    NDC.push("consume");
                     try {
                         
                         logger.debug("Feeding: " + dataSink);
