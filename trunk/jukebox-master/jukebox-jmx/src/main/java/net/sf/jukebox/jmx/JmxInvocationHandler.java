@@ -1,12 +1,9 @@
 package net.sf.jukebox.jmx;
 
 /**
- * The template definition for the handler that handles the {@link
- * javax.management.DynamicMBean#invoke
- * javax.management.DynamicMBean#invoke} method.
+ * The template definition for the handler that handles the {@link DynamicMBean#invoke} method.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000
- * @version $Id: JmxInvocationHandler.java,v 1.2 2007-06-14 04:32:12 vtt Exp $
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2009
  * @since Jukebox 2.0p5
  */
 abstract public class JmxInvocationHandler {

@@ -4,7 +4,7 @@ package net.sf.jukebox.jmx;
  * The template definition for the handler that handles the {@link
  * javax.management.DynamicMBean#getAttribute} method.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2008
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2009
  * @since Jukebox 2.0p5
  */
 public interface JmxAttributeReader {
