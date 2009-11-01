@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import javax.management.Attribute;
 import javax.management.AttributeList;
@@ -35,6 +36,25 @@ import org.apache.log4j.NDC;
 public final class JmxWrapper {
 
     public final Logger logger = Logger.getLogger(getClass());
+    
+    /**
+     * Create an instance.
+     */
+    public JmxWrapper() {
+        
+    }
+    
+    /**
+     * Create an instance and register all given objects.
+     * 
+     * @param targetSet Set of objects to register.
+     */
+    public JmxWrapper(Set<?> targetSet) {
+        
+        for (Iterator<?> i = targetSet.iterator(); i.hasNext(); ) {
+            register(i.next());
+        }
+    }
 
 
     /**
@@ -76,9 +96,9 @@ public final class JmxWrapper {
 
             expose(target, name, jmxDescriptor.description);
 
-        } catch (InstanceAlreadyExistsException e) {
+        } catch (InstanceAlreadyExistsException ex) {
 
-            logger.info("Already registered: " +  e.getMessage());
+            logger.info("Already registered: ", ex);
 
             NDC.push("again");
             try {
@@ -89,6 +109,7 @@ public final class JmxWrapper {
             } finally {
                 NDC.pop();
             }
+            
         } catch (Throwable t) {
             logger.error("Failed", t);
         } finally {
