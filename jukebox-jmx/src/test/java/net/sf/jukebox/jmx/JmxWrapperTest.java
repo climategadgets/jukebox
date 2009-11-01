@@ -3,12 +3,12 @@ package net.sf.jukebox.jmx;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.Set;
+
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
 import junit.framework.TestCase;
-//import net.sf.jukebox.conf.ConfigurableProperty;
-import org.apache.log4j.BasicConfigurator;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -17,16 +17,6 @@ import org.apache.log4j.Logger;
 public class JmxWrapperTest extends TestCase {
 
     private final Logger logger = Logger.getLogger(getClass());
-    private boolean loggerInitialized = false;
-
-    @Override
-    public void setUp() throws MalformedObjectNameException {
-
-        if (!loggerInitialized) {
-            BasicConfigurator.configure();
-            loggerInitialized = true;
-        }
-    }
 
     private ObjectName getObjectName() throws MalformedObjectNameException {
         Hashtable<String, String> properties = new Hashtable<String, String>();
