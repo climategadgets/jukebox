@@ -10,7 +10,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * <a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/">RRDTool</a> data logger.
@@ -24,6 +26,11 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
      * RRDTool location.
      */
     private File rrdtool;
+    
+    /**
+     * Map to hold the last signal timestamp (RRD overrun prevention).
+     */
+    private final Map<File, String> signature2timestamp = new TreeMap<File, String>();
 
     /**
      * Create an instance with no listeners.
@@ -214,6 +221,17 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 
 	    // Time is defined in seconds
 	    String timestamp = Long.toString(value.timestamp / 1000);
+	    
+	    // Careful, this method has a side effect
+	    if (haveSampleFor(rrd, timestamp)) {
+	        
+	        // Since RRD is collecting all sorts of measurements (min, max, average),
+	        // there's no sense in guessing what to do with te signal. Maybe in the future
+	        // it will be averaged, but for now (according to "worse is better") it's discarded.
+	        
+	        logger.debug("Already have sample @" + timestamp + ", discarded");
+	        return;
+	    }
 
 	    // Let's doublecheck: even though the sample may be present, its
 	    // signal value may be NaN
@@ -236,6 +254,35 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 	} finally {
 	    NDC.pop();
 	}
+    }
+
+    /**
+     * Check whether {@link #signature2timesamp} already has this timestamp,
+     * if not, add it.
+     * 
+     * @param rrd Signature to check against. 
+     * @param timestamp Timestamp to check.
+     * 
+     * @return {@code true} if there is already a record of this timestamp for this source.
+     */
+    private boolean haveSampleFor(File rrd, String timestamp) {
+        
+        String have = signature2timestamp.get(rrd);
+        
+        if (have == null) {
+
+            // Record. This is a side effect.
+            signature2timestamp.put(rrd, timestamp);
+            return false;
+        }
+        
+        if (have.equals(timestamp)) {
+            return true;
+        }
+        
+        // Replace. This is a side effect.
+        signature2timestamp.put(rrd, timestamp);
+        return false;
     }
 
     /**
