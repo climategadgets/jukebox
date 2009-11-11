@@ -4,7 +4,7 @@
   <groupId>net.sf.jukebox</groupId>
   <artifactId>jukebox-service</artifactId>
   <packaging>jar</packaging>
-  <version>6.0-RC2</version>
+  <version>6.0</version>
   <name>jukebox-service</name>
   <url>http://jukebox4.sourceforge.net/</url>
   <issueManagement>
@@ -57,17 +57,17 @@
     <dependency>
         <groupId>net.sf.jukebox</groupId>
         <artifactId>jukebox-common</artifactId>
-        <version>6.0-RC2</version>
+        <version>6.0</version>
     </dependency>
     <dependency>
         <groupId>net.sf.jukebox</groupId>
         <artifactId>jukebox-jmx</artifactId>
-        <version>6.0-RC2</version>
+        <version>6.0</version>
     </dependency>
     <dependency>
         <groupId>net.sf.jukebox</groupId>
         <artifactId>jukebox-sem</artifactId>
-        <version>6.0-RC2</version>
+        <version>6.0</version>
     </dependency>
   </dependencies>
   <distributionManagement>
@@ -79,7 +79,7 @@
     <parent>
         <groupId>net.sf.jukebox</groupId>
         <artifactId>jukebox-master</artifactId>
-        <version>6.0-RC2</version>
+        <version>6.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 </project>
