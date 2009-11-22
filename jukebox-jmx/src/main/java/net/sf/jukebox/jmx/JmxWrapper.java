@@ -56,7 +56,6 @@ public final class JmxWrapper {
         }
     }
 
-
     /**
      * Register the object with the JMX server.
      *
@@ -102,6 +101,9 @@ public final class JmxWrapper {
 
             NDC.push("again");
             try {
+                
+                // VT: FIXME: Need to change the scope of try/catch to include retrieval of
+                // JmxDescriptor so it can be reused here
                 mbs.unregisterMBean(name);
                 expose(this, name, "FIXME");
             } catch (Throwable t) {
@@ -128,9 +130,9 @@ public final class JmxWrapper {
      *
      * @exception IllegalArgumentException if there are inconsistencies in the way the {@link JmxAttribute properties}
      * are described, or the {@code target} is {@code null}.
-     * @throws MBeanRegistrationException if there's a problem registering the {@code target}.
-     * @throws NotCompliantMBeanException if the {@code target} is not quite what's needed.
-     * @throws InstanceAlreadyExistsException if the {@code name} has already been registered.
+     * @exception MBeanRegistrationException if there's a problem registering the {@code target}.
+     * @exception NotCompliantMBeanException if the {@code target} is not quite what's needed.
+     * @exception InstanceAlreadyExistsException if the {@code name} has already been registered.
      */
     public void expose(Object target, ObjectName name, String description) throws NotCompliantMBeanException, MBeanRegistrationException, InstanceAlreadyExistsException {
 
@@ -152,7 +154,7 @@ public final class JmxWrapper {
                 Annotation annotation = getAnnotation(targetClass, method, JmxAttribute.class);
 
                 if (annotation != null) {
-                    operations.addAll(expose(target, method, (JmxAttribute) annotation));
+                    operations.addAll(exposeMethod(target, method, (JmxAttribute) annotation));
                 }
             }
 
@@ -177,7 +179,7 @@ public final class JmxWrapper {
 
     private Annotation getAnnotation(Class<?> targetClass, Method method, Class<? extends Annotation> annotationClass) {
 
-        NDC.push("isAnnotationPresent");
+        NDC.push("getAnnotation");
 
         try {
 
@@ -197,10 +199,13 @@ public final class JmxWrapper {
             // b) the annotation is present on the superclass (FIXME: make sure both abstract and concrete are covered);
             // c) it is not present at all.
 
+            logger.debug("Checking interfaces");
             Class<?>[] interfaces = targetClass.getInterfaces();
 
             for (int offset = 0; offset < interfaces.length; offset++) {
+                
                 Class<?> anInterface = interfaces[offset];
+                logger.debug("Checking interface " + anInterface.getSimpleName());
                 annotation = getAnnotation(anInterface, method.getName(), annotationClass);
 
                 if (annotation != null) {
@@ -209,6 +214,10 @@ public final class JmxWrapper {
             }
 
             Class<?> superClass = targetClass.getSuperclass();
+            
+            if (superClass != null) {
+                logger.info("Checking superclass:" + superClass.getSimpleName());
+            }
 
             return superClass == null ? null : getAnnotation(superClass, method.getName(), annotationClass);
 
@@ -218,13 +227,19 @@ public final class JmxWrapper {
     }
 
     private Annotation getAnnotation(Class<?> targetClass, String methodName, Class<? extends Annotation> annotationClass) {
-        NDC.push("isAnnotationPresent(" + methodName + ')');
+
+        NDC.push("getAnnotation(" + methodName + ')');
+
         try {
+            
             return getAnnotation(targetClass, targetClass.getMethod(methodName), annotationClass);
+            
         } catch (NoSuchMethodException ignored) {
+            
             // Oh well...
             logger.debug("no");
             return null;
+            
         } finally {
             NDC.pop();
         }
@@ -239,7 +254,7 @@ public final class JmxWrapper {
      * @param annotation Annotation to extract the metadata from.
      * @return Operation signature.
      */
-    private List<MBeanAttributeInfo> expose(Object target, Method method, JmxAttribute annotation) {
+    private List<MBeanAttributeInfo> exposeMethod(Object target, Method method, JmxAttribute annotation) {
 
         NDC.push("exposeMethod");
 
@@ -252,7 +267,7 @@ public final class JmxWrapper {
             logger.info(target.getClass().getName() + '#' + method.getName() + ": exposed as " + name);
             logger.info("description: " + annotation.description());
 
-            return expose(target, name, annotation.description(), method, resolveMutator(target, method, name));
+            return exposeJmxAttribute(target, name, annotation.description(), method, resolveMutator(target, method, name));
 
             // VT: FIXME: It might be a good idea to further check the method sanity. Or not
             //method.invoke(target, property);
@@ -273,11 +288,11 @@ public final class JmxWrapper {
      *
      * @return Operation signature.
      */
-    private List<MBeanAttributeInfo> expose(Object target,
+    private List<MBeanAttributeInfo> exposeJmxAttribute(Object target,
             String name,
             String description,
             Method accessor, Method mutator) {
-        NDC.push("expose+");
+        NDC.push("exposeJmxAttribute");
 
         try {
 
@@ -300,17 +315,20 @@ public final class JmxWrapper {
 
             result.add(accessorInfo);
 
-            /*
-      if (false)
-      if (mutator != null) {
+            if (mutator != null && false) {
 
-        //MBeanAttributeInfo mutatorInfo = new MBeanAttributeInfo(description, mutator);
+                MBeanAttributeInfo mutatorInfo = new MBeanAttributeInfo(
+                        name,
+                        accessor.getReturnType().getName(),
+                        description,
+                        true,
+                        true,
+                        accessor.getName().startsWith("is"));
 
-        //logger.debug("mutator: " + mutatorInfo);
+                logger.debug("Mutator: " + mutatorInfo);
 
-        //result.add(mutatorInfo);
-      }
-             */
+                result.add(mutatorInfo);
+            }
 
             return result;
 
@@ -335,11 +353,11 @@ public final class JmxWrapper {
             Class<?> returnType = accessor.getReturnType();
             String mutatorName = "set" + upperFirst(name);
 
-            logger.debug("trying " + mutatorName + '(' + returnType.getSimpleName() + ')');
+            logger.debug("Trying " + mutatorName + '(' + returnType.getSimpleName() + ')');
 
             Method mutator = target.getClass().getMethod(mutatorName, returnType);
 
-            logger.debug("got method: " + mutator);
+            logger.debug("Found: " + mutator);
 
             return mutator;
 
@@ -394,18 +412,26 @@ public final class JmxWrapper {
      * @exception IllegalArgumentException if the method is not an accessor.
      */
     private boolean isAccessor(Method method) {
+        
+        NDC.push("isAccessor(" + method.getName() + ")");
+        
+        try {
 
-        if (method.getParameterTypes().length != 0) {
-            throw new IllegalArgumentException(method.getName() + "() is not an accessor (takes arguments)");
+            if (method.getParameterTypes().length != 0) {
+                throw new IllegalArgumentException(method.getName() + "() is not an accessor (takes arguments)");
+            }
+
+            logger.debug("returns " + method.getReturnType().getName());
+
+            if (method.getReturnType().getName().equals("void")) {
+                throw new IllegalArgumentException(method.getName() + "() is not an accessor (returns void)");
+            }
+
+            return true;
+
+        } finally {
+            NDC.pop();
         }
-
-        logger.debug("returns " + method.getReturnType().getName());
-
-        if (method.getReturnType().getName().equals("void")) {
-            throw new IllegalArgumentException(method.getName() + "() is not an accessor (returns void)");
-        }
-
-        return true;
     }
 
     /**
@@ -461,31 +487,35 @@ public final class JmxWrapper {
 
         private Proxy(Object target, MBeanInfo mbInfo) {
 
-            if (target == null) {
-                throw new IllegalArgumentException("target can't be null");
-            }
+            NDC.push("Proxy()");
 
-            NDC.push("constructor");
             try {
 
+                if (target == null) {
+                    throw new IllegalArgumentException("target can't be null");
+                }
+                
                 this.target = target;
                 this.mbInfo = mbInfo;
 
                 targetClass = target.getClass();
 
                 MBeanAttributeInfo[] attributes = mbInfo.getAttributes();
+                
                 for (int offset = 0; offset < attributes.length; offset++) {
+                
                     MBeanAttributeInfo attributeInstance = attributes[offset];
                     String attributeName = attributeInstance.getName();
-                    logger.debug("attribute: " + attributeName);
+                    logger.debug("Attribute: " + attributeName);
 
                     name2attribute.put(attributeName, attributeInstance);
                     name2accessor.put(attributeName, resolve(attributeName, attributeInstance.isIs()));
                 }
 
                 for (Iterator<String> i = name2accessor.keySet().iterator(); i.hasNext(); ) {
+                    
                     String name = i.next();
-                    logger.debug("accessor resolved for " + name + ": " + name2accessor.get(name));
+                    logger.debug("Accessor resolved for " + name + ": " + name2accessor.get(name));
                 }
 
             } finally {
@@ -511,7 +541,7 @@ public final class JmxWrapper {
 
                         Method targetMethod = targetClass.getMethod(methodName);
 
-                        logger.debug("resolved " + targetMethod);
+                        logger.debug("Resolved " + targetMethod);
 
                         return targetMethod;
 
@@ -551,16 +581,27 @@ public final class JmxWrapper {
                 return method.invoke(target);
 
             } catch (IllegalAccessException e) {
-                throw new ReflectionException(e, "oops");
+                throw new ReflectionException(e, "Oops");
             } catch (InvocationTargetException e) {
-                throw new ReflectionException(e, "oops");
+                throw new ReflectionException(e, "Oops");
             } finally {
                 NDC.pop();
             }
         }
 
         public void setAttribute(Attribute attribute) throws AttributeNotFoundException, InvalidAttributeValueException, MBeanException, ReflectionException {
-            throw new UnsupportedOperationException();
+            
+            NDC.push("setAttribute(" + attribute + ")");
+            
+            try {
+                
+                logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
+                
+            } finally {
+                NDC.pop();
+            }
+            
+            throw new UnsupportedOperationException("Not Supported Yet: setAttribute(" + attribute + ")");
         }
 
         public AttributeList getAttributes(String[] attributes) {
@@ -611,11 +652,33 @@ public final class JmxWrapper {
         }
 
         public AttributeList setAttributes(AttributeList attributes) {
-            throw new UnsupportedOperationException();
+            
+            NDC.push("setAttributes(" + attributes + ")");
+            
+            try {
+                
+                logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
+                
+            } finally {
+                NDC.pop();
+            }
+            
+            throw new UnsupportedOperationException("Not Supported Yet");
         }
 
         public Object invoke(String actionName, Object[] params, String[] signature) throws MBeanException, ReflectionException {
-            throw new UnsupportedOperationException();
+
+            NDC.push("invoke(" + actionName + ")");
+            
+            try {
+                
+                logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
+                
+            } finally {
+                NDC.pop();
+            }
+            
+            throw new UnsupportedOperationException("Not Supported Yet: invoke(" + actionName + ")");
         }
 
         public MBeanInfo getMBeanInfo() {
