@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -144,7 +145,8 @@ public final class JmxWrapper {
 
         try {
 
-            List<MBeanAttributeInfo> operations = new LinkedList<MBeanAttributeInfo>();
+            List<MBeanAttributeInfo> accessors = new LinkedList<MBeanAttributeInfo>();
+            Map<Method, Method> accessor2mutator = new HashMap<Method, Method>();
             Class<?> targetClass = target.getClass();
 
             for (Method method : targetClass.getMethods()) {
@@ -154,11 +156,11 @@ public final class JmxWrapper {
                 Annotation annotation = getAnnotation(targetClass, method, JmxAttribute.class);
 
                 if (annotation != null) {
-                    operations.addAll(exposeMethod(target, method, (JmxAttribute) annotation));
+                    exposeMethod(target, method, (JmxAttribute) annotation, accessors, accessor2mutator);
                 }
             }
 
-            MBeanAttributeInfo[] attributeArray = operations.toArray(new MBeanAttributeInfo[] {});
+            MBeanAttributeInfo[] attributeArray = accessors.toArray(new MBeanAttributeInfo[] {});
             MBeanInfo mbInfo = new MBeanInfo(target.getClass().getName(),
                     description,
                     attributeArray,
@@ -166,7 +168,7 @@ public final class JmxWrapper {
                     null,
                     null,
                     null);
-            Proxy proxy = new Proxy(target, mbInfo);
+            Proxy proxy = new Proxy(target, mbInfo, accessor2mutator);
 
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 
@@ -252,9 +254,10 @@ public final class JmxWrapper {
      * @param method The method to expose.
      *
      * @param annotation Annotation to extract the metadata from.
-     * @return Operation signature.
+     * @param accessors Container to add found accessor methods to. 
+     * @param accessor2mutator Mapping from accessor to mutator method.
      */
-    private List<MBeanAttributeInfo> exposeMethod(Object target, Method method, JmxAttribute annotation) {
+    private void exposeMethod(Object target, Method method, JmxAttribute annotation, List<MBeanAttributeInfo> accessors, Map<Method, Method> accessor2mutator) {
 
         NDC.push("exposeMethod");
 
@@ -262,15 +265,17 @@ public final class JmxWrapper {
 
         try {
 
-            String name = resolveAccessorName(method);
+            String accessorName = resolveAccessorName(method);
 
-            logger.info(target.getClass().getName() + '#' + method.getName() + ": exposed as " + name);
-            logger.info("description: " + annotation.description());
+            logger.info(target.getClass().getName() + '#' + method.getName() + ": exposed as " + accessorName);
+            logger.info("Description: " + annotation.description());
+            Method mutator = resolveMutator(target, method, accessorName);
+            
+            if (mutator != null) {
+                accessor2mutator.put(method, mutator);
+            }
 
-            return exposeJmxAttribute(target, name, annotation.description(), method, resolveMutator(target, method, name));
-
-            // VT: FIXME: It might be a good idea to further check the method sanity. Or not
-            //method.invoke(target, property);
+            accessors.add(exposeJmxAttribute(target, accessorName, annotation.description(), method, mutator));
 
         } finally {
             NDC.pop();
@@ -288,10 +293,11 @@ public final class JmxWrapper {
      *
      * @return Operation signature.
      */
-    private List<MBeanAttributeInfo> exposeJmxAttribute(Object target,
+    private MBeanAttributeInfo exposeJmxAttribute(Object target,
             String name,
             String description,
             Method accessor, Method mutator) {
+        
         NDC.push("exposeJmxAttribute");
 
         try {
@@ -300,8 +306,6 @@ public final class JmxWrapper {
             logger.info("type:     " + accessor.getReturnType().getName());
             logger.info("accessor: " + accessor);
             logger.info("mutator:  " + mutator);
-
-            List<MBeanAttributeInfo> result = new LinkedList<MBeanAttributeInfo>();
 
             MBeanAttributeInfo accessorInfo = new MBeanAttributeInfo(
                     name,
@@ -313,24 +317,7 @@ public final class JmxWrapper {
 
             logger.debug("accessor: " + accessorInfo);
 
-            result.add(accessorInfo);
-
-            if (mutator != null && false) {
-
-                MBeanAttributeInfo mutatorInfo = new MBeanAttributeInfo(
-                        name,
-                        accessor.getReturnType().getName(),
-                        description,
-                        true,
-                        true,
-                        accessor.getName().startsWith("is"));
-
-                logger.debug("Mutator: " + mutatorInfo);
-
-                result.add(mutatorInfo);
-            }
-
-            return result;
+            return accessorInfo;
 
         } finally {
             NDC.pop();
@@ -477,15 +464,46 @@ public final class JmxWrapper {
         return source.substring(0, 1).toUpperCase() + source.substring(1);
     }
 
+    /**
+     * JMX invocation proxy.
+     * 
+     * Facilitates converting {@link #getAttribute(String)}, {@link #setAttribute(Attribute)},
+     * {@link #getAttributeListString(String[])} and {@link #setAttributes(AttributeList)}
+     * into actual method invocations of methods on the {@link #target}.
+     */
     private class Proxy implements DynamicMBean {
 
+        /**
+         * Object to invoke methods on.
+         */
         private final Object target;
+        
+        /**
+         * {@link #target} class.
+         */
         private final Class<?> targetClass;
+        
+        /**
+         * Target JMX descriptor.
+         */
         private final MBeanInfo mbInfo;
+        
+        /**
+         * @deprecated Doesn't seem to be used anywhere.
+         */
         private final Map<String, MBeanAttributeInfo> name2attribute = new TreeMap<String, MBeanAttributeInfo>();
+        
+        /**
+         * Mapping of the attribute name to the accessor method.
+         */
         private final Map<String, Method> name2accessor = new TreeMap<String, Method>();
 
-        private Proxy(Object target, MBeanInfo mbInfo) {
+        /**
+         * Mapping of the attribute name to the mutator method.
+         */
+        private final Map<String, Method> name2mutator = new TreeMap<String, Method>();
+
+        private Proxy(Object target, MBeanInfo mbInfo, Map<Method, Method> accessor2mutator) {
 
             NDC.push("Proxy()");
 
@@ -509,7 +527,14 @@ public final class JmxWrapper {
                     logger.debug("Attribute: " + attributeName);
 
                     name2attribute.put(attributeName, attributeInstance);
-                    name2accessor.put(attributeName, resolve(attributeName, attributeInstance.isIs()));
+                    Method accessor = resolve(attributeName, attributeInstance.isIs());
+                    name2accessor.put(attributeName, accessor);
+                    
+                    Method mutator = accessor2mutator.get(accessor);
+                    
+                    if (mutator != null) {
+                        name2mutator.put(attributeName, mutator);
+                    }
                 }
 
                 for (Iterator<String> i = name2accessor.keySet().iterator(); i.hasNext(); ) {
@@ -518,11 +543,27 @@ public final class JmxWrapper {
                     logger.debug("Accessor resolved for " + name + ": " + name2accessor.get(name));
                 }
 
+                for (Iterator<String> i = name2mutator.keySet().iterator(); i.hasNext(); ) {
+                    
+                    String name = i.next();
+                    logger.debug("Mutator resolved for " + name + ": " + name2mutator.get(name));
+                }
+
             } finally {
                 NDC.pop();
             }
         }
 
+        /**
+         * Resolve the method instance by name.
+         * 
+         * @param methodName Method name.
+         * @param isIs Is this method a "isX" method.
+         * 
+         * @return Method instance.
+         * 
+         * @exception NoSuchMethodException if a method instance can't be resolved.
+         */
         private Method resolve(String methodName, boolean isIs) {
 
             NDC.push("resolve(" + methodName + ')');
@@ -595,13 +636,24 @@ public final class JmxWrapper {
             
             try {
                 
-                logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
+                Method method = name2mutator.get(attribute.getName());
                 
+                logger.debug("Mutator for "+ attribute.getName() + ": " + method);
+             
+                try {
+
+                    method.invoke(target, attribute.getValue());
+
+                } catch (Throwable t) {
+
+                    // It's OK to log *and* rethrow, it'll only show up in jconsole
+                    logger.error("Failed to setAttribute(" + attribute + ")", t);
+                    
+                    throw new IllegalStateException("Failed to setAttribute(" + attribute + ")", t);
+                }
             } finally {
                 NDC.pop();
             }
-            
-            throw new UnsupportedOperationException("Not Supported Yet: setAttribute(" + attribute + ")");
         }
 
         public AttributeList getAttributes(String[] attributes) {
