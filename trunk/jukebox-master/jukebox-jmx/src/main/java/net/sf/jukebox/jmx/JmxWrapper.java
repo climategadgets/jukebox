@@ -709,6 +709,17 @@ public final class JmxWrapper {
             
             try {
                 
+                for (Iterator<Attribute> i = attributes.asList().iterator(); i.hasNext(); ) {
+                    
+                    Attribute a = i.next();
+                    
+                    try {
+                        
+                    } catch (Throwable t) {
+                        logger.error("setAttribute(" + a + ") failed, moving on", t);
+                    }
+                }
+                
                 logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
                 
             } finally {
