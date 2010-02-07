@@ -69,14 +69,14 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 	// Unfortunately, there's no way to find out whether it is executable or not
 
 	if (!target.exists() || !target.canRead() || !target.isFile()) {
-	    throw new IllegalArgumentException(target.toString()
+	    throw new IllegalArgumentException(target.getAbsolutePath()
 		    + ": doesn't exist, unreadable or not a regular file");
 	}
 
 	// We won't accept relative names to avoid ambiguity
 
 	if (!target.isAbsolute()) {
-	    throw new IllegalArgumentException(target.toString()
+	    throw new IllegalArgumentException(target.getAbsolutePath()
 		    + ": only absolute locations are acceptable");
 	}
 	
