@@ -4,13 +4,9 @@
   <groupId>net.sf.jukebox</groupId>
   <artifactId>jukebox-master</artifactId>
   <packaging>pom</packaging>
-  <version>6.1.1</version>
   <name>jukebox-master</name>
+  <version>${project.version}</version>
   <url>http://jukebox4.sourceforge.net/</url>
-  <issueManagement>
-    <system>SourceForge Tracker</system>
-    <url>http://sourceforge.net/tracker/?group_id=3021</url>
-  </issueManagement>
   <inceptionYear>1995</inceptionYear>
   <developers>
     <developer>
@@ -32,10 +28,6 @@
       <name>LGPL</name>
     </license>
   </licenses>
-  <scm>
-    <connection>scm:svn:https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</connection>
-    <url>http://jukebox4.svn.sourceforge.net/viewvc/jukebox4/</url>
-  </scm>
   <modules>
     <module>jukebox-common</module>
     <module>jukebox-sem</module>
@@ -44,4 +36,34 @@
     <module>jukebox-datastream</module>
     <module>jukebox-fsm</module>
   </modules>
+  <scm>
+    <connection>scm:svn:https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</connection>
+    <url>http://jukebox4.svn.sourceforge.net/viewvc/jukebox4/</url>
+  </scm>
+  <issueManagement>
+    <system>SourceForge Tracker</system>
+    <url>http://sourceforge.net/tracker/?group_id=3021</url>
+  </issueManagement>
+  <properties>
+    <project.version>6.1.1</project.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
