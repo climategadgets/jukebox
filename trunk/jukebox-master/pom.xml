@@ -5,7 +5,7 @@
   <artifactId>jukebox-master</artifactId>
   <packaging>pom</packaging>
   <name>jukebox-master</name>
-  <version>${project.version}</version>
+  <version>6.1.1</version>
   <url>http://jukebox4.sourceforge.net/</url>
   <inceptionYear>1995</inceptionYear>
   <developers>
@@ -45,7 +45,6 @@
     <url>http://sourceforge.net/tracker/?group_id=3021</url>
   </issueManagement>
   <properties>
-    <project.version>6.1.1</project.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
