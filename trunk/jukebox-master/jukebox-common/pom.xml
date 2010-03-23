@@ -5,49 +5,12 @@
   <groupId>net.sf.jukebox</groupId>
   <artifactId>jukebox-common</artifactId>
   <packaging>jar</packaging>
-  <version>6.1.1</version>
+  <version>${project.version}</version>
   <name>jukebox-common</name>
-  <url>http://jukebox4.sourceforge.net/</url>
   <issueManagement>
     <system>SourceForge Tracker</system>
     <url>http://sourceforge.net/tracker/?group_id=3021</url>
   </issueManagement>
-  <inceptionYear>1995</inceptionYear>
-  <developers>
-    <developer>
-      <email>vt@freehold.crocodile.org</email>
-      <name>Vadim Tkachenko</name>
-    </developer>
-  </developers>
-  <licenses>
-    <license>
-      <name>LGPL</name>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:svn:https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</connection>
-    <url>http://jukebox4.svn.sourceforge.net/viewvc/jukebox4/</url>
-  </scm>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>RELEASE</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -93,7 +56,7 @@
   <parent>
     <groupId>net.sf.jukebox</groupId>
     <artifactId>jukebox-master</artifactId>
-    <version>6.1.1</version>
+    <version>${project.version}</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 </project>
