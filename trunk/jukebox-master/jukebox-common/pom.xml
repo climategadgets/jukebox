@@ -7,15 +7,11 @@
   <packaging>jar</packaging>
   <version>6.1.1</version>
   <name>jukebox-common</name>
-  <issueManagement>
-    <system>SourceForge Tracker</system>
-    <url>http://sourceforge.net/tracker/?group_id=3021</url>
-  </issueManagement>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -47,12 +43,6 @@
       </exclusions>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <repository>
-      <id>SourceForge</id>
-      <url>scp://shell1.sf.net/home/users/v/vt/vtt/jukebox/maven/repo</url>
-    </repository>
-  </distributionManagement>
   <parent>
     <groupId>net.sf.jukebox</groupId>
     <artifactId>jukebox-master</artifactId>
