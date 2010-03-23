@@ -17,6 +17,15 @@
       <email>vt@freehold.crocodile.org</email>
       <name>Vadim Tkachenko</name>
     </developer>
+    <developer>
+      <id>ddcarter</id>
+      <name>David Carter</name>
+      <email>david@carter.net</email>
+      <timezone>EST</timezone>
+      <roles>
+        <role>Maven Repository Maintainer</role>
+      </roles>
+    </developer>
   </developers>
   <licenses>
     <license>
