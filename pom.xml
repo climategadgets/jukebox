@@ -38,6 +38,7 @@
   </modules>
   <scm>
     <connection>scm:svn:https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</connection>
+    <developerConnection>scm:svn:https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</developerConnection>
     <url>http://jukebox4.svn.sourceforge.net/viewvc/jukebox4/</url>
   </scm>
   <issueManagement>
