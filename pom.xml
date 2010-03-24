@@ -44,6 +44,44 @@
     <system>SourceForge Tracker</system>
     <url>http://sourceforge.net/tracker/?group_id=3021</url>
   </issueManagement>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.1</version>
+        <scope>test</scope>
+      </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.15</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>activation</artifactId>
+          <groupId>javax.activation</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jms</artifactId>
+          <groupId>javax.jms</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mail</artifactId>
+          <groupId>javax.mail</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jmxri</artifactId>
+          <groupId>com.sun.jmx</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jmxtools</artifactId>
+          <groupId>com.sun.jdmk</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    </dependencies>
+  </dependencyManagement>
   <distributionManagement>
     <snapshotRepository>
       <id>sonatype-nexus-snapshots</id>
