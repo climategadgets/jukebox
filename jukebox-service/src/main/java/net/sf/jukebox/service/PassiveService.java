@@ -3,6 +3,8 @@ package net.sf.jukebox.service;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+import org.apache.log4j.NDC;
+
 import net.sf.jukebox.jmx.JmxAttribute;
 import net.sf.jukebox.jmx.JmxAware;
 import net.sf.jukebox.jmx.JmxDescriptor;
@@ -710,8 +712,15 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
         public// synchronized // BAD THING
         void run() {
 
-            // logger.debug("RUNNING");
-            wrap(target, sem);
+            try {
+                
+                wrap(target, sem);
+                
+            } finally {
+                
+                // Clean up after lazy programmers
+                NDC.remove();
+            }
         }
 
         /**

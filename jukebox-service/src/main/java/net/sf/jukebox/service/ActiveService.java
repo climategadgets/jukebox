@@ -2,6 +2,8 @@ package net.sf.jukebox.service;
 
 import java.util.concurrent.ThreadFactory;
 
+import org.apache.log4j.NDC;
+
 /**
  * Describes the concept of an active service, i.e.&nbsp;the one which starts
  * (observing some preconditions at startup), doing something, and then shuts
@@ -166,6 +168,11 @@ public abstract class ActiveService extends PassiveService {
 
                 // VT: NOTE: I'm just being paranoid. This should never happen.
                 logger.fatal("THIS SHOULDN'T HAVE HAPPENED: uncaught exception sneaked through:", t);
+
+            } finally {
+
+                // Clean up after lazy programmers
+                NDC.remove();
             }
         }
     }
