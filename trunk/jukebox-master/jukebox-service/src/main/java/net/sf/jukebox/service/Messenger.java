@@ -54,7 +54,7 @@ public abstract class Messenger extends LogAware {
      */
     public final ACT start() {
 
-        new Executor().start();
+        new Thread(new Executor()).start();
         return complete;
     }
 
@@ -71,7 +71,7 @@ public abstract class Messenger extends LogAware {
     /**
      * Lifecycle controller for the payload object.
      */
-    private final class Executor extends Thread {
+    private final class Executor implements Runnable {
 
         /**
          * Run the errand. This method must never be called directly, only by
