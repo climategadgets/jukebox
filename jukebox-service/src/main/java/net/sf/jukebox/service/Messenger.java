@@ -1,8 +1,11 @@
 package net.sf.jukebox.service;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 import net.sf.jukebox.logger.LogAware;
 import net.sf.jukebox.sem.ACT;
 import net.sf.jukebox.util.Interval;
+
 import org.apache.log4j.NDC;
 
 /**
@@ -17,7 +20,7 @@ import org.apache.log4j.NDC;
  * remnants of the safety net are present - this class will not blow up and
  * disappear without leaving a trace.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2010
  */
 public abstract class Messenger extends LogAware {
 
@@ -33,7 +36,7 @@ public abstract class Messenger extends LogAware {
     }
 
     /**
-     * Start the messenger.
+     * Start the messenger in a new thread.
      *
      * @return The asynchronous completion token associated with the completion
      *         of the given task.
@@ -55,6 +58,22 @@ public abstract class Messenger extends LogAware {
     public final ACT start() {
 
         new Thread(new Executor()).start();
+        return complete;
+    }
+    
+    /**
+     * Start the messenger in a new thread.
+     * 
+     * It is the responsibility of the caller to properly set up the {@code executor}.
+     * 
+     * @return The asynchronous completion token associated with the completion
+     * of the given task.
+     * 
+     * @see #start()
+     */
+    public final ACT start(ThreadPoolExecutor executor) {
+        
+        executor.execute(new Executor());
         return complete;
     }
 
