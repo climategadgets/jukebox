@@ -61,9 +61,12 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
     
     public void broadcast(final DataSample<E> signal) {
         
-        NDC.push("broadcast");
+        // Need the hash code to uniquely identify the broadcast invocation in the log
+        NDC.push("broadcast#" + Integer.toHexString(signal.hashCode()));
 
         try {
+            
+            logger.debug("Signal: " + signal);
             
             Set<DataSink<E>> copy = new CollectionSynchronizer<DataSink<E>>().copy(consumerSet);
 
@@ -77,11 +80,19 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
 
                         @Override
                         protected Object execute() throws Throwable {
-                            logger.debug("Feeding: " + dataSink);
-                            dataSink.consume(signal);
-                            return null;
-                        }
+                            
+                            NDC.push("execute");
+                            
+                            try {
+                            
+                                logger.debug("Feeding: " + dataSink);
+                                dataSink.consume(signal);
+                                return null;
 
+                            } finally {
+                                NDC.pop();
+                            }
+                        }
                     };
 
                     // There's nothing we can do about the return value, forget it - but don't forget to check the logs
@@ -89,7 +100,6 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
 
                 } else {
                     
-                    NDC.push("consume");
                     try {
                         
                         logger.debug("Feeding: " + dataSink);
@@ -97,8 +107,6 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                         
                     } catch (Throwable t) {
                         logger.warn("Consumer invocation resulted in exception, there's nothing we can do to fix it", t);
-                    } finally {
-                        NDC.pop();
                     }
                 }
             }
