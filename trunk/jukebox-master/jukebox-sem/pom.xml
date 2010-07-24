@@ -5,7 +5,7 @@
   <groupId>net.sf.jukebox</groupId>
   <artifactId>jukebox-sem</artifactId>
   <packaging>jar</packaging>
-  <version>6.1.2-SNAPSHOT</version>
+  <version>6.1.2</version>
   <name>${project.artifactId}</name>
   <dependencies>
     <dependency>
@@ -18,7 +18,7 @@
   <parent>
     <groupId>net.sf.jukebox</groupId>
     <artifactId>jukebox-master</artifactId>
-    <version>6.1.2-SNAPSHOT</version>
+    <version>6.1.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 </project>
