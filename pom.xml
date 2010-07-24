@@ -5,7 +5,7 @@
   <artifactId>jukebox-master</artifactId>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
-  <version>6.1.2-SNAPSHOT</version>
+  <version>6.1.2</version>
   <url>http://jukebox4.sourceforge.net/</url>
   <inceptionYear>1995</inceptionYear>
   <developers>
