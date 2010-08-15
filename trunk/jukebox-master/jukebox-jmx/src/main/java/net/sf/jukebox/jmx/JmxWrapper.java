@@ -114,7 +114,7 @@ public final class JmxWrapper {
             }
             
         } catch (Throwable t) {
-            logger.error("Failed", t);
+            logger.error("Failed for " + target, t);
         } finally {
             NDC.pop();
         }
