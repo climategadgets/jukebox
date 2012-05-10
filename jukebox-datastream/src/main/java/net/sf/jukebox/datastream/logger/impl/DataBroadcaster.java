@@ -17,11 +17,21 @@ import net.sf.jukebox.util.CollectionSynchronizer;
  * A data source. An entity capable of producing a {@link DataSample data sample}.
  *
  * @param <E> Data type to handle.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2009-2012
  */
 public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
 
     private final Set<DataSink<E>> consumerSet = new HashSet<DataSink<E>>();
+    private final boolean async;
+    
+    public DataBroadcaster() {
+        
+        // Hunting down the deadlock
+        String property = System.getProperty(getClass().getName()+ ".async");
+        
+        logger.info("Async: '" + property + "'");
+        async = property != null;    
+    }
     
     public synchronized void addConsumer(DataSink<E> consumer) {
         
@@ -74,7 +84,7 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                 
                 final DataSink<E> dataSink = i.next();
                 
-                if (System.getProperty(getClass().getName()+ ".async") != null) { 
+                if (async) { 
 
                     Messenger m = new Messenger() {
 
