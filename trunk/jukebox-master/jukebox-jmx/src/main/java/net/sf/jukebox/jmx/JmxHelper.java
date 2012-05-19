@@ -15,12 +15,12 @@ import org.apache.log4j.Logger;
  * performed by the set of simple handler objects. Uses the
  * {@code dispatcher} pattern.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2012
  * @since Jukebox 2.0p5
  */
 public class JmxHelper implements DynamicMBean {
 
-    private final Logger log = Logger.getLogger(getClass());
+    private final Logger logger = Logger.getLogger(getClass());
 
     /**
      * Exception message used in multiple methods.
@@ -181,7 +181,7 @@ public class JmxHelper implements DynamicMBean {
 
             } catch (Throwable t) {
 
-                log.error("Getting '" + next + "' attribute failed, cause:", t);
+                logger.error("Getting '" + next + "' attribute failed, cause:", t);
             }
         }
 
@@ -206,7 +206,7 @@ public class JmxHelper implements DynamicMBean {
 
             } catch (Throwable t) {
 
-                log.error("Setting '" + next.getName() + "' attribute failed, cause:", t);
+                logger.error("Setting '" + next.getName() + "' attribute failed, cause:", t);
             }
         }
 
