@@ -10,16 +10,11 @@ import java.util.Date;
  * along with its description.
  * 
  * @param <E> Data type of the sample.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2008
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2012
  */
 public final class DataSample<E> implements Serializable {
 
-    /**
-     * Serial version ID.
-     * 
-     * This class is unlikely to be serialized beyond JMX, so default value should work fine.
-     */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 234850129837904475L;
 
     /**
      * Date format used to print the timestamp in {@link #toString()}.
