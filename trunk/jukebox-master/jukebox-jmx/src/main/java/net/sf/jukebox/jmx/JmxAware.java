@@ -8,8 +8,13 @@ package net.sf.jukebox.jmx;
  *
  * Whether or not the specific <strong>instance</strong> of an object that <strong>can</strong> be exposed
  * <strong>will</strong> be exposed depends on the return value of {@link #getJmxDescriptor()}.
+ * 
+ * <strong>Android note</strong>: since JMX on Android is not supported, it remains to be seen how exactly
+ * this will be useful. For now, JMX support on Android will just be NOP - it is simpler to have it there
+ * and support "write once, run everywhere" (even when using NOP JMX library)than to rip the JMX support
+ * out of the code base.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2012
  */
 public interface JmxAware {
 
