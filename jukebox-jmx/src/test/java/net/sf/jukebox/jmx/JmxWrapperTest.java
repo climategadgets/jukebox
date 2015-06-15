@@ -17,11 +17,12 @@ import org.apache.log4j.Logger;
 public class JmxWrapperTest extends TestCase {
 
     private final Logger logger = Logger.getLogger(getClass());
+    private final Random rg = new Random();
 
     private ObjectName getObjectName() throws MalformedObjectNameException {
         Hashtable<String, String> properties = new Hashtable<String, String>();
 
-        properties.put("id", Double.toString(new Random().nextGaussian()));
+        properties.put("id", Double.toString(rg.nextGaussian()));
         return new ObjectName("testDomain", properties);
     }
 
@@ -70,7 +71,7 @@ public class JmxWrapperTest extends TestCase {
         assertTrue("We've made it", true);
     }
 
-    class LiteralAccessor {
+    static class LiteralAccessor {
 
         @JmxAttribute(description="just the name")
         public String name() {
@@ -78,7 +79,7 @@ public class JmxWrapperTest extends TestCase {
         }
     }
 
-    class GoodAccessor {
+    static class GoodAccessor {
 
         @JmxAttribute(description="just the name")
         public String getName() {
@@ -86,7 +87,7 @@ public class JmxWrapperTest extends TestCase {
         }
     }
 
-    class AccessorMutator {
+    static class AccessorMutator {
 
         @JmxAttribute(description="just the name")
         public String getName() {
@@ -97,7 +98,7 @@ public class JmxWrapperTest extends TestCase {
         }
     }
 
-    class AccessorBadMutator {
+    static class AccessorBadMutator {
 
         @JmxAttribute(description="just the name")
         public String getName() {
@@ -108,7 +109,7 @@ public class JmxWrapperTest extends TestCase {
         }
     }
 
-    class BadAccessorHasArguments {
+    static class BadAccessorHasArguments {
 
         @JmxAttribute(description="just the name")
         //@ConfigurableProperty(
@@ -120,7 +121,7 @@ public class JmxWrapperTest extends TestCase {
         }
     }
 
-    class BadAccessorReturnsVoid {
+    static class BadAccessorReturnsVoid {
 
         @JmxAttribute(description="just the name")
         public void name() {
