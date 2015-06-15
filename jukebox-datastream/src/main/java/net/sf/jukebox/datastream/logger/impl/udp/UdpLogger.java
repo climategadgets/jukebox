@@ -32,7 +32,7 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
     /**
      * Date format to use.
      */
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    private static final String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     /**
      * Socket port to broadcast on.
@@ -465,7 +465,9 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 	Date date = new Date(time);
 
 	try {
-	    timestamp = dateFormat.format(date);
+	    
+	    timestamp = new SimpleDateFormat(dateFormat).format(date);
+	    
 	} catch (Throwable t) {
 	    // This is bad, but better than nothing
 	    timestamp = date.toString();
