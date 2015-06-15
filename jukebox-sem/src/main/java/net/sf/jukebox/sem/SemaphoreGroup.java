@@ -474,26 +474,24 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
     @Override
     public String toString() {
 
-        String result = PackageNameStripper.stripPackage(getClass().getName());
+        StringBuilder sb = new StringBuilder(PackageNameStripper.stripPackage(getClass().getName()));
 
         if (!"".equals(name)) {
 
-            result += "[" + name + "]";
+            sb.append("[" + name + "]");
         }
 
-        result += " (";
+        sb.append(" (");
 
-        Iterator<EventSemaphore> e = group.iterator();
+        for (Iterator<EventSemaphore> i = group.iterator(); i.hasNext(); ) {
 
-        while (e.hasNext()) {
-
-            EventSemaphore es = e.next();
-            result += " " + es.getName() + "." + Integer.toHexString(es.hashCode());
+            EventSemaphore es = i.next();
+            sb.append(" ").append(es.getName()).append(".").append(Integer.toHexString(es.hashCode()));
         }
 
-        e = null;
-        result += " )";
-        return result;
+        sb.append(" )");
+        
+        return sb.toString();
     }
 
     /**
