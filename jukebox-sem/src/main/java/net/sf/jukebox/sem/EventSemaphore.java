@@ -66,289 +66,278 @@ import java.util.LinkedList;
  */
 public class EventSemaphore extends Semaphore {
 
-  /**
-   * Log facility to use. Actually, almost all logger calls have been already
-   * eliminated, but once in a while I have to debug the problems.
-   */
-  public static final String CH_SEM = "SEM";
+    /**
+     * Log facility to use. Actually, almost all logger calls have been already
+     * eliminated, but once in a while I have to debug the problems.
+     */
+    public static final String CH_SEM = "SEM";
 
-  /**
-   * Semaphore status. Initially false.
-   *
-   * @see #trigger
-   * @see #post
-   * @see #clear
-   * @see #getStatus
-   */
-  protected boolean status;
+    /**
+     * Semaphore status. Initially false.
+     *
+     * @see #trigger
+     * @see #post
+     * @see #clear
+     * @see #getStatus
+     */
+    protected boolean status;
 
-  /**
-   * Triggered status.
-   * <p>
-   * False until first status change, true later. All the threads which issue
-   * the {@link #waitFor() waitFor()} call for a semaphore which hadn't been
-   * triggered yet, will wait.
-   *
-   * @see #canGetStatus
-   */
-  protected boolean triggered;
+    /**
+     * Triggered status.
+     * <p>
+     * False until first status change, true later. All the threads which issue
+     * the {@link #waitFor() waitFor()} call for a semaphore which hadn't been
+     * triggered yet, will wait.
+     *
+     * @see #canGetStatus
+     */
+    protected boolean triggered;
 
-  /**
-   * Threads that have already requested status after last status change. In
-   * reality, thread hash codes stores rather the thread references, to help
-   * the garbage collector.
-   * <p>
-   * (September 10 98) With the introduction of the weak references in JDK
-   * 1.2, the hash code will be probably replaced by the weak reference.
-   */
-  protected LinkedList<Integer> lastRequest;
+    /**
+     * Threads that have already requested status after last status change. In
+     * reality, thread hash codes stores rather the thread references, to help
+     * the garbage collector.
+     * <p>
+     * (September 10 98) With the introduction of the weak references in JDK
+     * 1.2, the hash code will be probably replaced by the weak reference.
+     */
+    protected LinkedList<Integer> lastRequest;
 
-  /**
-   * Default constructor.
-   */
-  public EventSemaphore() {
+    /**
+     * Default constructor.
+     */
+    public EventSemaphore() {
 
-    super(null);
-    init();
-  }
-
-  /**
-   * Creates named EventSemaphore.
-   * <p>
-   * Note that there may be more than one semaphore with the same name, mostly
-   * because (as I mentioned before) Java environment model significantly
-   * differs from one in other operating systems. Ther'll never be such a
-   * thing as a global name space for every semaphore in the common networking
-   * environment, like one I'm familiar with in OS/2 (and the name space for
-   * the named pipes, too), so for the time being I think I don't need a
-   * global name uniqueness for the semaphores.
-   *
-   * @param name The name assigned for the semaphore.
-   */
-  public EventSemaphore(String name) {
-
-    super(name);
-    init();
-  }
-
-  /**
-   * Creates named EventSemaphore with default name.
-   * <p>
-   * The default name is
-   * <code>owner.getClass().getName()+"/"+Integer.toHexString(owner.hashCode())</code>
-   *
-   * @param owner The object that gives the name to this semaphore
-   */
-  public EventSemaphore(Object owner) {
-
-    super(owner);
-    init();
-  }
-
-  /**
-   * Creates named EventSemaphore with default name and the string name
-   * appended to it, *
-   * "owner.getClass().getName()+"/"+Integer.toHexString(owner.hashCode())+"/"+qualifier"
-   *
-   * @param owner Semaphore owner.
-   * @param qualifier The additional name.
-   */
-  public EventSemaphore(Object owner, String qualifier) {
-
-    super(owner, qualifier);
-    init();
-  }
-
-  /**
-   * Initialize. Set {@link #status status} and {@link #triggered triggered}
-   * to false, and create the {@link #lastRequest lastRequest} array.
-   */
-  private void init() {
-
-    status = false;
-    triggered = false;
-    lastRequest = new LinkedList<Integer>();
-  }
-
-  /**
-   * Can the current thread receive the actual status?
-   * <p>
-   *
-   * @return true if this method is called first time after semaphore
-   * creation/posting/clearing, false otherwise.
-   */
-  protected synchronized boolean canGetStatus() {
-
-    if (!triggered) {
-
-      // No posting/clearing occured yet, nobody can get the real
-      // value
-
-      return false;
+        super(null);
+        init();
     }
 
-    int ti = Thread.currentThread().hashCode();
-    Integer t = new Integer(ti);
-    int idx = lastRequest.indexOf(t);
+    /**
+     * Creates named EventSemaphore.
+     * <p>
+     * Note that there may be more than one semaphore with the same name, mostly
+     * because (as I mentioned before) Java environment model significantly
+     * differs from one in other operating systems. Ther'll never be such a
+     * thing as a global name space for every semaphore in the common networking
+     * environment, like one I'm familiar with in OS/2 (and the name space for
+     * the named pipes, too), so for the time being I think I don't need a
+     * global name uniqueness for the semaphores.
+     *
+     * @param name The name assigned for the semaphore.
+     */
+    public EventSemaphore(String name) {
 
-    if (idx == -1) {
-
-      // logger.debug(CH_SEM, "canGetStatus: first request (" +
-      // Integer.toHexString(ti) + ")" );
-      lastRequest.add(t);
-      return true;
-
+        super(name);
+        init();
     }
 
-    // logger.debug(CH_SEM, "canGetStatus: redundant request (" +
-    // Integer.toHexString(ti) + ")" );
-    return false;
-  }
+    /**
+     * Creates named EventSemaphore with default name.
+     * <p>
+     * The default name is
+     * <code>owner.getClass().getName()+"/"+Integer.toHexString(owner.hashCode())</code>
+     *
+     * @param owner The object that gives the name to this semaphore
+     */
+    public EventSemaphore(Object owner) {
 
-  /**
-   * Trigger the semaphore with the given status.
-   *
-   * @param value Semaphore status to be set.
-   * @see #post
-   * @see #clear
-   */
-  public synchronized void trigger(boolean value) {
-
-    // complain( LOG_DEBUG, CH_SEM, "triggered: " + name + ":" + value);
-    lastRequest.clear();
-    status = value;
-    triggered = true;
-    notifyListeners(status);
-    notifyAll();
-  }
-
-  /**
-   * {@link #trigger trigger}<code>( true )</code>
-   *
-   * @see #clear
-   */
-  public synchronized void post() {
-
-    trigger(true);
-  }
-
-  /**
-   * {@link #trigger trigger}<code>( false )</code>
-   *
-   * @see #post
-   */
-  public synchronized void clear() {
-
-    trigger(false);
-  }
-
-  /**
-   * Wait forever for the semaphore to be triggered.
-   * <p>
-   * Note: each thread will get "true" for a semaphore triggering just once.
-   * Any subsequent call will wait again.
-   *
-   * @return the semaphore status
-   * @see #getStatus
-   * @exception InterruptedException if the thread which the semaphore waits
-   * in has been interrupted.
-   */
-  @Override
-  public synchronized boolean waitFor() throws InterruptedException {
-
-    // complain( Log.DEBUG,"waitFor "+name );
-    if (canGetStatus()) {
-
-      // complain( Log.DEBUG,"caught behind: "+toString() );
-      return status;
+        super(owner);
+        init();
     }
 
-    wait();
-    // complain( Log.DEBUG,"caught: "+toString() );
-    // Added 970604
-    lastRequest.add(Thread.currentThread().hashCode());
-    return status;
-  }
+    /**
+     * Creates named EventSemaphore with default name and the string name
+     * appended to it, *
+     * "owner.getClass().getName()+"/"+Integer.toHexString(owner.hashCode())+"/"+qualifier"
+     *
+     * @param owner Semaphore owner.
+     * @param qualifier The additional name.
+     */
+    public EventSemaphore(Object owner, String qualifier) {
 
-  /**
-   * Wait the specified amount of time for the semaphore posting.
-   *
-   * @param millis Time to wait, milliseconds.
-   * @return the semaphore status
-   * @see #getStatus
-   * @exception InterruptedException if the thread which the semaphore waits
-   * in is interrupted.
-   * @exception SemaphoreTimeoutException if no events occured within a
-   * timeout.
-   */
-  @Override
-  public synchronized boolean waitFor(long millis) throws SemaphoreTimeoutException, InterruptedException {
-
-    // complain( "waitFor("+millis+") "+name );
-    if (canGetStatus()) {
-      return status;
+        super(owner, qualifier);
+        init();
     }
 
-    wait(millis);
+    /**
+     * Initialize. Set {@link #status status} and {@link #triggered triggered}
+     * to false, and create the {@link #lastRequest lastRequest} array.
+     */
+    private void init() {
 
-    if (canGetStatus()) {
-      return status;
+        status = false;
+        triggered = false;
+        lastRequest = new LinkedList<Integer>();
     }
 
-    SemaphoreTimeoutException timedOut = new SemaphoreTimeoutException(Long.toString(millis));
+    /**
+     * Can the current thread receive the actual status?
+     * <p>
+     *
+     * @return true if this method is called first time after semaphore
+     * creation/posting/clearing, false otherwise.
+     */
+    protected synchronized boolean canGetStatus() {
 
-    notifyListeners(timedOut);
-    throw timedOut;
-  }
+        if (!triggered) {
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public synchronized String toString() {
+            // No posting/clearing occured yet, nobody can get the real value
 
-    String result = "(EventSem";
+            return false;
+        }
 
-    if (!"".equals(name)) {
+        int ti = Thread.currentThread().hashCode();
+        Integer t = new Integer(ti);
+        int idx = lastRequest.indexOf(t);
 
-      result += "[" + name + "]";
+        if (idx == -1) {
+
+            lastRequest.add(t);
+            return true;
+
+        }
+
+        return false;
     }
 
-    result += "." + Integer.toHexString(hashCode()) + ":" + status + ")";
+    /**
+     * Trigger the semaphore with the given status.
+     *
+     * @param value Semaphore status to be set.
+     * @see #post
+     * @see #clear
+     */
+    public synchronized void trigger(boolean value) {
 
-    return result;
-  }
+        lastRequest.clear();
+        status = value;
+        triggered = true;
 
-  /**
-   * Had the semaphore been triggered.
-   * <p>
-   * Answers positive on request if the semaphore had been triggered. Note
-   * that the answer is positive JUST ONCE FOR EACH REQUESTING THREAD. Any
-   * subsequent answer is false, as well as if the semaphore hadn't been
-   * triggered at all, until the next semaphore event. <br>
-   * This method is going to become package protected.
-   *
-   * @return true if the semaphore has been triggered, false if not.
-   * @see #waitFor()
-   */
-  public synchronized boolean isTriggered() {
+        notifyListeners(status);
+        notifyAll();
+    }
 
-    return canGetStatus();
+    /**
+     * {@link #trigger trigger}<code>( true )</code>
+     *
+     * @see #clear
+     */
+    public synchronized void post() {
 
-    // logger.debug(CH_SEM, "isTriggered: " + result);
-    //return result;
-  }
+        trigger(true);
+    }
 
-  /**
-   * Get the semaphore status.
-   * <p>
-   * Note that the real-time status may be obtained at the any moment without
-   * any limitations.
-   *
-   * @return The semaphore status.
-   */
-  public synchronized boolean getStatus() {
+    /**
+     * {@link #trigger trigger}<code>( false )</code>
+     *
+     * @see #post
+     */
+    public synchronized void clear() {
 
-    return status;
-  }
+        trigger(false);
+    }
+
+    /**
+     * Wait forever for the semaphore to be triggered.
+     * <p>
+     * Note: each thread will get "true" for a semaphore triggering just once.
+     * Any subsequent call will wait again.
+     *
+     * @return the semaphore status
+     * @see #getStatus
+     * @exception InterruptedException if the thread which the semaphore waits
+     * in has been interrupted.
+     */
+    @Override
+    public synchronized boolean waitFor() throws InterruptedException {
+
+        if (canGetStatus()) {
+
+            return status;
+        }
+
+        wait();
+
+        lastRequest.add(Thread.currentThread().hashCode());
+
+        return status;
+    }
+
+    /**
+     * Wait the specified amount of time for the semaphore posting.
+     *
+     * @param millis Time to wait, milliseconds.
+     * @return the semaphore status
+     * @see #getStatus
+     * @exception InterruptedException if the thread which the semaphore waits
+     * in is interrupted.
+     * @exception SemaphoreTimeoutException if no events occured within a
+     * timeout.
+     */
+    @Override
+    public synchronized boolean waitFor(long millis) throws SemaphoreTimeoutException, InterruptedException {
+
+        if (canGetStatus()) {
+            return status;
+        }
+
+        wait(millis);
+
+        if (canGetStatus()) {
+            return status;
+        }
+
+        SemaphoreTimeoutException timedOut = new SemaphoreTimeoutException(Long.toString(millis));
+
+        notifyListeners(timedOut);
+        throw timedOut;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public synchronized String toString() {
+
+        String result = "(EventSem";
+
+        if (!"".equals(name)) {
+
+            result += "[" + name + "]";
+        }
+
+        result += "." + Integer.toHexString(hashCode()) + ":" + status + ")";
+
+        return result;
+    }
+
+    /**
+     * Had the semaphore been triggered.
+     * <p>
+     * Answers positive on request if the semaphore had been triggered. Note
+     * that the answer is positive JUST ONCE FOR EACH REQUESTING THREAD. Any
+     * subsequent answer is false, as well as if the semaphore hadn't been
+     * triggered at all, until the next semaphore event. <br>
+     * This method is going to become package protected.
+     *
+     * @return true if the semaphore has been triggered, false if not.
+     * @see #waitFor()
+     */
+    public synchronized boolean isTriggered() {
+
+        return canGetStatus();
+    }
+
+    /**
+     * Get the semaphore status.
+     * <p>
+     * Note that the real-time status may be obtained at the any moment without
+     * any limitations.
+     *
+     * @return The semaphore status.
+     */
+    public synchronized boolean getStatus() {
+
+        return status;
+    }
 }
