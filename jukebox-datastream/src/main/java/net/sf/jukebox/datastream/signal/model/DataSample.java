@@ -19,7 +19,7 @@ public final class DataSample<E> implements Serializable {
     /**
      * Date format used to print the timestamp in {@link #toString()}.
      */
-    public static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
     /**
      * Timestamp associated with the sample. Must represent a valid time.
