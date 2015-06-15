@@ -54,7 +54,7 @@ public class RunnableAggregatorTest extends TestCase {
         }
     }
 
-    public class Producer implements Runnable {
+    public static class Producer implements Runnable {
 
         private final Set<Integer> collector;
 
@@ -63,7 +63,7 @@ public class RunnableAggregatorTest extends TestCase {
         }
 
         public void run() {
-            collector.add(new Integer(hashCode()));
+            collector.add(Integer.valueOf(hashCode()));
         }
     }
 }
