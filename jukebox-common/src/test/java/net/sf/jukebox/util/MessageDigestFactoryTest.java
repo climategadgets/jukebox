@@ -8,7 +8,7 @@ import junit.framework.TestCase;
  */
 public class MessageDigestFactoryTest extends TestCase {
 
-    private final String message = "I know the word";
+    private static final String message = "I know the word";
 
     public void testMD5() {
         
