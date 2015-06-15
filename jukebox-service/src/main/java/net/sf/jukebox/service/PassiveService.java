@@ -346,7 +346,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
      * @see #enabled
      */
     @JmxAttribute(description = "True from the moment the service is started until the moment the service is stopped")
-    public final boolean isEnabled() {
+    public final synchronized boolean isEnabled() {
         return enabled;
     }
 
