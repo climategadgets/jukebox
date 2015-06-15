@@ -55,6 +55,7 @@ public class ShutdownHandler extends Thread {
     if (target == null) {
 
       System.err.println("ShutdownHandler: oh well, you've failed to set the target before system went down...");
+      return;
     }
 
     try {
