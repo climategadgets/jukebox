@@ -12,15 +12,8 @@
     <developer>
       <email>vt@freehold.crocodile.org</email>
       <name>Vadim Tkachenko</name>
-    </developer>
-    <developer>
-      <id>ddcarter</id>
-      <name>David Carter</name>
-      <email>david@carter.net</email>
-      <timezone>EST</timezone>
-      <roles>
-        <role>Maven Repository Maintainer</role>
-      </roles>
+      <url>https://github.com/climategadgets</url>
+      <id>climategadgets</id>
     </developer>
   </developers>
   <licenses>
@@ -37,13 +30,13 @@
     <module>jukebox-fsm</module>
   </modules>
   <scm>
-    <connection>scm:svn:https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</connection>
-    <developerConnection>scm:svn:https://jukebox4.svn.sourceforge.net/svnroot/jukebox4</developerConnection>
-    <url>http://jukebox4.svn.sourceforge.net/viewvc/jukebox4/</url>
+    <connection>scm:git:git://github.com/climategadgets/jukebox.git</connection>
+    <developerConnection>scm:git:git@github.com:climategadgets/jukebox.git</developerConnection>
+    <url>https://github.com/climategadgets/jukebox</url>
   </scm>
   <issueManagement>
-    <system>SourceForge Tracker</system>
-    <url>http://sourceforge.net/tracker/?group_id=3021</url>
+    <system>GitHub Issue Tracker</system>
+    <url>https://github.com/climategadgets/jukebox/issues</url>
   </issueManagement>
   <dependencyManagement>
     <dependencies>
