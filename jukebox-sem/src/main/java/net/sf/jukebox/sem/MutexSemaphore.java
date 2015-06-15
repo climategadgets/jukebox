@@ -188,6 +188,9 @@ public class MutexSemaphore extends Semaphore {
             currentOwner = null;
 
             // logger.info(CH_MUTEX, "release: OK");
+            
+            // This is a mutex, there's no point in notifyAll() - exactly one listener will get a chance
+            // to reacquire the lock
             notify();
         }
     }
