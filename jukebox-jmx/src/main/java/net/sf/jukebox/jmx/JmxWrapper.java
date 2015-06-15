@@ -9,8 +9,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+
 import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
@@ -537,16 +539,16 @@ public final class JmxWrapper {
                     }
                 }
 
-                for (Iterator<String> i = name2accessor.keySet().iterator(); i.hasNext(); ) {
+                for (Iterator<Entry<String, Method>> i = name2accessor.entrySet().iterator(); i.hasNext(); ) {
                     
-                    String name = i.next();
-                    logger.debug("Accessor resolved for " + name + ": " + name2accessor.get(name));
+                    Entry<String, Method> entry = i.next();
+                    logger.debug("Accessor resolved for " + entry.getKey() + ": " + entry.getValue());
                 }
 
-                for (Iterator<String> i = name2mutator.keySet().iterator(); i.hasNext(); ) {
+                for (Iterator<Entry<String, Method>> i = name2mutator.entrySet().iterator(); i.hasNext(); ) {
                     
-                    String name = i.next();
-                    logger.debug("Mutator resolved for " + name + ": " + name2mutator.get(name));
+                    Entry<String, Method> entry = i.next();
+                    logger.debug("Mutator resolved for " + entry.getKey() + ": " + entry.getValue());
                 }
 
             } finally {
