@@ -187,7 +187,7 @@ public class EventSemaphore extends Semaphore {
         }
 
         int ti = Thread.currentThread().hashCode();
-        Integer t = new Integer(ti);
+        Integer t = Integer.valueOf(ti);
         int idx = lastRequest.indexOf(t);
 
         if (idx == -1) {
