@@ -172,7 +172,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
             // logger.debug(CH_SG, "Left: " + localGroup.toString());
         }
 
-        localGroup = null;
         return true;
     }
 
@@ -332,7 +331,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
             // logger.debug(CH_SG,"Left: "+localGroup.toString() );
         }
 
-        localGroup = null;
         return result;
     }
 
@@ -416,7 +414,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
             localGroup.remove(esPosted);
         }
 
-        localGroup = null;
         return null;
     }
 
