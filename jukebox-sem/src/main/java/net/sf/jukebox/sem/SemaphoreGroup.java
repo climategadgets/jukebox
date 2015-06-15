@@ -81,17 +81,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void finalize() throws Throwable {
-
-        // group = null;
-        // posted = null;
-        super.finalize();
-    }
-
-    /**
      * Add the {@link Semaphore semaphore} to the group.
      *
      * @param ES Semaphore to add to the group.
