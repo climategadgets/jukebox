@@ -182,7 +182,7 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 	    return;
 	}
 
-	StringBuffer sb = new StringBuffer();
+	StringBuilder sb = new StringBuilder();
 
 	writeHeader(sb);
 	writeData(sb, signature, value);
@@ -208,7 +208,7 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
      * 
      * @param sb String buffer to write the header to.
      */
-    protected abstract void writeHeader(StringBuffer sb);
+    protected abstract void writeHeader(StringBuilder sb);
 
     /**
      * Write a protocol data.
@@ -217,7 +217,7 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
      * @param signature Channel signature to use.
      * @param value Data value.
      */
-    protected abstract void writeData(StringBuffer sb, String signature, DataSample<E> value);
+    protected abstract void writeData(StringBuilder sb, String signature, DataSample<E> value);
 
     /**
      * Resolve a host address into a network address.
@@ -397,7 +397,7 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 	    return message;
 	}
 
-	StringBuffer sb = new StringBuffer();
+	StringBuilder sb = new StringBuilder();
 
 	for (int offset = 0; offset < message.length(); offset++) {
 

@@ -50,7 +50,7 @@ public class XapLogger<E extends Number> extends UdpLogger<E> {
      * @param sb String buffer to write the header to.
      */
     @Override
-    protected final void writeHeader(StringBuffer sb) {
+    protected final void writeHeader(StringBuilder sb) {
 
 	sb.append("xap-header\n");
 	sb.append("{\n");
@@ -70,7 +70,7 @@ public class XapLogger<E extends Number> extends UdpLogger<E> {
      * @param value Data sample value.
      */
     @Override
-    protected final void writeData(StringBuffer sb, String signature, DataSample<E> value) {
+    protected final void writeData(StringBuilder sb, String signature, DataSample<E> value) {
 
 	sb.append("dz.data-sample\n");
 	sb.append("{\n");
