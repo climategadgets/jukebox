@@ -1,8 +1,9 @@
 package net.sf.jukebox.aggregator;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -24,7 +25,10 @@ public class RunnableAggregatorTest extends TestCase {
     }
 
     public void testProducerScarce() {
-        testProducer(100, 10);
+        
+        for (int count = 0; count < 500; count++) {
+            testProducer(100, 10);
+        }
     }
 
     public void testProducerAbundant() {
@@ -38,7 +42,7 @@ public class RunnableAggregatorTest extends TestCase {
             RunnableAggregator aggregator = new RunnableAggregator();
             BlockingQueue<Runnable> requestQueue = new LinkedBlockingQueue<Runnable>();
 
-            Set<Integer> result = Collections.synchronizedSet(new TreeSet<Integer>());
+            List<Integer> result = Collections.synchronizedList(new LinkedList<Integer>());
 
             for (int count = 0; count < objectLimit; count++) {
 
@@ -56,9 +60,9 @@ public class RunnableAggregatorTest extends TestCase {
 
     public static class Producer implements Runnable {
 
-        private final Set<Integer> collector;
+        private final Collection<Integer> collector;
 
-        public Producer(Set<Integer> collector) {
+        public Producer(Collection<Integer> collector) {
             this.collector = collector;
         }
 
