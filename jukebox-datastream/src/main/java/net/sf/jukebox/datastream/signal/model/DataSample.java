@@ -124,7 +124,7 @@ public final class DataSample<E> implements Serializable {
     @Override
     public String toString() {
     
-        StringBuffer sb = new StringBuffer("DataSample[");
+        StringBuilder sb = new StringBuilder("DataSample[");
         
         // Default date resolution is not good enough for some applications
         sb.append(dateFormat.format(new Date(timestamp)));
