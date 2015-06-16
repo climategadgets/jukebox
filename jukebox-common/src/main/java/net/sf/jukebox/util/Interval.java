@@ -22,7 +22,7 @@ public class Interval {
             return "-(" + toTimeInterval(-elapsed) + ")";
         }
 
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         long millis = elapsed % 1000,
              seconds = elapsed / 1000,
  	     minutes = seconds / 60,
