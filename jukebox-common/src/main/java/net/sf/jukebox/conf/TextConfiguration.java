@@ -256,7 +256,7 @@ public class TextConfiguration implements Configuration {
 
         if (found instanceof List) {
 
-            StringBuffer result = new StringBuffer();
+            StringBuilder result = new StringBuilder();
             List source = (List) found;
 
             for (Iterator i = source.iterator(); i.hasNext();) {
