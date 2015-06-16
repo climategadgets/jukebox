@@ -101,7 +101,7 @@ public class PropertiesReader extends TextConfigurationReader {
 
 //        System.err.println("Source: '" + source + "'");
 
-        StringBuffer target = new StringBuffer();
+        StringBuilder target = new StringBuilder();
 
         // True if the current character is within the double quote
 
