@@ -179,7 +179,7 @@ public class ACT extends EventSemaphore {
     @Override
     public String toString() {
 
-        StringBuffer buf = new StringBuffer("ACT.");
+        StringBuilder buf = new StringBuilder("ACT.");
         buf.append(Integer.toHexString(hashCode()));
         buf.append("(");
 
