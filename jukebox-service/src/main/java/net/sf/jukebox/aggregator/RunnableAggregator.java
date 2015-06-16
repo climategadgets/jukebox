@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import net.sf.jukebox.sem.ACT;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.NDC;
 
@@ -61,8 +61,6 @@ public class RunnableAggregator {
         try {
 
             check(threadCount, workerQueue);
-
-            ACT done = new ACT();
 
             final BlockingQueue<Runnable> spoolQueue = new LinkedBlockingQueue<Runnable>();
             final ThreadPoolExecutor tpe = new ThreadPoolExecutor(threadCount, threadCount + 1, 60L, TimeUnit.SECONDS, spoolQueue);
