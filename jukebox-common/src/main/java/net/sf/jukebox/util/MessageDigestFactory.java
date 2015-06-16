@@ -78,7 +78,7 @@ public class MessageDigestFactory {
 
         byte digest[] = dos.getMessageDigest().digest();
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for (int offset = 0; offset < digest.length; offset++) {
 
