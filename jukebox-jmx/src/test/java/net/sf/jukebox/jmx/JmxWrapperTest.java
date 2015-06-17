@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Set;
 
 import javax.management.Attribute;
+import javax.management.AttributeNotFoundException;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanException;
 import javax.management.MBeanServer;
@@ -237,6 +238,8 @@ public class JmxWrapperTest extends TestCase {
                 
                 try {
                     
+                    // An unexpected exception in an accessor
+                    
                     mbs.getAttribute(name, "error");
                     fail("Should've failed by now");
                     
@@ -247,6 +250,8 @@ public class JmxWrapperTest extends TestCase {
 
                 try {
                     
+                    // An unexpected exception in a mutator
+                    
                     mbs.setAttribute(name, new Attribute("error", "DUDE"));
                     fail("Should've failed by now");
 
@@ -255,6 +260,29 @@ public class JmxWrapperTest extends TestCase {
                     assertEquals("Wrong exception message", "NOBODY expects the Spanish Inquisition!", ex.getCause().getCause().getCause().getMessage());
                 }
 
+                try {
+                    
+                    // Nonexistent accessor
+                    
+                    mbs.getAttribute(name, "nonexistent");
+                    fail("Should've failed by now");
+                    
+                } catch (AttributeNotFoundException ex) {
+                    
+                    assertEquals("Wrong exception message", "nonexistent", ex.getMessage());
+                }
+
+                try {
+                    
+                    // Nonexistent mutator
+                    
+                    mbs.setAttribute(name, new Attribute("nonexistent", "DUDE"));
+                    fail("Should've failed by now");
+                    
+                } catch (AttributeNotFoundException ex) {
+                    
+                    assertEquals("Wrong exception message", "nonexistent", ex.getMessage());
+                }
             }
 
             try {

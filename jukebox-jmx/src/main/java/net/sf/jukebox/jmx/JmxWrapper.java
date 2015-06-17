@@ -642,8 +642,12 @@ public final class JmxWrapper {
                 
                 Method method = name2mutator.get(attribute.getName());
                 
-                logger.debug("Mutator for "+ attribute.getName() + ": " + method);
+                logger.debug("Mutator for " + attribute.getName() + ": " + method);
              
+                if (method == null) {
+                    throw new AttributeNotFoundException(attribute.getName());
+                }
+
                 try {
 
                     method.invoke(target, attribute.getValue());
