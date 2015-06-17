@@ -113,7 +113,7 @@ public class ACT extends EventSemaphore {
      */
     public synchronized void complete(boolean status, Object message) {
 
-        setUserObject(message);
+        userObject = message;
         trigger(status);
     }
 
@@ -154,23 +154,6 @@ public class ACT extends EventSemaphore {
         }
 
         return userObject;
-    }
-
-    /**
-     * Set the user object associated with this ACT.
-     *
-     * @param userObject The user object.
-     *
-     * @throws IllegalStateException if this method was called after the
-     * operation completion.
-     */
-    private void setUserObject(Object userObject) {
-
-        if (isComplete()) {
-            throw new IllegalStateException("Too late, should've done that before completion");
-        }
-
-        this.userObject = userObject;
     }
 
     /**
