@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import java.util.Random;
 import java.util.Set;
 
+import javax.management.Attribute;
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanException;
 import javax.management.MBeanServer;
@@ -183,9 +184,9 @@ public class JmxWrapperTest extends TestCase {
         assertEquals("Test", JmxWrapper.upperFirst("test"));
     }
     
-    public void testGetAttribute() throws Throwable {
+    public void testAttributes() throws Throwable {
         
-        NDC.push("testGetAttribute");
+        NDC.push("testAttributes");
         
         try {
         
@@ -215,6 +216,47 @@ public class JmxWrapperTest extends TestCase {
             assertEquals("Wrong object instance count", 1, found.size());
             assertEquals("Wrong name found", name, found.iterator().next().getObjectName());
             
+            {
+                // The good behavior case
+                
+                Object code = mbs.getAttribute(name, "code");
+
+                logger.info("getAttribute(code): " + code);
+
+                assertEquals("Wrong code extracted", target.getCode(), code);
+
+                mbs.setAttribute(name, new Attribute("code", "DUDE"));
+
+                logger.info("setAttribute(code): " + target.getCode());
+
+                assertEquals("Wrong code set", target.getCode(), "DUDE");
+            }
+
+            {
+                // The bad behavior case
+                
+                try {
+                    
+                    mbs.getAttribute(name, "error");
+                    fail("Should've failed by now");
+                    
+                } catch (ReflectionException ex) {
+                    
+                    assertEquals("Wrong exception message", "Nobody expects the Spanish Inquisition!", ex.getCause().getCause().getMessage());
+                }
+
+                try {
+                    
+                    mbs.setAttribute(name, new Attribute("error", "DUDE"));
+                    fail("Should've failed by now");
+
+                } catch (RuntimeMBeanException ex) {
+                    
+                    assertEquals("Wrong exception message", "NOBODY expects the Spanish Inquisition!", ex.getCause().getCause().getCause().getMessage());
+                }
+
+            }
+
             try {
             
                 mbs.invoke(name, "hashCode", null, null);
@@ -222,6 +264,7 @@ public class JmxWrapperTest extends TestCase {
             } catch (RuntimeMBeanException ex) {
                 assertEquals("Wrong exception message", "Not Supported Yet: invoke(hashCode)", ex.getCause().getMessage());
             }
+            
             
         } finally {
             NDC.pop();
@@ -338,11 +381,31 @@ public class JmxWrapperTest extends TestCase {
         }
     }
     
-    static class SimpleJmxAware implements JmxAware {
+    class SimpleJmxAware implements JmxAware {
 
+        private String code = Integer.toHexString(rg.nextInt());
+                
         @Override
         public JmxDescriptor getJmxDescriptor() {
             return new JmxDescriptor("jukebox", getClass().getSimpleName(), Integer.toHexString(hashCode()), "test case");
+        }
+        
+        @JmxAttribute(description = "random code")
+        public String getCode() {
+            return code;
+        }
+        
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        @JmxAttribute(description = "broken method")
+        public String getError() {
+            throw new NullPointerException("Nobody expects the Spanish Inquisition!");
+        }
+        
+        public void setError(String error) {
+            throw new NullPointerException("NOBODY expects the Spanish Inquisition!");
         }
     }
 }
