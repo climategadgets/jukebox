@@ -24,4 +24,16 @@
         <Method name="release" />
         <Bug pattern="NO_NOTIFY_NOT_NOTIFYALL"/>
     </Match>
+    <!-- This is a test, the warning is irrelevant -->
+    <Match>
+        <Class name="net.sf.jukebox.service.MessengerTest"/>
+        <Field name="current" />
+        <Bug pattern="IS2_INCONSISTENT_SYNC"/>
+    </Match>
+    <!-- This is a test, the warning is irrelevant -->
+    <Match>
+        <Class name="net.sf.jukebox.service.MessengerTest"/>
+        <Field name="max" />
+        <Bug pattern="IS2_INCONSISTENT_SYNC"/>
+    </Match>
 </FindBugsFilter>
