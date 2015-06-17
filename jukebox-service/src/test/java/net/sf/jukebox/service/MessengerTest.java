@@ -5,15 +5,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import net.sf.jukebox.sem.ACT;
 import net.sf.jukebox.sem.SemaphoreGroup;
-
 import junit.framework.TestCase;
 
 public class MessengerTest extends TestCase {
     
     private int current = 0;
     private int max = 0;
-
+    
     public void testPool() throws InterruptedException {
 
         final int poolSize = 10;
@@ -32,6 +32,23 @@ public class MessengerTest extends TestCase {
         assertEquals("Wrong current", 0, current);
     }
     
+    public void testStart() throws InterruptedException {
+        
+        ACT done = new Worker().start();
+        
+        assertTrue("Wrong status upon completion", done.waitFor());
+    }
+
+    public void testFail() throws InterruptedException {
+        
+        ACT done = new Fail().start();
+        
+        assertFalse("Wrong status upon completion", done.waitFor());
+        assertNotNull("Wrong user object", done.getUserObject());
+        assertEquals("Wrong user object", Error.class, done.getUserObject().getClass());
+        assertEquals("Wrong user object", "Oops", ((Error) done.getUserObject()).getMessage());
+    }
+
     private synchronized void in() {
         
         current++;
@@ -46,7 +63,7 @@ public class MessengerTest extends TestCase {
         current--;
     }
 
-    protected class Worker extends Messenger {
+    class Worker extends Messenger {
 
         @Override
         protected Object execute() throws Throwable {
@@ -56,6 +73,14 @@ public class MessengerTest extends TestCase {
             out();
             return null;
         }
-        
+    }
+
+    static class Fail extends Messenger {
+
+        @Override
+        protected Object execute() throws Throwable {
+
+            throw new Error("Oops");
+        }
     }
 }
