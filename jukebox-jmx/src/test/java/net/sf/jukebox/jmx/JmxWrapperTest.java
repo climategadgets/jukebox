@@ -1,5 +1,6 @@
 package net.sf.jukebox.jmx;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.Set;
@@ -68,6 +69,23 @@ public class JmxWrapperTest extends TestCase {
 
     public void testInterfaceDefined() throws Throwable {
         new JmxWrapper().expose(new TheImplementation(), getObjectName(), "Annotation on the interface");
+        assertTrue("We've made it", true);
+    }
+    
+    public void testCollectionConstructor() {
+        
+        Set<Object> targets = new HashSet<Object>();
+        
+        targets.add(new LiteralAccessor());
+        targets.add(new GoodAccessor());
+        targets.add(new AccessorMutator());
+        targets.add(new AccessorBadMutator());
+        targets.add(new BadAccessorHasArguments());
+        targets.add(new BadAccessorReturnsVoid());
+        targets.add(new TheImplementation());
+        targets.add(new TheConcreteSuperclass());
+        
+        new JmxWrapper(targets);
         assertTrue("We've made it", true);
     }
 
