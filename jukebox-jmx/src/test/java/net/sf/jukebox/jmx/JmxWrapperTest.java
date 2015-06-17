@@ -156,6 +156,24 @@ public class JmxWrapperTest extends TestCase {
 
         assertTrue("We've made it", true);
     }
+    
+    public void testLowerFirst() {
+        
+        assertEquals(null, JmxWrapper.lowerFirst(null));
+        assertEquals("", JmxWrapper.lowerFirst(""));
+        assertEquals("a", JmxWrapper.lowerFirst("A"));
+        assertEquals("1", JmxWrapper.lowerFirst("1"));
+        assertEquals("tEST", JmxWrapper.lowerFirst("TEST"));
+    }
+
+    public void testUpperFirst() {
+        
+        assertEquals(null, JmxWrapper.upperFirst(null));
+        assertEquals("", JmxWrapper.upperFirst(""));
+        assertEquals("A", JmxWrapper.upperFirst("a"));
+        assertEquals("1", JmxWrapper.upperFirst("1"));
+        assertEquals("Test", JmxWrapper.upperFirst("test"));
+    }
 
     static class LiteralAccessor {
 
