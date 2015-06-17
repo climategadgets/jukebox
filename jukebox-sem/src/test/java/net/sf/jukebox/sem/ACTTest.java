@@ -7,7 +7,7 @@ public class ACTTest extends TestCase {
     public void testLifecycle1() throws InterruptedException, SemaphoreTimeoutException {
         
         String userObject = "Hi there";
-        ACT act = new ACT(userObject);
+        final ACT act = new ACT(userObject);
         
         try {
             
@@ -22,13 +22,30 @@ public class ACTTest extends TestCase {
         
         assertEquals("Wrong string representation", "ACT." + Integer.toHexString(act.hashCode()) + "(Hi there:waiting)", act.toString());
 
-        act.complete(true);
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                
+                try {
+                    
+                    Thread.sleep(100);
+                    act.complete(true);
+                    
+                } catch (InterruptedException ex) {
+                    
+                    // The trace is irrelevant here
+                    fail("Unexpected exception: " + ex.toString());
+                }
+            }
+        };
         
-        assertTrue(act.isComplete());
+        new Thread(r).start();
 
         assertTrue(act.waitFor());
-        assertTrue(act.waitFor(100));
-
+        assertTrue(act.isComplete());
+        assertTrue(act.waitFor());
+        
         assertEquals("Wrong user object", userObject, act.getUserObject());
         assertTrue("Wrong status", act.getStatus());
         
