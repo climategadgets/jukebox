@@ -383,11 +383,13 @@ public final class JmxWrapper {
         if (name.startsWith("get")) {
             return lowerFirst(name.substring(3));
         }
-
+        
         if (name.startsWith("set")) {
-            throw new IllegalStateException("Method name doesn't conform to accessor pattern (need isX or getX): " + name);
+            throw new IllegalArgumentException(name + "(): method name doesn't conform to accessor pattern (need isX or getX)");
         }
 
+        logger.warn("Non-standard method name '" + name + "' (better be isX or getX)");
+        
         return name;
     }
 

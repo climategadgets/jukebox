@@ -86,6 +86,16 @@ public class JmxWrapperTest extends TestCase {
         }
     }
 
+    public void testBadAccessorWrongName() throws Throwable {
+        try {
+            new JmxWrapper().expose(new BadAccessorWrongName(), getObjectName(), "Bad accessor signature - returns void");
+        } catch (IllegalArgumentException e) {
+            logger.info(e);
+            assertTrue("Null exception message", e.getMessage() != null);
+            assertEquals("Unexpected exception message", "setName(): method name doesn't conform to accessor pattern (need isX or getX)", e.getMessage());
+        }
+    }
+
     public void testInterfaceDefined() throws Throwable {
         new JmxWrapper().expose(new TheImplementation(), getObjectName(), "Annotation on the interface");
         assertTrue("We've made it", true);
@@ -166,7 +176,7 @@ public class JmxWrapperTest extends TestCase {
     static class IsAccessor {
 
         @JmxAttribute(description="is enabled?")
-        public boolean getEnabled() {
+        public boolean isEnabled() {
             return true;
         }
     }
@@ -209,6 +219,14 @@ public class JmxWrapperTest extends TestCase {
 
         @JmxAttribute(description="just the name")
         public void name() {
+        }
+    }
+
+    static class BadAccessorWrongName {
+
+        @JmxAttribute(description="just the name")
+        public String setName() {
+            return "name";
         }
     }
 
