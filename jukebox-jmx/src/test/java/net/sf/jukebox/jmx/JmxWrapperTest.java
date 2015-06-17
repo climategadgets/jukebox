@@ -283,6 +283,30 @@ public class JmxWrapperTest extends TestCase {
                     
                     assertEquals("Wrong exception message", "nonexistent", ex.getMessage());
                 }
+
+                try {
+                    
+                    // Inaccessible accessor
+                    
+                    Object secret = mbs.getAttribute(name, "secret");
+                    fail("Should've failed by now");
+                    
+                } catch (AttributeNotFoundException ex) {
+                    
+                    assertEquals("Wrong exception message", "secret", ex.getMessage());
+                }
+
+                try {
+                    
+                    // Inaccessible mutator
+                    
+                    mbs.setAttribute(name, new Attribute("secret", "DUDE"));
+                    fail("Should've failed by now");
+                    
+                } catch (AttributeNotFoundException ex) {
+                    
+                    assertEquals("Wrong exception message", "secret", ex.getMessage());
+                }
             }
 
             try {
@@ -434,6 +458,14 @@ public class JmxWrapperTest extends TestCase {
         
         public void setError(String error) {
             throw new NullPointerException("NOBODY expects the Spanish Inquisition!");
+        }
+
+        @JmxAttribute(description = "inaccessible method")
+        private String getSecret() {
+            return "secret";
+        }
+        
+        private void setSecret(String secret) {
         }
     }
 }
