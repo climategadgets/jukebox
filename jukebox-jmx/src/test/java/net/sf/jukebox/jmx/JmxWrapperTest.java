@@ -88,6 +88,26 @@ public class JmxWrapperTest extends TestCase {
         new JmxWrapper(targets);
         assertTrue("We've made it", true);
     }
+    
+    public void testRegisterNull() {
+        
+        try {
+        
+            new JmxWrapper().register(null);
+            
+            fail("Should've failed by now");
+
+        } catch (IllegalArgumentException ex) {
+            
+            assertEquals("Wrong exception message", "target can't be null", ex.getMessage());
+        }
+    }
+    
+    public void testRegisterNotJmxAware() {
+        
+        new JmxWrapper().register("something that is definitely @JmxAware");
+        assertTrue("We've made it", true);
+    }
 
     static class LiteralAccessor {
 
