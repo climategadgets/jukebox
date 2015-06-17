@@ -131,6 +131,17 @@ public class JmxWrapperTest extends TestCase {
         assertTrue("We've made it", true);
     }
 
+    public void testRegisterTwice() {
+        
+        JmxWrapper w = new JmxWrapper();
+        Object target = new SimpleJmxAware();
+        
+        w.register(target);
+        w.register(target);
+
+        assertTrue("We've made it", true);
+    }
+
     static class LiteralAccessor {
 
         @JmxAttribute(description="just the name")
