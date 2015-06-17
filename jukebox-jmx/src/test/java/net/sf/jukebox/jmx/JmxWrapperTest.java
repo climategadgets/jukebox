@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 
 /**
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2009
+ * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2015
  */
 public class JmxWrapperTest extends TestCase {
 
@@ -25,6 +25,20 @@ public class JmxWrapperTest extends TestCase {
 
         properties.put("id", Double.toString(rg.nextGaussian()));
         return new ObjectName("testDomain", properties);
+    }
+
+    public void testExposeNull() throws Throwable {
+        
+        try {
+        
+            new JmxWrapper().expose(null, getObjectName(), "null");
+            
+            fail("Should've failed by now");
+
+        } catch (IllegalArgumentException ex) {
+            
+            assertEquals("Wrong exception message", "target can't be null", ex.getMessage());
+        }
     }
 
     public void testLiteral() throws Throwable {
@@ -84,6 +98,8 @@ public class JmxWrapperTest extends TestCase {
         targets.add(new BadAccessorReturnsVoid());
         targets.add(new TheImplementation());
         targets.add(new TheConcreteSuperclass());
+        targets.add("something that is definitely not @JmxAware");
+        targets.add(new SimpleJmxAware());
         
         new JmxWrapper(targets);
         assertTrue("We've made it", true);
@@ -105,7 +121,13 @@ public class JmxWrapperTest extends TestCase {
     
     public void testRegisterNotJmxAware() {
         
-        new JmxWrapper().register("something that is definitely @JmxAware");
+        new JmxWrapper().register("something that is definitely not @JmxAware");
+        assertTrue("We've made it", true);
+    }
+
+    public void testRegisterJmxAware() {
+        
+        new JmxWrapper().register(new SimpleJmxAware());
         assertTrue("We've made it", true);
     }
 
@@ -202,5 +224,12 @@ public class JmxWrapperTest extends TestCase {
             return "must be exposed through the annotation is present only on the concrete superclass";
         }
     }
-}
+    
+    class SimpleJmxAware implements JmxAware {
 
+        @Override
+        public JmxDescriptor getJmxDescriptor() {
+            return new JmxDescriptor("jukebox", getClass().getSimpleName(), Integer.toHexString(hashCode()), "test case");
+        }
+    }
+}
