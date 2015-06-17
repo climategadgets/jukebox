@@ -47,7 +47,12 @@ public class JmxWrapperTest extends TestCase {
     }
 
     public void testGoodAccessor() throws Throwable {
-        new JmxWrapper().expose(new GoodAccessor(), getObjectName(), "Properly named accessor");
+        new JmxWrapper().expose(new GoodAccessor(), getObjectName(), "Properly named get* accessor");
+        assertTrue("We've made it", true);
+    }
+
+    public void testIsAccessor() throws Throwable {
+        new JmxWrapper().expose(new IsAccessor(), getObjectName(), "Properly named is* accessor");
         assertTrue("We've made it", true);
     }
 
@@ -155,6 +160,14 @@ public class JmxWrapperTest extends TestCase {
         @JmxAttribute(description="just the name")
         public String getName() {
             return "name";
+        }
+    }
+
+    static class IsAccessor {
+
+        @JmxAttribute(description="is enabled?")
+        public boolean getEnabled() {
+            return true;
         }
     }
 
