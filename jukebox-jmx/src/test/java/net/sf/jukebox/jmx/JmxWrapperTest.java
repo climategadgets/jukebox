@@ -1,16 +1,24 @@
 package net.sf.jukebox.jmx;
 
+import java.lang.management.ManagementFactory;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.Set;
 
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
+import javax.management.ObjectInstance;
 import javax.management.ObjectName;
+import javax.management.ReflectionException;
+import javax.management.RuntimeMBeanException;
 
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.NDC;
 
 /**
  * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2015
@@ -174,6 +182,51 @@ public class JmxWrapperTest extends TestCase {
         assertEquals("1", JmxWrapper.upperFirst("1"));
         assertEquals("Test", JmxWrapper.upperFirst("test"));
     }
+    
+    public void testGetAttribute() throws Throwable {
+        
+        NDC.push("testGetAttribute");
+        
+        try {
+        
+            MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+            SimpleJmxAware target = new SimpleJmxAware();
+            JmxWrapper w = new JmxWrapper();
+            
+            w.register(target);
+            
+            JmxDescriptor jmxDescriptor = target.getJmxDescriptor();
+            
+            StringBuilder sb = new StringBuilder();
+            
+            sb.append(jmxDescriptor.domainName).append(":");
+            sb.append("name=").append(jmxDescriptor.name).append(",");
+            sb.append("instance=").append(jmxDescriptor.instance);
+    
+            String pattern = sb.toString();
+            logger.info("getAttribute name: " + pattern);
+    
+            ObjectName name = new ObjectName(pattern);
+            
+            Set<ObjectInstance> found = mbs.queryMBeans(name, null);
+            
+            logger.info("found: " + found);
+            
+            assertEquals("Wrong object instance count", 1, found.size());
+            assertEquals("Wrong name found", name, found.iterator().next().getObjectName());
+            
+            try {
+            
+                mbs.invoke(name, "hashCode", null, null);
+            
+            } catch (RuntimeMBeanException ex) {
+                assertEquals("Wrong exception message", "Not Supported Yet: invoke(hashCode)", ex.getCause().getMessage());
+            }
+            
+        } finally {
+            NDC.pop();
+        }
+    }
 
     static class LiteralAccessor {
 
@@ -285,7 +338,7 @@ public class JmxWrapperTest extends TestCase {
         }
     }
     
-    class SimpleJmxAware implements JmxAware {
+    static class SimpleJmxAware implements JmxAware {
 
         @Override
         public JmxDescriptor getJmxDescriptor() {
