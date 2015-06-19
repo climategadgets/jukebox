@@ -16,4 +16,40 @@ public class EventSemaphoreTest extends TestCase {
         assertEquals("Wrong name", PackageNameStripper.stripPackage(getClass().getName()) + "/" + Integer.toHexString(hashCode()) + "/", semOwned.getName());
         assertEquals("Wrong name", PackageNameStripper.stripPackage(getClass().getName()) + "/" + Integer.toHexString(hashCode()) + "/" + name, semOwnedNamed.getName());
     }
+    
+    public void testPost() {
+        testTrigger(true);
+    }
+
+    public void testClear() {
+        testTrigger(false);
+    }
+
+    private void testTrigger(boolean value) {
+        
+        EventSemaphore sem = new EventSemaphore();
+        
+        assertFalse("Wrong state", sem.canGetStatus());
+        assertFalse("Wrong state", sem.isTriggered());
+        
+        assertEquals("Wrong status", false, sem.getStatus());
+        assertEquals("Wrong status", false, sem.getStatus());
+
+        // Overcomplication to improve the test coverage; trigger(value) would've worked just as fine
+        
+        if (value) {
+            sem.post();
+        } else {
+            sem.clear();
+        }
+        
+        assertEquals("Wrong status", value, sem.getStatus());
+        assertEquals("Wrong status", value, sem.getStatus());
+
+        assertTrue("Wrong state", sem.isTriggered());
+        
+        // The 'triggered' state is already cleared by now
+        assertFalse("Wrong state", sem.isTriggered());
+        assertFalse("Wrong state", sem.canGetStatus());
+    }
 }
