@@ -51,7 +51,7 @@ public class EventSemaphoreTest extends TestCase {
     public void testClear() {
         testTrigger(false);
     }
-
+    
     private void testTrigger(boolean value) {
         
         EventSemaphore sem = new EventSemaphore();
@@ -78,5 +78,52 @@ public class EventSemaphoreTest extends TestCase {
         // The 'triggered' state is already cleared by now
         assertFalse("Wrong state", sem.isTriggered());
         assertFalse("Wrong state", sem.canGetStatus());
+    }
+    
+    public void testWaitForWithWait() throws InterruptedException {
+        
+        testWaitForWithWait(false);
+        testWaitForWithWait(true);
+    }
+    
+    private void testWaitForWithWait(final boolean value) throws InterruptedException {
+        
+        final EventSemaphore sem = new EventSemaphore();
+        
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                
+                try {
+                
+                    Thread.sleep(100);
+                    sem.trigger(value);
+
+                } catch (InterruptedException e) {
+                    
+                    fail("Unexpected exception: " + e.toString());
+                }
+            }
+        };
+        
+        new Thread(r).start();
+        
+        sem.waitFor();
+        assertEquals("Wrong status", value, sem.getStatus());
+    }
+
+    public void testWaitForNoWait() throws InterruptedException {
+        
+        testWaitForNoWait(false);
+        testWaitForNoWait(true);
+    }
+
+    private void testWaitForNoWait(boolean value) throws InterruptedException {
+
+        EventSemaphore sem = new EventSemaphore();
+        
+        sem.trigger(value);
+        assertEquals("Wrong status", value, sem.waitFor());
     }
 }
