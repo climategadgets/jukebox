@@ -11,6 +11,7 @@ public class MulticasterTest extends TestCase {
         try {
             
             m.addListener(null);
+            fail("Should've failed by now");
             
         } catch (IllegalArgumentException ex) {
             assertEquals("Wrong exception message", "null listener doesn't make sense", ex.getMessage());
@@ -19,6 +20,22 @@ public class MulticasterTest extends TestCase {
         m.addListener(new Listener());
     }
     
+    public void testRemove() {
+        
+        Multicaster m = new Multicaster();
+        
+        try {
+            
+            m.removeListener(null);
+            fail("Should've failed by now");
+            
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Wrong exception message", "null argument", ex.getMessage());
+        }
+        
+        m.addListener(new Listener());
+    }
+
     private static class Listener implements EventListener {
 
         @Override

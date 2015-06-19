@@ -2,6 +2,7 @@ package net.sf.jukebox.sem;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Notification multicaster.
@@ -35,7 +36,7 @@ public class Multicaster {
    * @see #removeListener
    * @see EventListener
    */
-  protected HashSet<EventListener> listenerSet = new HashSet<EventListener>();
+  private final Set<EventListener> listenerSet = new HashSet<EventListener>();
 
   /**
    * Add the listener.
@@ -67,7 +68,7 @@ public class Multicaster {
    */
   public synchronized void removeListener(EventListener target) {
 
-    if (listenerSet == null) {
+    if (target == null) {
       throw new IllegalArgumentException("null argument");
     }
 
