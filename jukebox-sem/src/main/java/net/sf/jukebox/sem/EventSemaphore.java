@@ -299,16 +299,16 @@ public class EventSemaphore extends Semaphore {
     @Override
     public synchronized String toString() {
 
-        String result = "(EventSem";
+        StringBuilder sb = new StringBuilder("(EventSem");
 
         if (!"".equals(name)) {
 
-            result += "[" + name + "]";
+            sb.append("[").append(name).append("]");
         }
 
-        result += "." + Integer.toHexString(hashCode()) + ":" + status + ")";
+        sb.append(".").append(Integer.toHexString(hashCode())).append(":").append(status).append(")");
 
-        return result;
+        return sb.toString();
     }
 
     /**
