@@ -26,6 +26,7 @@ package net.sf.jukebox.sem;
  * attempts (stack depth, in other words).
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @deprecated Consider using {@link java.util.concurrent.Semaphore} instead.
  */
 public class MutexSemaphore extends Semaphore {
 
