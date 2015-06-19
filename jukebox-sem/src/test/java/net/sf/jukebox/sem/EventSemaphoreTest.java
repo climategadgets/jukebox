@@ -126,4 +126,68 @@ public class EventSemaphoreTest extends TestCase {
         sem.trigger(value);
         assertEquals("Wrong status", value, sem.waitFor());
     }
+
+    public void testWaitForMillisWithWait() throws InterruptedException, SemaphoreTimeoutException {
+        
+        testWaitForMillisWithWait(false, 100, 150);
+        testWaitForMillisWithWait(true, 100, 150);
+    }
+    
+    public void testWaitForMillisWithTimeout() throws InterruptedException, SemaphoreTimeoutException {
+
+        Boolean[] values = new Boolean[] { false, true };
+
+        for (int offset = 0; offset < values.length; offset++) {
+            
+            try {
+                
+                testWaitForMillisWithWait(values[offset], 100, 50);
+                fail("Should've been off with exception by now");
+            
+            } catch (SemaphoreTimeoutException ex) {
+                assertEquals("Wrong exception message", "50", ex.getMessage());
+            }
+        }
+    }
+    
+    private void testWaitForMillisWithWait(final boolean value, final int sleep, final int millis) throws InterruptedException, SemaphoreTimeoutException {
+        
+        final EventSemaphore sem = new EventSemaphore();
+        
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                
+                try {
+                
+                    Thread.sleep(sleep);
+                    sem.trigger(value);
+
+                } catch (InterruptedException e) {
+                    
+                    fail("Unexpected exception: " + e.toString());
+                }
+            }
+        };
+        
+        new Thread(r).start();
+        
+        sem.waitFor(millis);
+        assertEquals("Wrong status", value, sem.getStatus());
+    }
+
+    public void testWaitForMillisNoWait() throws InterruptedException, SemaphoreTimeoutException {
+        
+        testWaitForMillisNoWait(false);
+        testWaitForMillisNoWait(true);
+    }
+
+    private void testWaitForMillisNoWait(boolean value) throws InterruptedException, SemaphoreTimeoutException {
+
+        EventSemaphore sem = new EventSemaphore();
+        
+        sem.trigger(value);
+        assertEquals("Wrong status", value, sem.waitFor(50));
+    }
 }
