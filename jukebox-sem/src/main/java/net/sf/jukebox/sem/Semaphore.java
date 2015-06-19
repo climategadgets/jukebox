@@ -29,10 +29,6 @@ public abstract class Semaphore extends Multicaster {
      */
     protected String name;
 
-    protected Semaphore() {
-
-    }
-
     /**
      * Create the named semaphore.
      *
