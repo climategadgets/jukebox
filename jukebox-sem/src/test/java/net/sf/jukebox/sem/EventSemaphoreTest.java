@@ -18,18 +18,21 @@ public class EventSemaphoreTest extends TestCase {
         EventSemaphore semNamed = new EventSemaphore(name);
         EventSemaphore semOwned = new EventSemaphore(this);
         EventSemaphore semOwnedNamed = new EventSemaphore(this, name);
+        EventSemaphore semOwnedByNullNamed = new EventSemaphore(null, name);
         
         assertEquals("Wrong name", null, sem.getName());
         assertEquals("Wrong name", "", semEmptyName.getName());
         assertEquals("Wrong name", name, semNamed.getName());
         assertEquals("Wrong name", PackageNameStripper.stripPackage(getClass().getName()) + "/" + Integer.toHexString(hashCode()) + "/", semOwned.getName());
         assertEquals("Wrong name", PackageNameStripper.stripPackage(getClass().getName()) + "/" + Integer.toHexString(hashCode()) + "/" + name, semOwnedNamed.getName());
+        assertEquals("Wrong name", PackageNameStripper.stripPackage(semOwnedByNullNamed.getClass().getName()) + "/" + Integer.toHexString(semOwnedByNullNamed.hashCode()) + "/" + name, semOwnedByNullNamed.getName());
         
         assertEquals("Wrong string representation", toString(sem), sem.toString());
         assertEquals("Wrong string representation", toString(semEmptyName), semEmptyName.toString());
         assertEquals("Wrong string representation", toString(semNamed), semNamed.toString());
         assertEquals("Wrong string representation", toString(semOwned), semOwned.toString());
         assertEquals("Wrong string representation", toString(semOwnedNamed), semOwnedNamed.toString());
+        assertEquals("Wrong string representation", toString(semOwnedByNullNamed), semOwnedByNullNamed.toString());
     }
     
     private String toString(EventSemaphore target) {
