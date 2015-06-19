@@ -19,7 +19,6 @@ import net.sf.jukebox.util.SimpleQueue;
  * related to a confusion between <code>EventSemaphore</code> and
  * <code>Semaphore</code>. Should be looked at.
  *
- * @version $Id: SemaphoreGroup.java,v 1.2 2007-06-14 04:32:18 vtt Exp $
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim
  * Tkachenko</a> 1995-1998
  */

@@ -14,7 +14,6 @@ import net.sf.jukebox.util.PackageNameStripper;
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim
  * Tkachenko</a> 1995-1998
- * @version $Id: Semaphore.java,v 1.2 2007-06-14 04:32:18 vtt Exp $
  */
 public abstract class Semaphore extends Multicaster {
 

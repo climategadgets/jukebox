@@ -21,9 +21,7 @@ import java.util.Set;
  * methods that will return the default value in case when the configuration
  * value is missing from the source.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim
- * Tkachenko</a> 1998-2002
- * @version $Id: Configuration.java,v 1.3 2007-06-14 21:58:04 vtt Exp $
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1998-2002
  */
 public interface Configuration {
 

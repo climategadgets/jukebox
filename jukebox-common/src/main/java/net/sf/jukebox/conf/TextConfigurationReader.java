@@ -20,7 +20,6 @@ import java.io.Reader;
  * @author Significant influence from <a href="http://java.apache.org"
  * target=_top>Java-Apache Project</a> in general and code written by <a
  * href="mailto:mazzocch@systemy.it">Stefano Mazzocchi</a> in particular.
- * @version $Id: TextConfigurationReader.java,v 1.2 2007-06-14 04:32:09 vtt Exp $
  */
 public class TextConfigurationReader extends LineNumberReader {
 

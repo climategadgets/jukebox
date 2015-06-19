@@ -12,7 +12,6 @@ import org.apache.log4j.NDC;
  * The Finite State Machine implementation.
  *
  * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
- * @version $Id: FiniteStateMachine.java,v 1.8 2006/05/14 04:19:18 vt Exp $
  */
 public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate extends Enum & FsmState, Tevent extends FsmEvent, Toutput> {
 

@@ -16,9 +16,7 @@ import net.sf.jukebox.sem.EventListener;
  * preserve the former documentation for it.
  * </dl>
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim
- * Tkachenko</a> 1996-1999
- * @version $Id: IdleClient.java,v 1.2 2007-06-14 04:32:19 vtt Exp $
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1996-1999
  * @see Idle
  * @see Idle#OUT
  * @see Alarm

@@ -49,7 +49,6 @@ import net.sf.jukebox.util.Interval;
  * beyond that.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2007
- * @version $Id: PassiveService.java,v 1.2 2007-06-14 04:32:20 vtt Exp $
  * @see ActiveService
  */
 public abstract class PassiveService extends LogAware implements Service, PassiveServiceMXBean, JmxAware {

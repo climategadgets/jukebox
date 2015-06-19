@@ -13,7 +13,6 @@ import org.apache.log4j.spi.LoggingEvent;
  * Basic ANSI color layout.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2007
- * @version $Id: ANSIColorLayout.java,v 1.2 2007-06-14 04:32:15 vtt Exp $
  */
 public class ANSIColorLayout extends PatternLayout {
 

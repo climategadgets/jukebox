@@ -60,7 +60,6 @@ import java.util.LinkedList;
  * </dl>
  * </dl>
  *
- * @version $Id: EventSemaphore.java,v 1.5 2007-06-16 06:56:18 vtt Exp $
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2007
  * @see SemaphoreGroup
  */

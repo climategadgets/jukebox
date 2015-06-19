@@ -21,7 +21,6 @@ import org.w3c.dom.Node;
  * is read only, and will throw an exception on any attempt to modify it.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000
- * @version $Id: XmlConfiguration.java,v 1.2 2007-06-14 04:32:09 vtt Exp $
  */
 public class XmlConfiguration extends TextConfiguration {
 

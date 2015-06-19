@@ -22,7 +22,6 @@ import java.util.Iterator;
  * another class to do it.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
- * @version $Id: Multicaster.java,v 1.3 2007-06-15 07:08:55 vtt Exp $
  * @see EventListener
  */
 public class Multicaster {

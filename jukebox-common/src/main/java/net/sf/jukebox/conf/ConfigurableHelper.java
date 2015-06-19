@@ -38,7 +38,6 @@ package net.sf.jukebox.conf;
  * really welcomed it), there's no viable option.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000
- * @version $Id: ConfigurableHelper.java,v 1.2 2007-06-14 04:32:08 vtt Exp $
  */
 public class ConfigurableHelper implements Configurable {
 

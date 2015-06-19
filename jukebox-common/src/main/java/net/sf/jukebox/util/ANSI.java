@@ -4,7 +4,6 @@ package net.sf.jukebox.util;
  * ANSI color ESCAPE sequence support.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2007
- * @version $Id: ANSI.java,v 1.2 2007-06-14 04:32:21 vtt Exp $
  */
 public enum ANSI {
 

@@ -27,7 +27,6 @@ package net.sf.jukebox.conf;
  * cumbersome.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1998-2000
- * @version $Id: Configurable.java,v 1.2 2007-06-14 04:32:08 vtt Exp $
  * 
  * @deprecated Self-aware object configuration model is being retired in favor of dependency injection.
  */

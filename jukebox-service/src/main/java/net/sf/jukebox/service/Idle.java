@@ -21,7 +21,6 @@ import net.sf.jukebox.sem.EventListener;
  * to remember why.
  *
  * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
- * @version $Id: Idle.java,v 1.2 2007-06-14 04:32:19 vtt Exp $
  */
 public final class Idle extends PassiveService implements EventListener {
 

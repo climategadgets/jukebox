@@ -4,7 +4,6 @@ package net.sf.jukebox.sem;
  * Objects which implement this interface will be able to receive the event
  * notification asynchronously, as opposed to the active listening to the
  * event.
- * @version $Id: EventListener.java,v 1.2 2007-06-14 04:32:17 vtt Exp $
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
  * @see Multicaster
  * @see Semaphore
