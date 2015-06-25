@@ -32,6 +32,8 @@ public class RunnableAggregatorTest extends TestCase {
     }
 
     public void testProducerAbundant() {
+        
+        // VT: NOTE: This will likely fail on hardware limited platforms, @Ignore it.
         testProducer(100, 1000);
     }
 
