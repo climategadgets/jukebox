@@ -76,7 +76,7 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
 
         try {
             
-            logger.debug(signal);
+            logger.trace(signal);
             
             Set<DataSink<E>> copy = new CollectionSynchronizer<DataSink<E>>().copy(consumerSet);
 
