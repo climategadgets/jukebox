@@ -8,8 +8,6 @@ import java.util.Set;
 
 import javax.management.Attribute;
 import javax.management.AttributeNotFoundException;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanException;
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectInstance;
@@ -288,7 +286,7 @@ public class JmxWrapperTest extends TestCase {
                     
                     // Inaccessible accessor
                     
-                    Object secret = mbs.getAttribute(name, "secret");
+                    mbs.getAttribute(name, "secret");
                     fail("Should've failed by now");
                     
                 } catch (AttributeNotFoundException ex) {
