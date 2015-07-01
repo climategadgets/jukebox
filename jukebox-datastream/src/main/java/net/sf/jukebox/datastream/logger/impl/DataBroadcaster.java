@@ -94,8 +94,12 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                             NDC.push("execute");
                             
                             try {
-                            
-                                logger.debug("Feeding: " + dataSink);
+
+                                // dataSink.toString() may be expensive
+                                if (logger.isTraceEnabled()) {
+                                    logger.trace("Feeding: " + dataSink);
+                                }
+                                
                                 dataSink.consume(signal);
                                 return null;
 
@@ -112,7 +116,11 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                     
                     try {
                         
-                        logger.debug("Feeding: " + dataSink);
+                        // dataSink.toString() may be expensive
+                        if (logger.isTraceEnabled()) {
+                            logger.trace("Feeding: " + dataSink);
+                        }
+                        
                         dataSink.consume(signal);
                         
                     } catch (Throwable t) {
