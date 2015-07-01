@@ -1,12 +1,5 @@
 package net.sf.jukebox.datastream.logger.impl.udp;
 
-import net.sf.jukebox.util.network.HostHelper;
-import net.sf.jukebox.datastream.logger.impl.AbstractLogger;
-import net.sf.jukebox.datastream.signal.model.DataSample;
-import net.sf.jukebox.datastream.signal.model.DataSource;
-import net.sf.jukebox.conf.ConfigurableProperty;
-import net.sf.jukebox.jmx.JmxAttribute;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -14,9 +7,24 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import net.sf.jukebox.conf.ConfigurableProperty;
+import net.sf.jukebox.datastream.logger.impl.AbstractLogger;
+import net.sf.jukebox.datastream.logger.impl.udp.xap.XapLogger;
+import net.sf.jukebox.datastream.logger.impl.udp.xpl.XplLogger;
+import net.sf.jukebox.datastream.signal.model.DataSample;
+import net.sf.jukebox.datastream.signal.model.DataSource;
+import net.sf.jukebox.jmx.JmxAttribute;
+import net.sf.jukebox.util.network.HostHelper;
 
 import org.apache.log4j.NDC;
 
