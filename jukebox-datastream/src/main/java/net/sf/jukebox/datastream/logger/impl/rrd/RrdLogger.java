@@ -66,20 +66,18 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 	    throw new IllegalArgumentException("target can't be null");
 	}
 
-	// Unfortunately, there's no way to find out whether it is executable or not
+        // We won't accept relative names to avoid ambiguity
 
-	if (!target.exists() || !target.canRead() || !target.isFile()) {
+        if (!target.isAbsolute()) {
+            throw new IllegalArgumentException(target.getAbsolutePath()
+                    + ": only absolute locations are acceptable");
+        }
+        
+	if (!target.exists() || !target.canRead() || !target.isFile() || !target.canExecute()) {
 	    throw new IllegalArgumentException(target.getAbsolutePath()
-		    + ": doesn't exist, unreadable or not a regular file");
+		    + ": doesn't exist, unreadable, not executable or not a regular file");
 	}
 
-	// We won't accept relative names to avoid ambiguity
-
-	if (!target.isAbsolute()) {
-	    throw new IllegalArgumentException(target.getAbsolutePath()
-		    + ": only absolute locations are acceptable");
-	}
-	
 	rrdtool = target;
     }
 
