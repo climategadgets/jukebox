@@ -1,0 +1,8 @@
+include 'jukebox-jmx'
+include 'jukebox-service'
+include 'jukebox-fsm'
+include 'jukebox-sem'
+include 'jukebox-common'
+include 'jukebox-datastream'
+
+rootProject.name = 'jukebox-master'

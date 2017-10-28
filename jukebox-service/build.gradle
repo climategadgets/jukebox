@@ -1,0 +1,5 @@
+dependencies {
+
+    compile project(':jukebox-sem')
+    compile project(':jukebox-jmx')
+}

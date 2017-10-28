@@ -1,0 +1,26 @@
+subprojects {
+
+    apply plugin: 'java'
+    group = 'net.sf.jukebox'
+    version = '6.1.3-SNAPSHOT'
+
+    apply plugin: 'findbugs'
+
+    findbugs {
+
+        excludeFilter = file("$rootProject.projectDir/findbugs-exclude.xml")
+        ignoreFailures = true
+    }
+
+    repositories {
+
+        jcenter()
+    }
+
+    dependencies {
+
+        compile 'log4j:log4j:1.2.17'
+
+        testCompile 'junit:junit:4.12'
+    }
+}
