@@ -28,17 +28,18 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 
 /**
  * A facility to expose objects presented to it via JMX.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2008-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2008-2018
  */
 public final class JmxWrapper {
 
-    public final Logger logger = Logger.getLogger(getClass());
+    public final Logger logger = LogManager.getLogger(getClass());
     
     /**
      * Create an instance.
@@ -73,7 +74,7 @@ public final class JmxWrapper {
         ObjectName name = null;
         MBeanServer mbs = null;
 
-        NDC.push("jmxRegister");
+        ThreadContext.push("jmxRegister");
 
         try {
 
@@ -102,7 +103,7 @@ public final class JmxWrapper {
 
             logger.info("Already registered: ", ex);
 
-            NDC.push("again");
+            ThreadContext.push("again");
             try {
                 
                 // VT: FIXME: Need to change the scope of try/catch to include retrieval of
@@ -112,13 +113,13 @@ public final class JmxWrapper {
             } catch (Throwable t) {
                 logger.error("Failed", t);
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
             
         } catch (Throwable t) {
             logger.error("Failed for " + target, t);
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
@@ -143,7 +144,7 @@ public final class JmxWrapper {
             throw new IllegalArgumentException("target can't be null");
         }
 
-        NDC.push("expose(" + target.getClass().getSimpleName() + ')');
+        ThreadContext.push("expose(" + target.getClass().getSimpleName() + ')');
 
         try {
 
@@ -177,13 +178,13 @@ public final class JmxWrapper {
             mbs.registerMBean(proxy, name);
 
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
     private Annotation getAnnotation(Class<?> targetClass, Method method, Class<? extends Annotation> annotationClass) {
 
-        NDC.push("getAnnotation");
+        ThreadContext.push("getAnnotation");
 
         try {
 
@@ -226,13 +227,13 @@ public final class JmxWrapper {
             return superClass == null ? null : getAnnotation(superClass, method.getName(), annotationClass);
 
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
     private Annotation getAnnotation(Class<?> targetClass, String methodName, Class<? extends Annotation> annotationClass) {
 
-        NDC.push("getAnnotation(" + methodName + ')');
+        ThreadContext.push("getAnnotation(" + methodName + ')');
 
         try {
             
@@ -245,7 +246,7 @@ public final class JmxWrapper {
             return null;
             
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
@@ -261,7 +262,7 @@ public final class JmxWrapper {
      */
     private void exposeMethod(Object target, Method method, JmxAttribute annotation, List<MBeanAttributeInfo> accessors, Map<Method, Method> accessor2mutator) {
 
-        NDC.push("exposeMethod");
+        ThreadContext.push("exposeMethod");
 
         logger.debug(target.getClass().getName() + '#' + method.getName() + " found to be JmxAttribute");
 
@@ -280,7 +281,7 @@ public final class JmxWrapper {
             accessors.add(exposeJmxAttribute(target, accessorName, annotation.description(), method, mutator));
 
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
@@ -300,7 +301,7 @@ public final class JmxWrapper {
             String description,
             Method accessor, Method mutator) {
         
-        NDC.push("exposeJmxAttribute");
+        ThreadContext.push("exposeJmxAttribute");
 
         try {
 
@@ -322,7 +323,7 @@ public final class JmxWrapper {
             return accessorInfo;
 
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
@@ -336,7 +337,7 @@ public final class JmxWrapper {
      * @return The method found, or {@code null} if none.
      */
     private Method resolveMutator(Object target, Method accessor, String name) {
-        NDC.push("resolveMutator(" + name + ")");
+        ThreadContext.push("resolveMutator(" + name + ")");
         try {
 
             Class<?> returnType = accessor.getReturnType();
@@ -355,7 +356,7 @@ public final class JmxWrapper {
             logger.info("No mutator found: " + e.getMessage());
             return null;
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
@@ -404,7 +405,7 @@ public final class JmxWrapper {
      */
     private boolean isAccessor(Method method) {
         
-        NDC.push("isAccessor(" + method.getName() + ")");
+        ThreadContext.push("isAccessor(" + method.getName() + ")");
         
         try {
 
@@ -421,7 +422,7 @@ public final class JmxWrapper {
             return true;
 
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
@@ -509,7 +510,7 @@ public final class JmxWrapper {
 
         private Proxy(Object target, MBeanInfo mbInfo, Map<Method, Method> accessor2mutator) {
 
-            NDC.push("Proxy()");
+            ThreadContext.push("Proxy()");
 
             try {
 
@@ -554,7 +555,7 @@ public final class JmxWrapper {
                 }
 
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
         }
 
@@ -570,7 +571,7 @@ public final class JmxWrapper {
          */
         private Method resolve(String methodName, boolean isIs) {
 
-            NDC.push("resolve(" + methodName + ')');
+            ThreadContext.push("resolve(" + methodName + ')');
 
             try {
 
@@ -608,13 +609,13 @@ public final class JmxWrapper {
                     return resolve("get" + upperFirst(methodName), false);
                 }
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
         }
 
         public Object getAttribute(String attribute) throws AttributeNotFoundException, MBeanException, ReflectionException {
 
-            NDC.push("getAttribute(" + attribute + ')');
+            ThreadContext.push("getAttribute(" + attribute + ')');
             try {
 
                 Method method = name2accessor.get(attribute);
@@ -630,13 +631,13 @@ public final class JmxWrapper {
             } catch (InvocationTargetException e) {
                 throw new ReflectionException(e, "Oops");
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
         }
 
         public void setAttribute(Attribute attribute) throws AttributeNotFoundException, InvalidAttributeValueException, MBeanException, ReflectionException {
             
-            NDC.push("setAttribute(" + attribute + ")");
+            ThreadContext.push("setAttribute(" + attribute + ")");
             
             try {
                 
@@ -660,13 +661,13 @@ public final class JmxWrapper {
                     throw new IllegalStateException("Failed to setAttribute(" + attribute + ")", t);
                 }
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
         }
 
         public AttributeList getAttributes(String[] attributes) {
 
-            NDC.push(getAttributeListString(attributes));
+            ThreadContext.push(getAttributeListString(attributes));
             try {
 
                 AttributeList attributeList = new AttributeList();
@@ -692,7 +693,7 @@ public final class JmxWrapper {
                 return attributeList;
 
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
         }
 
@@ -713,7 +714,7 @@ public final class JmxWrapper {
 
         public AttributeList setAttributes(AttributeList attributes) {
             
-            NDC.push("setAttributes(" + attributes + ")");
+            ThreadContext.push("setAttributes(" + attributes + ")");
             
             try {
                 
@@ -731,7 +732,7 @@ public final class JmxWrapper {
                 logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
                 
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
             
             throw new UnsupportedOperationException("Not Supported Yet");
@@ -739,14 +740,14 @@ public final class JmxWrapper {
 
         public Object invoke(String actionName, Object[] params, String[] signature) throws MBeanException, ReflectionException {
 
-            NDC.push("invoke(" + actionName + ")");
+            ThreadContext.push("invoke(" + actionName + ")");
             
             try {
                 
                 logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
                 
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
             
             throw new UnsupportedOperationException("Not Supported Yet: invoke(" + actionName + ")");

@@ -1,13 +1,15 @@
 package net.sf.jukebox.service;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.core.LoggerContext;
 
 /**
  * Wrapper to run the descendants of {@link PassiveService}.
@@ -15,7 +17,7 @@ import org.apache.log4j.PropertyConfigurator;
  * {@link #main(String[])} method is invoked, first argument is parsed as the name class to instantiate and run, the rest are treated as a command line for the target.
  * 
  * @since Jukebox v2
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
  */
 public class ApplicationWrapper {
   
@@ -24,9 +26,9 @@ public class ApplicationWrapper {
    */
   public static void main(String[] args) {
 
-    final Logger logger = Logger.getLogger(ApplicationWrapper.class);
+    final Logger logger = LogManager.getLogger(ApplicationWrapper.class);
 
-    NDC.push("main");
+    ThreadContext.push("main");
     try {
 
       logger.info("Complete, exitCode=" + new ApplicationWrapper().execute(logger, args));
@@ -36,7 +38,7 @@ public class ApplicationWrapper {
       logger.fatal("Unexpected exception", t);
 
     } finally {
-      NDC.pop();
+      ThreadContext.pop();
     }
   }
 
@@ -44,12 +46,12 @@ public class ApplicationWrapper {
     
     initLogWatcher(logger);
 
-    NDC.push("env");
+    ThreadContext.push("env");
     for (Iterator<Object> env = System.getProperties().keySet().iterator(); env.hasNext();) {
       String key = env.next().toString();
       logger.debug(key + ": " + System.getProperty(key));
     }
-    NDC.pop();
+    ThreadContext.pop();
 
     PassiveService service = createService(logger, args);
 
@@ -99,7 +101,7 @@ public class ApplicationWrapper {
    */
   private void initLogWatcher(Logger logger) {
     
-    NDC.push("initLogWatcher");
+    ThreadContext.push("initLogWatcher");
     try {
       String log4jProperties = System.getProperty("log4j.configuration");
 
@@ -119,7 +121,16 @@ public class ApplicationWrapper {
         return;
       }
 
-      PropertyConfigurator.configureAndWatch(log4jPropertiesURL.getFile(), 10000);
+      {
+          // VT: NOTE: Log4j => Logj42 migration - things may be broken here, need a test case
+
+          //PropertyConfigurator.configureAndWatch(log4jPropertiesURL.getFile(), 10000);
+
+          LoggerContext context = (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
+          File cf = new File(log4jPropertiesURL.getFile());
+
+          context.setConfigLocation(cf.toURI());
+      }
 
       logger.info("Watching " + log4jPropertiesURL.getFile());
 
@@ -127,7 +138,7 @@ public class ApplicationWrapper {
       // There's nothing we can do but complain
       logger.error("Unrecoverable exception trying to initialize log watcher", t);
     } finally {
-      NDC.pop();
+      ThreadContext.pop();
     }
   }
 
@@ -145,7 +156,7 @@ public class ApplicationWrapper {
   PassiveService createService(Logger logger, final String[] args) {
 
 
-    NDC.push("createService");
+    ThreadContext.push("createService");
     try {
 
       logger.info("Instantiating " + args[0]);
@@ -183,7 +194,7 @@ public class ApplicationWrapper {
       throw new IllegalStateException("Wasn't supposed to get here");
     
     } finally {
-      NDC.pop();
+      ThreadContext.pop();
     }
   }
 

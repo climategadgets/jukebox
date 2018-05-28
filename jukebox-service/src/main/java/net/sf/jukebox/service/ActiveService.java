@@ -2,14 +2,14 @@ package net.sf.jukebox.service;
 
 import java.util.concurrent.ThreadFactory;
 
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.ThreadContext;
 
 /**
  * Describes the concept of an active service, i.e.&nbsp;the one which starts
  * (observing some preconditions at startup), doing something, and then shuts
  * down (observing some post-conditions at shutdown).
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
  * @see PassiveService
  */
 public abstract class ActiveService extends PassiveService {
@@ -172,7 +172,12 @@ public abstract class ActiveService extends PassiveService {
             } finally {
 
                 // Clean up after lazy programmers
-                NDC.remove();
+
+                // VTL NOTE: Whereas NDC#remove() needed to be called here to prevent resource leaks with Log4j,
+                // Log4j2 doesn't have it. Let's for now assume that ThreadContext#clearStack() takes care of it,
+                // but let's also keep an eye on leaks and investigate if this is sufficient.
+
+                ThreadContext.clearStack();
             }
         }
     }

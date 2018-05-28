@@ -8,19 +8,20 @@ import javax.management.AttributeList;
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The helper class allowing the {@link DynamicMBean} operations to be
  * performed by the set of simple handler objects. Uses the
  * {@code dispatcher} pattern.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2012
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2018
  * @since Jukebox 2.0p5
  */
 public class JmxHelper implements DynamicMBean {
 
-    private final Logger logger = Logger.getLogger(getClass());
+    private final Logger logger = LogManager.getLogger(getClass());
 
     /**
      * Exception message used in multiple methods.

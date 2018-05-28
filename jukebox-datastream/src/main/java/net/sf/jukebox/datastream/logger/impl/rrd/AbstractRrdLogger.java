@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.logging.log4j.ThreadContext;
+
 import net.sf.jukebox.conf.ConfigurableProperty;
 import net.sf.jukebox.datastream.logger.impl.AbstractLogger;
 import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.jmx.JmxAttribute;
-
-import org.apache.log4j.NDC;
 
 /**
  * An abstract class supporting RRD logging implementations.
@@ -24,7 +24,7 @@ import org.apache.log4j.NDC;
  * @param <E> Data type to log.
  * @see JRobinLogger
  * @see RrdLogger
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
  */
 public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractLogger<E> {
 
@@ -125,7 +125,7 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
      */
     protected final synchronized void consume(String signature, String name, RRD rrd) {
 	
-	NDC.push("consume");
+	ThreadContext.push("consume");
 
 	try {
 	    
@@ -170,7 +170,7 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
 	    }
 
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 
@@ -181,7 +181,7 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
      */
     private Properties readIndex() {
 	
-	NDC.push("readIndex");
+	ThreadContext.push("readIndex");
 	
 	try {
 
@@ -209,7 +209,7 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
 	    }
 
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 
@@ -221,7 +221,7 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
      */
     private void storeIndex(Properties p) {
 	
-	NDC.push("storeIndex");
+	ThreadContext.push("storeIndex");
 	
 	try {
 
@@ -254,7 +254,7 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
 	    }
 
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 

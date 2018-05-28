@@ -11,13 +11,13 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.ThreadContext;
 
 /**
  * Common implementation base for different data loggers.
  * @param <E> Data type to log.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2008
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
  */
 public abstract class AbstractLogger<E extends Number> extends PassiveService implements DataLogger<E> {
 
@@ -47,7 +47,7 @@ public abstract class AbstractLogger<E extends Number> extends PassiveService im
    */
   public final void consume(DataSample<E> sample) {
       
-      NDC.push("consume");
+      ThreadContext.push("consume");
 
       try {
 
@@ -78,7 +78,7 @@ public abstract class AbstractLogger<E extends Number> extends PassiveService im
               }
           }
       } finally {
-          NDC.pop();
+          ThreadContext.pop();
       }
   }
 

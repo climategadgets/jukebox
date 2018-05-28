@@ -17,15 +17,16 @@ import javax.management.RuntimeMBeanException;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.LogManager;
 
 /**
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2015
+ * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2018
  */
 public class JmxWrapperTest extends TestCase {
 
-    private final Logger logger = Logger.getLogger(getClass());
+    private final Logger logger = LogManager.getLogger(getClass());
     private final Random rg = new Random();
 
     private ObjectName getObjectName() throws MalformedObjectNameException {
@@ -185,7 +186,7 @@ public class JmxWrapperTest extends TestCase {
     
     public void testAttributes() throws Throwable {
         
-        NDC.push("testAttributes");
+        ThreadContext.push("testAttributes");
         
         try {
         
@@ -317,7 +318,7 @@ public class JmxWrapperTest extends TestCase {
             
             
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 

@@ -2,11 +2,11 @@ package net.sf.jukebox.service;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.apache.logging.log4j.ThreadContext;
+
 import net.sf.jukebox.logger.LogAware;
 import net.sf.jukebox.sem.ACT;
 import net.sf.jukebox.util.Interval;
-
-import org.apache.log4j.NDC;
 
 /**
  * Entity supposed to carry on the task and deliver the message produced as a
@@ -20,7 +20,7 @@ import org.apache.log4j.NDC;
  * remnants of the safety net are present - this class will not blow up and
  * disappear without leaving a trace.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2010
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
  */
 public abstract class Messenger extends LogAware {
 
@@ -99,7 +99,7 @@ public abstract class Messenger extends LogAware {
         @Override
         public void run() {
 
-            NDC.push("run@" + Integer.toHexString(Thread.currentThread().hashCode()));
+            ThreadContext.push("run@" + Integer.toHexString(Thread.currentThread().hashCode()));
             
             long start = System.currentTimeMillis();
 
@@ -129,8 +129,14 @@ public abstract class Messenger extends LogAware {
             } finally {
 
                 logger.info("Completed in " + Interval.toTimeInterval(System.currentTimeMillis() - start));
-                NDC.pop();
-                NDC.remove();
+
+                ThreadContext.pop();
+
+                // VTL NOTE: Whereas NDC#remove() needed to be called here to prevent resource leaks with Log4j,
+                // Log4j2 doesn't have it. Let's for now assume that ThreadContext#clearStack() takes care of it,
+                // but let's also keep an eye on leaks and investigate if this is sufficient.
+
+               ThreadContext.clearStack();
             }
         }
     }

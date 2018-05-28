@@ -3,7 +3,7 @@ package net.sf.jukebox.service;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.ThreadContext;
 
 import net.sf.jukebox.jmx.JmxAttribute;
 import net.sf.jukebox.jmx.JmxAware;
@@ -48,7 +48,7 @@ import net.sf.jukebox.util.Interval;
  * applicable in to a specific task within American Express and was never used
  * beyond that.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2007
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
  * @see ActiveService
  */
 public abstract class PassiveService extends LogAware implements Service, PassiveServiceMXBean, JmxAware {
@@ -718,7 +718,12 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
             } finally {
                 
                 // Clean up after lazy programmers
-                NDC.remove();
+
+                // VTL NOTE: Whereas NDC#remove() needed to be called here to prevent resource leaks with Log4j,
+                // Log4j2 doesn't have it. Let's for now assume that ThreadContext#clearStack() takes care of it,
+                // but let's also keep an eye on leaks and investigate if this is sufficient.
+
+                ThreadContext.clearStack();
             }
         }
 

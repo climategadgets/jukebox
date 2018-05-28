@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.ThreadContext;
 
 import net.sf.jukebox.conf.ConfigurableProperty;
 import net.sf.jukebox.datastream.logger.impl.AbstractLogger;
@@ -33,7 +33,7 @@ import net.sf.jukebox.jmx.JmxDescriptor;
  * </ul>
  * @param <E> Data type to log.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
  */
 public class TraceLogger<E extends Number> extends AbstractLogger<E> {
 
@@ -107,7 +107,7 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
     @Override
     protected final void createChannel(String name, String signature, long timestamp) {
 
-	NDC.push("createChannel");
+	ThreadContext.push("createChannel");
 	
 	try {
 
@@ -148,7 +148,7 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
 	    }
 
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 
@@ -158,7 +158,7 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
     @Override
     protected final synchronized void consume(String signature, DataSample<E> value) {
 	
-	NDC.push("consume");
+	ThreadContext.push("consume");
 	
 	try {
 
@@ -195,7 +195,7 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
 	    }
 
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 

@@ -6,17 +6,18 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Object implementing scatter/gather, or aggregation algorithm for trivial {@link Runnable} workers.
  * 
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2008
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2018
  */
 public class RunnableAggregator {
     
-    protected final Logger logger = Logger.getLogger(getClass());
+    protected final Logger logger = LogManager.getLogger(getClass());
     
     /**
      * Process the queue with the number of threads equal to the queue size.
@@ -54,7 +55,7 @@ public class RunnableAggregator {
      */
     public void process(final int threadCount, BlockingQueue<Runnable> workerQueue, BlockingQueue<Error<Runnable>> errors) {
         
-        NDC.push("process"
+        ThreadContext.push("process"
                 + '@' + Integer.toHexString(Thread.currentThread().hashCode())
                 + ',' + Integer.toHexString(hashCode()));
 
@@ -112,7 +113,7 @@ public class RunnableAggregator {
             }
 
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
     
@@ -136,7 +137,7 @@ public class RunnableAggregator {
     }
     
     private void cancel(BlockingQueue<Runnable> processQueue) {
-        NDC.push("cleanup");
+        ThreadContext.push("cleanup");
         try {
             logger.warn("Queue cleanup: " + processQueue.size() + " workers to take care of");
             
@@ -155,7 +156,7 @@ public class RunnableAggregator {
         } catch (InterruptedException ex) {
             logger.warn("Failed to clean up the rest of the queue: " + processQueue, ex);
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
     
@@ -174,7 +175,7 @@ public class RunnableAggregator {
 
         public void run() {
             
-        NDC.push("run"
+        ThreadContext.push("run"
                 + '@' + Integer.toHexString(Thread.currentThread().hashCode())
                 + ',' + Integer.toHexString(hashCode()));
         
@@ -198,7 +199,7 @@ public class RunnableAggregator {
                         
                     } catch (InterruptedException ex) {
                         
-                        NDC.push("oops");
+                        ThreadContext.push("oops");
                         
                         try {
                             
@@ -207,14 +208,14 @@ public class RunnableAggregator {
                             logger.error("Interruption caused by exception", ex);
                             
                         } finally {
-                            NDC.pop();
+                            ThreadContext.pop();
                         }
                     }
                 }
                 
             } finally {
                 queueGate.release();
-                NDC.pop();
+                ThreadContext.pop();
             }
         }
     }

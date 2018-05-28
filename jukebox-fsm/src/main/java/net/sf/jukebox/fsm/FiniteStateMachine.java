@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * The Finite State Machine implementation.
@@ -15,7 +16,7 @@ import org.apache.log4j.NDC;
  */
 public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate extends Enum & FsmState, Tevent extends FsmEvent, Toutput> {
 
-    protected final Logger log = Logger.getLogger(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
     /**
      * The finite state machine context.
      */
@@ -84,7 +85,7 @@ public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate ext
      */
     public synchronized void process(Tevent event) throws Throwable {
 
-        NDC.push("process");
+        ThreadContext.push("process");
         try {
             log.debug("Current state: " + currentState);
 
@@ -99,15 +100,15 @@ public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate ext
                 transition(nextState);
             }
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
     private void transition(Tstate nextState) {
 
-        NDC.push("transition");
+        ThreadContext.push("transition");
         try {
-            NDC.push("leaving");
+            ThreadContext.push("leaving");
             try {
                 log.debug(currentState);
 
@@ -119,12 +120,12 @@ public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate ext
                     return;
                 }
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
 
             currentState = nextState;
 
-            NDC.push("entering");
+            ThreadContext.push("entering");
             try {
                 log.debug(currentState);
 
@@ -135,10 +136,10 @@ public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate ext
                     currentState = null;
                 }
             } finally {
-                NDC.pop();
+                ThreadContext.pop();
             }
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 

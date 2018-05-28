@@ -4,7 +4,6 @@ import net.sf.jukebox.datastream.signal.model.DataSample;
 import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.conf.ConfigurableProperty;
 import net.sf.jukebox.jmx.JmxDescriptor;
-import org.apache.log4j.NDC;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,11 +13,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.logging.log4j.ThreadContext;
+
 /**
  * <a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/">RRDTool</a> data logger.
  * 
  * @param <E> Data type to log.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
  */
 public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File> {
 
@@ -88,7 +89,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
     protected final synchronized void createChannel(String name,
 	    String signature, long timestamp) throws IOException {
 	
-	NDC.push("createChannel");
+	ThreadContext.push("createChannel");
 	
 	try {
 
@@ -173,7 +174,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 	    }
 
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 
@@ -198,7 +199,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
     @Override
     protected final synchronized void consume(String signature, DataSample<E> value) {
 
-	NDC.push("consume");
+	ThreadContext.push("consume");
 	
 	try {
 	    
@@ -250,7 +251,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 	    run(command);
 	
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 
@@ -300,7 +301,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
      */
     private synchronized void run(final String command) {
 
-	NDC.push("run");
+	ThreadContext.push("run");
 
 	BufferedReader br = null;
 
@@ -336,7 +337,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 		    logger.info("Can't close() the process stream, ignored:", e);
 		}
 	    }
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 
@@ -348,7 +349,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
      */
     private void dump(boolean error, BufferedReader br) {
 	
-	NDC.push("dump");
+	ThreadContext.push("dump");
 	
 	try {
 
@@ -387,7 +388,7 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 	    }
 
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
     }
 

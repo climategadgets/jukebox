@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.NDC;
+import org.apache.logging.log4j.ThreadContext;
 
 import net.sf.jukebox.datastream.signal.model.DataSample;
 import net.sf.jukebox.datastream.signal.model.DataSink;
@@ -17,7 +17,7 @@ import net.sf.jukebox.util.CollectionSynchronizer;
  * A data source. An entity capable of producing a {@link DataSample data sample}.
  *
  * @param <E> Data type to handle.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2009-2012
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2009-2018
  */
 public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
 
@@ -34,9 +34,9 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
     }
     
     public synchronized void addConsumer(DataSink<E> consumer) {
-        
-        NDC.push("addConsumer");
-        
+
+        ThreadContext.push("addConsumer");
+
         try {
             
             // Reason for the synchronized scope (and not method) is the collection synchronizer
@@ -47,13 +47,13 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
             }
             
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 
     public synchronized void removeConsumer(DataSink<E> consumer) {
         
-        NDC.push("removeConsumer");
+        ThreadContext.push("removeConsumer");
         
         try {
             
@@ -65,14 +65,14 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
             }
             
         } finally {
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
     
     public void broadcast(final DataSample<E> signal) {
         
         // Need the hash code to uniquely identify the broadcast invocation in the log
-        NDC.push("broadcast#" + Integer.toHexString(signal.hashCode()));
+        ThreadContext.push("broadcast#" + Integer.toHexString(signal.hashCode()));
 
         try {
             
@@ -91,7 +91,7 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                         @Override
                         protected Object execute() throws Throwable {
                             
-                            NDC.push("execute");
+                            ThreadContext.push("execute");
                             
                             try {
 
@@ -104,7 +104,7 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                                 return null;
 
                             } finally {
-                                NDC.pop();
+                                ThreadContext.pop();
                             }
                         }
                     };
@@ -131,7 +131,7 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
             
         } finally {
             
-            NDC.pop();
+            ThreadContext.pop();
         }
     }
 }

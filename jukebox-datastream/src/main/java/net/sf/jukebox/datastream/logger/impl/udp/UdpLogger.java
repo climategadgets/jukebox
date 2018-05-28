@@ -17,6 +17,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.logging.log4j.ThreadContext;
+
 import net.sf.jukebox.conf.ConfigurableProperty;
 import net.sf.jukebox.datastream.logger.impl.AbstractLogger;
 import net.sf.jukebox.datastream.logger.impl.udp.xap.XapLogger;
@@ -26,14 +28,12 @@ import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.jmx.JmxAttribute;
 import net.sf.jukebox.util.network.HostHelper;
 
-import org.apache.log4j.NDC;
-
 /**
  * An abstract logger that provides logging by broadcasting UDP packets.
  * Provides a base for {@link XapLogger xAP logger} and {@link XplLogger xPL logger}.
  *
  * @param <E> Data type to log.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
  */
 public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 
@@ -138,7 +138,7 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
     @Override
     protected final void startup() throws Throwable {
 	
-	NDC.push("startup");
+	ThreadContext.push("startup");
 	
 	try {
 
@@ -158,7 +158,7 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 
 	    // There's nothing we can possibly do at startup in subclasses
 	} finally {
-	    NDC.pop();
+	    ThreadContext.pop();
 	}
 
     }
