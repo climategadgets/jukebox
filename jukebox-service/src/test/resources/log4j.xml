@@ -7,7 +7,6 @@
       <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %p %C{1} %t [%x] %m %n" />
     </layout>
   </appender>
-  
   <root>
     <priority value="DEBUG" />
     <appender-ref ref="CONSOLE" />
