@@ -3,7 +3,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     group = 'net.sf.jukebox'
-    version = '6.1.3-SNAPSHOT'
+    version = '7.0.0-SNAPSHOT'
 
     apply plugin: 'findbugs'
 
