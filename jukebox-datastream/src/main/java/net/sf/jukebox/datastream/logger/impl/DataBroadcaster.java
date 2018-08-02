@@ -10,7 +10,6 @@ import net.sf.jukebox.datastream.signal.model.DataSample;
 import net.sf.jukebox.datastream.signal.model.DataSink;
 import net.sf.jukebox.datastream.signal.model.DataSource;
 import net.sf.jukebox.logger.LogAware;
-import net.sf.jukebox.service.Messenger;
 import net.sf.jukebox.util.CollectionSynchronizer;
 
 /**
@@ -20,6 +19,8 @@ import net.sf.jukebox.util.CollectionSynchronizer;
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2009-2018
  */
 public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
+
+    private static String invocationError = "Consumer invocation resulted in exception, there's nothing we can do to fix it";
 
     private final Set<DataSink<E>> consumerSet = new HashSet<DataSink<E>>();
     private final boolean async;
@@ -86,10 +87,10 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                 
                 if (async) { 
 
-                    Messenger m = new Messenger() {
+                    Runnable agent = new Runnable() {
 
                         @Override
-                        protected Object execute() throws Throwable {
+                        public void run() {
                             
                             ThreadContext.push("execute");
                             
@@ -101,7 +102,10 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                                 }
                                 
                                 dataSink.consume(signal);
-                                return null;
+
+                            } catch (Throwable t) {
+
+                                logger.warn(invocationError, t);
 
                             } finally {
                                 ThreadContext.pop();
@@ -109,8 +113,9 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                         }
                     };
 
-                    // There's nothing we can do about the return value, forget it - but don't forget to check the logs
-                    m.start();
+                    // VT: FIXME: https://github.com/climategadgets/jukebox/issues/1
+
+                    new Thread(agent).start();
 
                 } else {
                     
@@ -124,7 +129,7 @@ public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
                         dataSink.consume(signal);
                         
                     } catch (Throwable t) {
-                        logger.warn("Consumer invocation resulted in exception, there's nothing we can do to fix it", t);
+                        logger.warn(invocationError, t);
                     }
                 }
             }
