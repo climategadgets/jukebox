@@ -35,9 +35,6 @@ public class XplLogger<E extends Number> extends UdpLogger<E> {
         super(producers, port);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getDefaultPort() {
 
@@ -103,9 +100,6 @@ public class XplLogger<E extends Number> extends UdpLogger<E> {
 	sb.append("}\n");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String getDescription() {
 

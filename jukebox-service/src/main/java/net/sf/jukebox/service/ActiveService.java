@@ -56,9 +56,6 @@ public abstract class ActiveService extends PassiveService {
      */
     protected abstract void execute() throws Throwable;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void startCore() {
 
@@ -83,9 +80,6 @@ public abstract class ActiveService extends PassiveService {
             super(target);
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         protected void call() throws Throwable {
 
@@ -100,9 +94,6 @@ public abstract class ActiveService extends PassiveService {
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         protected void setFlags(boolean status) {
 

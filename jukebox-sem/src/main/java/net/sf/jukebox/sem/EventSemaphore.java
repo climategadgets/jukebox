@@ -292,9 +292,6 @@ public class EventSemaphore extends Semaphore {
         throw timedOut;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized String toString() {
 

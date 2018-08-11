@@ -33,9 +33,6 @@ public class ShutdownHandler extends Thread {
     Runtime.getRuntime().addShutdownHook(this);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   public synchronized void setTarget(StoppableService target) {
 
     if (this.target != null) {

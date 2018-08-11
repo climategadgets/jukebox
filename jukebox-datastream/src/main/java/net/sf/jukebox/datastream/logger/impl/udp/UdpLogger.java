@@ -132,9 +132,6 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 	return hostname;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final void startup() throws Throwable {
 	
@@ -163,9 +160,6 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final synchronized void shutdown() throws Throwable {
 
@@ -175,9 +169,6 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 	socket = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final void consume(String signature, DataSample<E> value) {
 
@@ -366,9 +357,6 @@ public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 	}
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final void createChannel(String name, String signature,
 	    long timestamp) {

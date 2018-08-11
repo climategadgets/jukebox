@@ -124,9 +124,7 @@ public class JmxHelper implements DynamicMBean {
         actionMap.put(key, handler);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Object getAttribute(String attribute) {
 
         if (attribute == null || "".equals(attribute)) {
@@ -144,9 +142,7 @@ public class JmxHelper implements DynamicMBean {
         return r.getAttribute(target);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setAttribute(Attribute attribute) {
 
         if (attribute == null) {
@@ -164,9 +160,7 @@ public class JmxHelper implements DynamicMBean {
         w.setAttribute(target, attribute);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public AttributeList getAttributes(String[] attributes) {
 
         AttributeList result = new AttributeList();
@@ -189,9 +183,7 @@ public class JmxHelper implements DynamicMBean {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public AttributeList setAttributes(AttributeList attributes) {
 
         AttributeList result = new AttributeList();
@@ -214,17 +206,13 @@ public class JmxHelper implements DynamicMBean {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public MBeanInfo getMBeanInfo() {
 
         return info;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Object invoke(String actionName, Object[] params, String[] signature) {
 
         JmxInvocationHandler h = actionMap.get(actionName);

@@ -156,9 +156,6 @@ public class ACT extends EventSemaphore {
         return userObject;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 

@@ -163,9 +163,6 @@ public class MutexSemaphore extends Semaphore {
         throw new SemaphoreTimeoutException(Long.toString(millis));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public synchronized void release() {
 
         if (currentOwner == null) {

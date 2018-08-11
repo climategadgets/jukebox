@@ -612,9 +612,6 @@ public class TextConfiguration implements Configuration {
         throw new IllegalArgumentException("Not boolean: '" + value + "'");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 
@@ -644,9 +641,7 @@ public class TextConfiguration implements Configuration {
                 + "assumes single value, check for duplicate entries: " + key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Object get(String key) {
 
         Object found = theConfiguration.get(key);
@@ -659,9 +654,7 @@ public class TextConfiguration implements Configuration {
         return found;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Object get(String key, Object defaultValue) {
 
         try {
@@ -674,25 +667,19 @@ public class TextConfiguration implements Configuration {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Configuration getDefaultConfiguration() {
 
         return defaultConf;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public URL getURL() {
 
         return baseURL;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public synchronized URL[] getUrlChain() {
 
         int size = (baseURL == null) ? 0 : 1;
@@ -738,9 +725,7 @@ public class TextConfiguration implements Configuration {
         return chain;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Set<String> keySet() {
 
         return theConfiguration.keySet();

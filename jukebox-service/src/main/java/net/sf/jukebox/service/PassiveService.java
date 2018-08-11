@@ -388,9 +388,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
         return startedAt == -1 ? "down" : Interval.toTimeInterval(getUptimeMillis());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public JmxDescriptor getJmxDescriptor() {
         return new JmxDescriptor("jukebox", getClass().getSimpleName(), Integer.toHexString(hashCode()), "FIXME");
     }
@@ -570,9 +568,6 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         protected void setFlags(boolean status) {
 
@@ -727,9 +722,6 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         protected void finalize() throws Throwable {
 

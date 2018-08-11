@@ -222,18 +222,12 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean waitFor() throws InterruptedException {
 
         return waitForAll();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean waitFor(long millis) throws SemaphoreTimeoutException {
 
@@ -467,9 +461,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 

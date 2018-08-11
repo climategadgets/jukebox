@@ -35,9 +35,6 @@ public class XapLogger<E extends Number> extends UdpLogger<E> {
         super(producers, port);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getDefaultPort() {
 
@@ -89,9 +86,6 @@ public class XapLogger<E extends Number> extends UdpLogger<E> {
 	sb.append("}\n");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String getDescription() {
 

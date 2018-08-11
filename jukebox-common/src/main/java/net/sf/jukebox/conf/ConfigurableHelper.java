@@ -51,9 +51,7 @@ public class ConfigurableHelper implements Configurable {
      */
     private Configuration conf;
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final synchronized void configure(final String configurationRoot, final Configuration conf) {
 
         if (configurationRoot == null) {
@@ -104,9 +102,7 @@ public class ConfigurableHelper implements Configurable {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final String getConfigurationRoot() {
 
         if ( configurationRoot == null ) {
@@ -117,9 +113,7 @@ public class ConfigurableHelper implements Configurable {
         return configurationRoot;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final Configuration getConfiguration() {
 
         if ( conf == null ) {

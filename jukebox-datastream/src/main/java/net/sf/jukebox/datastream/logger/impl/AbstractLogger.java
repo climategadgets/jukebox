@@ -42,9 +42,7 @@ public abstract class AbstractLogger<E extends Number> extends PassiveService im
       }
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  @Override
   public final void consume(DataSample<E> sample) {
       
       ThreadContext.push("consume");

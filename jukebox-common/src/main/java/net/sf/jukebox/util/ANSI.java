@@ -57,9 +57,6 @@ public enum ANSI {
     this.sequence = ESCAPE + sequence;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String toString() {
     return sequence;

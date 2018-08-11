@@ -118,9 +118,6 @@ public final class DataSample<E> implements Serializable {
         return error != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
     

@@ -101,9 +101,6 @@ public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractL
 	return new File(rrdBase.toString());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final void startup() throws Throwable {
 

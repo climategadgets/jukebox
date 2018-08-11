@@ -52,9 +52,6 @@ public final class Idle extends PassiveService implements EventListener {
         super(null, null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void startup() {
 
@@ -137,9 +134,6 @@ public final class Idle extends PassiveService implements EventListener {
         unregister(cli);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void shutdown() {
 
@@ -147,18 +141,12 @@ public final class Idle extends PassiveService implements EventListener {
         // complain( LOG_DEBUG,PassiveService.CH_SERVICE,"shutting down" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 
         return "<IdleTracker>";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void finalize() throws Throwable {
 

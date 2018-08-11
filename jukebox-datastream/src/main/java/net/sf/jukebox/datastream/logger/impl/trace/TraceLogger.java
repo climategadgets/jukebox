@@ -101,9 +101,6 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
 	return map;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final void createChannel(String name, String signature, long timestamp) {
 
@@ -152,9 +149,6 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
 	}
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final synchronized void consume(String signature, DataSample<E> value) {
 	
@@ -221,9 +215,6 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
 	return new PrintWriter(new FileWriter(f, true));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void startup() throws Throwable {
 
@@ -233,17 +224,11 @@ public class TraceLogger<E extends Number> extends AbstractLogger<E> {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void shutdown() throws Throwable {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JmxDescriptor getJmxDescriptor() {
 

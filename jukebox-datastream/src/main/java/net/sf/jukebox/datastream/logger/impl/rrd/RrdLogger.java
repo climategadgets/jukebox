@@ -82,9 +82,6 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 	rrdtool = target;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final synchronized void createChannel(String name,
 	    String signature, long timestamp) throws IOException {
@@ -193,9 +190,6 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final synchronized void consume(String signature, DataSample<E> value) {
 
@@ -284,9 +278,6 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final void shutdown() throws Throwable {
 
@@ -392,9 +383,6 @@ public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File
 	}
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription() {
 	return "RRDTool based RRD logger";

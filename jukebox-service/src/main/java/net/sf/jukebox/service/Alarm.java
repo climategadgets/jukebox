@@ -224,9 +224,6 @@ public class Alarm extends LogAware implements Runnable {
         // logger.debug(LOG_KERN, "finished");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void finalize() throws Throwable {
 
@@ -244,9 +241,6 @@ public class Alarm extends LogAware implements Runnable {
         this.note = note;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 
