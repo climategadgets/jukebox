@@ -69,7 +69,7 @@ public class RunnableAggregator {
             // Need to freeze the queue
             BlockingQueue<Runnable> processQueue = new LinkedBlockingQueue<Runnable>(workerQueue);
             
-            // THis is not redundant, I'll need it later
+            // This is not redundant, I'll need it later
             int queueSize = processQueue.size();
 
             // Need this to wait until all submitted tasks are processed
@@ -88,35 +88,54 @@ public class RunnableAggregator {
                 // By this time, permits for all the queue elements have already been issued.
                 // Since we have to wait until *everyone* is finished with the job, we'll just
                 // acquire all of them to make sure that is true
-                
+
                 queueGate.acquire(queueSize);
                 
             } catch (InterruptedException ex) {
                 
                 logger.debug("Interrupted, stopping", ex);
-                
-                tpe.shutdown();
-                
-                final int processed = queueGate.availablePermits();
 
-                // "In transit" jobs are those for which permits were issued, but not released.
-                // They're still queued up inside of thread pool executor, and will be executed
-                // as usual, until the internal queue is exhausted.
-                final int inTransit = queueSize - processed;
-
-                // Discarded jobs are those that were never taken out of processQueue
-                final int discarded = processQueue.size();
-
-                logger.info("Processed " + processed + ", inTransit " + inTransit + ", discarded " + discarded);
-                
-                cancel(processQueue);
+                // There's nothing left to do other than shutdown normally
             }
+
+            shutdown(tpe, queueSize, queueGate, processQueue);
 
         } finally {
             ThreadContext.pop();
         }
     }
     
+    private void shutdown(ThreadPoolExecutor tpe, int queueSize, Semaphore queueGate, BlockingQueue<Runnable> processQueue) {
+
+        ThreadContext.push("shutdown");
+
+        try {
+
+            logger.debug("shutting down");
+
+            tpe.shutdown();
+
+            final int processed = queueGate.availablePermits();
+
+            // "In transit" jobs are those for which permits were issued, but not released.
+            // They're still queued up inside of thread pool executor, and will be executed
+            // as usual, until the internal queue is exhausted.
+            final int inTransit = queueSize - processed;
+
+            // Discarded jobs are those that were never taken out of processQueue
+            final int discarded = processQueue.size();
+
+            logger.info("Processed " + processed + ", inTransit " + inTransit + ", discarded " + discarded);
+
+            cancel(processQueue);
+
+            logger.debug("done");
+
+        } finally {
+            ThreadContext.pop();
+        }
+    }
+
     /**
      * Make sure the values are sane.
      * 
