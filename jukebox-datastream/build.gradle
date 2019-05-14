@@ -1,5 +1,7 @@
 dependencies {
 
+    compile group: 'org.rrd4j', name: 'rrd4j', version: '3.5'
+
     compile project(':jukebox-service')
     compile project(':jukebox-jmx')
 }
