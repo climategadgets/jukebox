@@ -191,12 +191,14 @@ public final class JmxWrapper {
             logger.debug("method " + method);
             logger.debug("annotation " + annotationClass.getSimpleName());
 
-            Annotation annotation = method.getAnnotation(annotationClass);
+            {
+                Annotation annotation = method.getAnnotation(annotationClass);
 
-            if (annotation != null) {
-                // This is the simple case...
-                logger.debug("simple case");
-                return annotation;
+                if (annotation != null) {
+                    // This is the simple case...
+                    logger.debug("simple case");
+                    return annotation;
+                }
             }
 
             // Well, simple case didn't work. Three options are possible now:
@@ -211,7 +213,7 @@ public final class JmxWrapper {
                 
                 Class<?> anInterface = interfaces[offset];
                 logger.debug("Checking interface " + anInterface.getSimpleName());
-                annotation = getAnnotation(anInterface, method.getName(), annotationClass);
+                Annotation annotation = getAnnotation(anInterface, method.getName(), annotationClass);
 
                 if (annotation != null) {
                     return annotation;
