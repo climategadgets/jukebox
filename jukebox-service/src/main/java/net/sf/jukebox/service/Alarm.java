@@ -220,8 +220,6 @@ public class Alarm extends LogAware implements Runnable {
                 return;
             }
         } while (core != null);
-
-        // logger.debug(LOG_KERN, "finished");
     }
 
     @Override

@@ -86,8 +86,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
      */
     public synchronized void add(EventSemaphore ES) {
 
-        // logger.debug(CH_SG, "adding: " + ES.toString());
-
         // Have to check for presence even though HashSet checks it anyway
         // because have to add the listener to the event semaphore.
 
@@ -95,8 +93,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
         // check. Have to verify.
 
         if (!group.contains(ES)) {
-
-            // logger.debug(CH_SG, "added: " + ES.toString());
 
             group.add(ES);
             ES.addListener(this);
@@ -163,12 +159,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
             EventSemaphore esPosted = posted.waitObject();
 
-            // logger.debug(CH_SG, "waitForAll(): " +
-            // esPosted.toString());
-
             localGroup.remove(esPosted);
-
-            // logger.debug(CH_SG, "Left: " + localGroup.toString());
         }
 
         return true;
@@ -199,13 +190,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
             EventSemaphore sem = e.next();
 
-            // logger.debug(CH_SG, "waitForAll(" + value + "): checking:
-            // " + sem.toString());
-
             if (sem.isTriggered()) {
-
-                // logger.debug(CH_SG,"waitForAll(" + value + "): caught
-                // behind: "+sem.toString() );
 
                 // If I want to check the value and there's a value I don't
                 // like, bail out
@@ -280,9 +265,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
         Set<EventSemaphore> localGroup = new HashSet<EventSemaphore>(group);
         boolean result = true;
 
-        // logger.debug(CH_SG, "waitForAll(" + value + "): " +
-        // localGroup.toString());
-
         if (!checkBehind(localGroup, true, value)) {
 
             if (returnImmediately) {
@@ -306,9 +288,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
                 }
             }
 
-            // logger.debug(CH_SG, "waitForAll("+value+"): " +
-            // esPosted.toString());
-
             if (esPosted.getStatus() != value) {
 
                 if (returnImmediately) {
@@ -321,7 +300,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
             }
 
             localGroup.remove(esPosted);
-            // logger.debug(CH_SG,"Left: "+localGroup.toString() );
         }
 
         return result;
@@ -355,8 +333,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
         }
 
-        // logger.debug(CH_SG, "waitForOne(): caught
-        // "+esPosted.toString());
         return esPosted;
     }
 
@@ -515,8 +491,6 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
             throw new IllegalArgumentException("status should be the Boolean");
         }
-
-        // logger.debug(CH_SG, "notified with: " + producer.toString());
 
         posted.put((EventSemaphore) producer);
     }

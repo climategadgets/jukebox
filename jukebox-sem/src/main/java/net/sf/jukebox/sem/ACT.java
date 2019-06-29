@@ -135,7 +135,6 @@ public class ACT extends EventSemaphore {
             throw new IllegalStateException("Can't trigger ACT more than once");
         }
 
-//        logger.debug("ACT", "complete/" + status);
         super.trigger(status);
     }
 

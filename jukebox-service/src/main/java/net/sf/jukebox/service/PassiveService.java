@@ -470,8 +470,6 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
         @Override
         protected void call() throws Throwable {
 
-            // logger.debug("target: "+target.getClass().getName());
-
             ((PassiveService) target).startup();
 
             // If the startup() has thrown an exception, it doesn't make
@@ -592,7 +590,6 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
             throw new IllegalStateException("Already started");
         }
 
-        // logger.debug(CH_SERVICE, "posting semStarted");
         semStarted.post();
 
         enabled = true;
@@ -742,8 +739,6 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
 
             target.call();
 
-            // logger.debug("call(): successful");
-
         } catch (InterruptedException iex) {
 
             logger.info("startup interrupted: ", iex);
@@ -766,10 +761,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
 
         core = null;
         target.setFlags(true);
-        // logger.debug(CH_SERVICE, "trigger: " + sem.toString() + " " +
-        // result);
         sem.post();
-        // notifyAll(); // ???
     }
 
     /**

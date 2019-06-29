@@ -113,8 +113,6 @@ public class XmlConfiguration extends TextConfiguration {
             vpath.add(st.nextToken());
         }
 
-//        logger.debug(CH_XC + "/getElements", "Path requested: " + vpath, null);
-
         // Now let's walk it
 
         Element root = conf.getDocumentElement();
@@ -143,16 +141,9 @@ public class XmlConfiguration extends TextConfiguration {
 
              // OK, we've finished.
 
-//             logger.warn(CH_XC, "path exhausted", null);
              return;
          }
 
-/*         logger.debug(CH_XC, "Resolving "
-         	+ current.getTagName()
-         	+ ", path "
-         	+ path,
-         	null);
- */
          String pathElement = path.remove(0);
 
          // Now, let's see who's got the name we want
@@ -163,7 +154,6 @@ public class XmlConfiguration extends TextConfiguration {
 
              String name = cursor.getNodeName();
 
-//             logger.debug(CH_XC, "Analyzing: " + name, null);
 
              if ( name.equals(pathElement) ) {
 
@@ -172,14 +162,11 @@ public class XmlConfiguration extends TextConfiguration {
                      // Bingo!
 
                      result.add(cursor);
-//                     logger.info(CH_XC, "Adding element: " + path + " " + name, null);
 
                  } else {
 
                      // We've got a component of the name right, but there
                      // are other elements left in the path.
-
-//                     logger.info(CH_XC, "Found path element: " + name, null);
 
                      Node child = cursor.getFirstChild();
 
@@ -190,7 +177,6 @@ public class XmlConfiguration extends TextConfiguration {
 
                      if ( child == null ) {
 
-//                         logger.info(CH_XC, "No more children @" + name, null);
                          return;
                      }
 
@@ -227,25 +213,12 @@ public class XmlConfiguration extends TextConfiguration {
 
         boolean hasChildren = node.hasChildNodes();
 
-/*        logger.warn(CH_XC, "Parsing entry: "
-        	+ prefix
-        	+ "/"
-        	+ node.getNodeName()
-        	+ (hasChildren?" (has children)":""),
-        	null);
- */
         switch ( node.getNodeType() ) {
 
             case Node.TEXT_NODE:
 
                 if ( !("".equals(node.getNodeValue().trim())) ) {
 
-/*                    logger.info(CH_XC, prefix
-                	+ " = '"
-                	+ node.getNodeValue().trim()
-                	+ "'",
-                	null);
- */
                     super.put(prefix, node.getNodeValue().trim());
                 }
                 break;

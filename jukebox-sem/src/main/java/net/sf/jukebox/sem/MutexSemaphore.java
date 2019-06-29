@@ -115,7 +115,6 @@ public class MutexSemaphore extends Semaphore {
 
         depth++;
         currentOwner = current;
-        // logger.info(CH_MUTEX, "got the lock");
         return true;
     }
 
@@ -176,17 +175,10 @@ public class MutexSemaphore extends Semaphore {
         }
 
         depth--;
-        // complain(Log.DEBUG, "release: depth: "+depth);
-        // complain(Log.DEBUG, "release: thread: "
-        // + currentOwner.getName()
-        // + "/"
-        // + Thread.currentThread().getName());
 
         if (depth == 0) {
             currentOwner = null;
 
-            // logger.info(CH_MUTEX, "release: OK");
-            
             // This is a mutex, there's no point in notifyAll() - exactly one listener will get a chance
             // to reacquire the lock
             notify();

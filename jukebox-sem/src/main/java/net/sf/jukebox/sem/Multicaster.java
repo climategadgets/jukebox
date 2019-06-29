@@ -55,8 +55,6 @@ public class Multicaster {
     // is already there, we don't have to check for it
 
     listenerSet.add(target);
-
-    // logger.debug(CH_MC, "addListener: "+target.toString() );
   }
 
   /**
@@ -73,7 +71,6 @@ public class Multicaster {
     }
 
     listenerSet.remove(target);
-    // logger.debug(CH_MC, "removeListener: "+target.toString() );
   }
 
   /**
@@ -100,9 +97,7 @@ public class Multicaster {
 
       EventListener target = e.next();
 
-      // logger.debug(CH_MC, "Notify: "+target.toString() );
       target.eventNotification(producer, status);
-      // logger.debug(CH_MC, "Notify: confirmed" );
     }
   }
 }

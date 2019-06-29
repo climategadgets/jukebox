@@ -83,8 +83,6 @@ public class ApplicationWrapper {
 
       logger.info("Waiting for the service completion");
       exitCode = service.getSemStopped().waitFor();
-      // stoppedAt = System.currentTimeMillis();
-      // logger.info(CH_WRAPPER, "Service is being shut down");
 
       service.getSemDown().waitFor();
       logger.info("Service has been shut down.");
