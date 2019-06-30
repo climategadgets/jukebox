@@ -5,14 +5,6 @@ subprojects {
     group = 'net.sf.jukebox'
     version = '7.0.0-SNAPSHOT'
 
-    apply plugin: 'findbugs'
-
-    findbugs {
-
-        excludeFilter = file("$rootProject.projectDir/findbugs-exclude.xml")
-        ignoreFailures = true
-    }
-
     repositories {
 
         jcenter()
