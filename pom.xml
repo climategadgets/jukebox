@@ -99,20 +99,6 @@
             </plugin>
         </plugins>
     </build>
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <effort>Max</effort>
-                    <threshold>Low</threshold>
-                    <excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
     <profiles>
         <profile>
             <id>release-sign-artifacts</id>
