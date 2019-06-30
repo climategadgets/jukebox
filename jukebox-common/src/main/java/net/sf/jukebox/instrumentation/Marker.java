@@ -9,11 +9,11 @@ import org.apache.logging.log4j.Logger;
 /**
  * An object to keep track of time spent on something in a convenient manner.
  *
- * Usage pattern (just like {@link NDC}:
+ * Usage pattern (just like {@link ThreadContext}:
  *
  * {@code
  *
- * NDC.push("whatever");
+ * ThreadContext.push("whatever");
  * Marker m = new Marker("something complicated");
  *
  * try {
@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
  *
  *     // NOTE: Put m.close() BEFORE NDC.pop(), not after, to preserve the context
  *     m.close();
- *     NDC.pop();
+ *     ThreadContext.pop();
  * }
  *
  * @see https://github.com/home-climate-control/dz/blob/master/dz3-master/dz3-common/src/main/java/net/sf/dz3/instrumentation/Marker.java
@@ -92,9 +92,10 @@ public class Marker {
         this(marker, Level.DEBUG);
     }
 
+    /**
+     * Mark the beginning of the timed section.
+     */
     protected void printStartMarker() {
-
-        // Mark the beginning of the timed section
 
         StringBuilder sb = new StringBuilder();
 
@@ -134,6 +135,9 @@ public class Marker {
      * @return Time elapsed since creation of this marker instance, in milliseconds.
      */
     public final long close() {
+
+        // VT: NOTE: No need to bother with synchronization, Marker is intended
+        // to be used in a single thread
 
         if (closed) {
             StringBuilder sb = new StringBuilder();
