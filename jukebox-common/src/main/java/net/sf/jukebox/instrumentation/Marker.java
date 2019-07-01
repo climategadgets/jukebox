@@ -1,17 +1,10 @@
 package net.sf.jukebox.instrumentation;
 
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.logging.log4j.EventLogger;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
-import org.apache.logging.log4j.message.StructuredDataMessage;
 
 /**
  * An object to keep track of time spent on something in a convenient manner.
@@ -99,20 +92,17 @@ public class Marker {
         this(marker, Level.DEBUG);
     }
 
-    private void log(Map<String, String> message) {
-
-        StructuredDataMessage m = new StructuredDataMessage(Integer.toHexString(hashCode()), null, "marker");
-
-        m.putAll(message);
-        EventLogger.logEvent(m);
-    }
-
     /**
      * Mark the beginning of the timed section.
      */
     protected void printStartMarker() {
 
-        log(new Builder().append("event", "started").build());
+        StringBuilder sb = new StringBuilder();
+
+        getSignature(sb);
+        sb.append(marker).append(") started");
+
+        logger.log(level, sb.toString());
     }
 
     /**
@@ -124,11 +114,15 @@ public class Marker {
      */
     public final long checkpoint(String checkpointMessage) {
 
-        log(new Builder()
-                .append("event", "checkpoint")
-                .append("checkpoint", checkpointMessage)
-                .append("duration", Long.toString(stopWatch.getTime()))
-                .append("elapsed", stopWatch.toString()).build());
+        StringBuilder sb = new StringBuilder();
+
+        getSignature(sb);
+        sb.append(marker);
+        sb.append(") checkpoint '" + checkpointMessage + "' reached at ");
+
+        printTimeMarker(sb, stopWatch);
+
+        logger.log(level, sb.toString());
 
         return stopWatch.getTime();
     }
@@ -157,10 +151,15 @@ public class Marker {
 
         closed = true;
 
-        log(new Builder()
-                .append("event", "completed")
-                .append("duration", Long.toString(stopWatch.getTime()))
-                .append("elapsed", stopWatch.toString()).build());
+        StringBuilder sb = new StringBuilder();
+
+        getSignature(sb);
+        sb.append(marker);
+        sb.append(") completed in ");
+
+        printTimeMarker(sb, stopWatch);
+
+        logger.log(level, sb.toString());
 
         return stopWatch.getTime();
     }
@@ -192,26 +191,6 @@ public class Marker {
             sb.append(") RUNAWAY INSTANCE, NOT close()d");
 
             logger.error(sb.toString());
-        }
-    }
-
-    private class Builder {
-
-        private Map<String, String> map = new TreeMap<>();
-
-        public Builder() {
-            map.put("marker", marker);
-            map.put("thread", Integer.toHexString(Thread.currentThread().hashCode()));
-            map.put("instance", Integer.toHexString(Marker.this.hashCode()));
-        }
-
-        public Builder append(String key, String value) {
-            map.put(key,  value);
-            return this;
-        }
-
-        public Map<String, String> build() {
-            return Collections.unmodifiableMap(map);
         }
     }
 }
