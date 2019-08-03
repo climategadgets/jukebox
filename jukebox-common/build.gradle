@@ -1,4 +1,6 @@
 dependencies {
 
     compile 'org.apache.commons:commons-lang3:3.3.2'
+
+    testCompile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.11.0'
 }

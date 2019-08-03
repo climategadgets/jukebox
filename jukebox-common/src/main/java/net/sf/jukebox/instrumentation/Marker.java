@@ -1,10 +1,15 @@
 package net.sf.jukebox.instrumentation;
 
 
+import java.time.Duration;
+
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 
 /**
  * An object to keep track of time spent on something in a convenient manner.
@@ -32,6 +37,8 @@ public class Marker {
 
     private final Logger logger = LogManager.getLogger(getClass());
 
+    private final MeterRegistry meterRegistry;
+
     /**
      * Message to be printed in the log when the marker is closed.
      */
@@ -53,7 +60,9 @@ public class Marker {
     private boolean closed = false;
 
     /**
-     * Create an instance and start the {@link #stopWatch timer}.
+     * Create an instance, link it with the registry, and start the {@link #stopWatch timer}.
+     *
+     * @param meterRegistry Meter registry to submit samples to.
      *
      * @param marker Message to print when the marker is closed.
      * It would be a good idea not to use parentheses in this string, for they
@@ -61,7 +70,9 @@ public class Marker {
      *
      * @param level Level to print marker messages with.
      */
-    public Marker(String marker, Level level) {
+    public Marker(MeterRegistry meterRegistry, String marker, Level level) {
+
+        this.meterRegistry = meterRegistry;
 
         if (marker == null) {
             throw new IllegalArgumentException("Marker can't be null");
@@ -81,15 +92,42 @@ public class Marker {
     }
 
     /**
-     * Create an instance at {@link Level#DEBUG DEBUG} level and start the {@link #stopWatch timer}.
+     * Create an instance not linked to a meter registry and start the {@link #stopWatch timer}.
+     *
+     * @param marker Message to print when the marker is closed.
+     * It would be a good idea not to use parentheses in this string, for they
+     * will break automated processing.
+     *
+     * @param level Level to print marker messages with.
+     */
+    public Marker(String marker, Level level) {
+        this(null, marker, level);
+    }
+
+    /**
+     * Create an instance at {@link Level#DEBUG} level, link it with the registry,
+     * and start the {@link #stopWatch timer}.
+     *
+     * @param meterRegistry Meter registry to submit samples to.
+     *
+     * @param marker Message to print when the marker is closed.
+     * It would be a good idea not to use parentheses in this string, for they
+     * will break automated processing.
+     */
+    public Marker(MeterRegistry meterRegistry, String marker) {
+        this(meterRegistry, marker, Level.DEBUG);
+    }
+
+    /**
+     * Create an instance not linked to a meter registry at {@link Level#DEBUG}
+     * level and start the {@link #stopWatch timer}.
      *
      * @param marker Message to print when the marker is closed.
      * It would be a good idea not to use parentheses in this string, for they
      * will break automated processing.
      */
     public Marker(String marker) {
-
-        this(marker, Level.DEBUG);
+        this(null, marker, Level.DEBUG);
     }
 
     /**
@@ -97,12 +135,27 @@ public class Marker {
      */
     protected void printStartMarker() {
 
+        logStartMarker();
+        metricsStartMarker();
+    }
+
+    private void logStartMarker() {
+
         StringBuilder sb = new StringBuilder();
 
         getSignature(sb);
         sb.append(marker).append(") started");
 
         logger.log(level, sb.toString());
+    }
+
+    private void metricsStartMarker() {
+
+        if (meterRegistry == null) {
+            return;
+        }
+
+        meterRegistry.timer(marker, "type", "marker", "event", "start").record(Duration.ZERO);
     }
 
     /**
@@ -124,7 +177,18 @@ public class Marker {
 
         logger.log(level, sb.toString());
 
-        return stopWatch.getTime();
+        long now = stopWatch.getTime();
+
+        if (meterRegistry == null) {
+            return now;
+        }
+
+        meterRegistry.timer(marker,
+                "type", "marker",
+                "event", "checkpoint",
+                "message", checkpointMessage).record(Duration.ofMillis(now));
+
+        return now;
     }
 
     /**
@@ -151,6 +215,14 @@ public class Marker {
 
         closed = true;
 
+        logClose();
+        metricsClose();
+
+        return stopWatch.getTime();
+    }
+
+    private void logClose() {
+
         StringBuilder sb = new StringBuilder();
 
         getSignature(sb);
@@ -160,8 +232,15 @@ public class Marker {
         printTimeMarker(sb, stopWatch);
 
         logger.log(level, sb.toString());
+    }
 
-        return stopWatch.getTime();
+    private void metricsClose() {
+
+        if (meterRegistry == null) {
+            return;
+        }
+
+        meterRegistry.timer(marker, "type", "marker", "event", "end").record(Duration.ofMillis(stopWatch.getTime()));
     }
 
     protected void printTimeMarker(StringBuilder sb, StopWatch stopWatch) {
