@@ -28,6 +28,7 @@ package net.sf.jukebox.sem;
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
  * @deprecated Consider using {@link java.util.concurrent.Semaphore} instead.
  */
+@Deprecated
 public class MutexSemaphore extends Semaphore {
 
     /**
@@ -186,7 +187,7 @@ public class MutexSemaphore extends Semaphore {
             currentOwner = null;
 
             // logger.info(CH_MUTEX, "release: OK");
-            
+
             // This is a mutex, there's no point in notifyAll() - exactly one listener will get a chance
             // to reacquire the lock
             notify();

@@ -27,9 +27,10 @@ package net.sf.jukebox.conf;
  * cumbersome.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1998-2000
- * 
+ *
  * @deprecated Self-aware object configuration model is being retired in favor of dependency injection.
  */
+@Deprecated
 public interface Configurable {
 
     /**
