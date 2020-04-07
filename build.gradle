@@ -6,6 +6,7 @@ subprojects {
 
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
+    apply plugin: 'jacoco'
 
     group = 'net.sf.jukebox'
     version = '7.0.0-SNAPSHOT'
