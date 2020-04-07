@@ -35,7 +35,7 @@ import org.apache.logging.log4j.ThreadContext;
 /**
  * A facility to expose objects presented to it via JMX.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2008-2018
+ * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2008-2020
  */
 public final class JmxWrapper {
 
@@ -496,12 +496,6 @@ public final class JmxWrapper {
         private final MBeanInfo mbInfo;
 
         /**
-         * @deprecated Doesn't seem to be used anywhere.
-         */
-        @Deprecated
-        private final Map<String, MBeanAttributeInfo> name2attribute = new TreeMap<String, MBeanAttributeInfo>();
-
-        /**
          * Mapping of the attribute name to the accessor method.
          */
         private final Map<String, Method> name2accessor = new TreeMap<String, Method>();
@@ -534,7 +528,6 @@ public final class JmxWrapper {
                     String attributeName = attributeInstance.getName();
                     logger.debug("Attribute: " + attributeName);
 
-                    name2attribute.put(attributeName, attributeInstance);
                     Method accessor = resolve(attributeName, attributeInstance.isIs());
                     name2accessor.put(attributeName, accessor);
 
