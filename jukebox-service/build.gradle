@@ -1,5 +1,5 @@
 dependencies {
 
-    compile project(':jukebox-sem')
-    compile project(':jukebox-jmx')
+    api project(':jukebox-sem')
+    api project(':jukebox-jmx')
 }

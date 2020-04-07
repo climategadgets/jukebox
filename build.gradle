@@ -1,13 +1,17 @@
+plugins {
+    id 'com.github.spotbugs' version '4.0.5'
+}
+
 subprojects {
 
-    apply plugin: 'java'
-    apply plugin: 'maven'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'jacoco'
+
     group = 'net.sf.jukebox'
     version = '7.0.0-SNAPSHOT'
 
-    apply plugin: 'findbugs'
-
-    findbugs {
+    spotbugs {
 
         excludeFilter = file("$rootProject.projectDir/findbugs-exclude.xml")
         ignoreFailures = true
@@ -20,9 +24,9 @@ subprojects {
 
     dependencies {
 
-		compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.0'
-		compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
+        api group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.1'
+        api group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.1'
 
-        testCompile 'junit:junit:4.12'
+        testImplementation 'junit:junit:4.13'
     }
 }
