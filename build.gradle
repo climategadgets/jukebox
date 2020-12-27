@@ -25,8 +25,8 @@ subprojects {
 
     dependencies {
 
-        api group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.1'
-        api group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.1'
+        api group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.2'
+        api group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.2'
 
         testImplementation 'junit:junit:4.13'
     }
