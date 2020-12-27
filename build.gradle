@@ -5,6 +5,7 @@ plugins {
 subprojects {
 
     apply plugin: 'java-library'
+    apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'jacoco'
 
