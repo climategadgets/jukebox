@@ -30,4 +30,12 @@ subprojects {
 
         testImplementation 'junit:junit:4.13'
     }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+            from components.java
+            }
+        }
+    }
 }
