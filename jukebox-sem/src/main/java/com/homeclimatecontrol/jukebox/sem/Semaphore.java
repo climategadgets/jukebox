@@ -12,7 +12,7 @@ import com.homeclimatecontrol.jukebox.util.PackageNameStripper;
  * classes, so it is documented more briefly - it you need clarifications, you
  * may find them there.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim
  * Tkachenko</a> 1995-1998
  */
 public abstract class Semaphore extends Multicaster {

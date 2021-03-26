@@ -4,7 +4,7 @@ package com.homeclimatecontrol.jukebox.sem;
  * The reason to exist is to note that this very exception has something to
  * do with a semaphore operation.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-1998
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-1998
  */
 public class SemaphoreException extends Exception {
 

@@ -7,7 +7,7 @@ import java.util.LinkedList;
  * any collection interfaces.
  *
  * @param <E> Type to use for the queue.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2008
  */
 public class SimpleQueue<E> {
 

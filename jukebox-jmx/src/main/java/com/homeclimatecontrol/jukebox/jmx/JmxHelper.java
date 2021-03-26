@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
  * performed by the set of simple handler objects. Uses the
  * {@code dispatcher} pattern.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2000-2018
  * @since Jukebox 2.0p5
  */
 public class JmxHelper implements DynamicMBean {

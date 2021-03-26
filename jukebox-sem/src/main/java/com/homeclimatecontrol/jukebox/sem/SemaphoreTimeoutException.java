@@ -11,7 +11,7 @@ import com.homeclimatecontrol.jukebox.TimeoutException;
  * @see EventSemaphore#waitFor(long)
  * @see SemaphoreGroup#waitForOne(long)
  * @see SemaphoreGroup#waitForAll(long)
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2008
  */
 public class SemaphoreTimeoutException extends SemaphoreException implements TimeoutException {
 

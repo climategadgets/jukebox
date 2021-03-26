@@ -28,7 +28,7 @@ import org.xml.sax.InputSource;
  * with the singletons in the application server environment, I'd rather leave
  * it an instance entity - little overhead, great flexibility.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2000-2008
  */
 public class ConfigurationFactory {
 

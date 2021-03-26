@@ -16,7 +16,7 @@ import com.homeclimatecontrol.jukebox.util.CollectionSynchronizer;
  * A data source. An entity capable of producing a {@link DataSample data sample}.
  *
  * @param <E> Data type to handle.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2009-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2009-2018
  */
 public class DataBroadcaster<E> extends LogAware implements DataSource<E> {
 

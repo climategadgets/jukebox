@@ -19,7 +19,7 @@ import com.homeclimatecontrol.jukebox.util.SimpleQueue;
  * related to a confusion between <code>EventSemaphore</code> and
  * <code>Semaphore</code>. Should be looked at.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim
  * Tkachenko</a> 1995-1998
  */
 public class SemaphoreGroup extends Semaphore implements EventListener {

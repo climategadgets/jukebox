@@ -3,7 +3,7 @@ package com.homeclimatecontrol.jukebox.fsm;
 /**
  * Describes the individual Finite State Machine state.
  *
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a>
  */
 public interface FsmState {
 

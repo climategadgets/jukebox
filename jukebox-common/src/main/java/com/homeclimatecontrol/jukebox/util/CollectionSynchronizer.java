@@ -9,7 +9,7 @@ import java.util.TreeSet;
  *
  * Probably obsolete by now.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2009
  */
 public class CollectionSynchronizer<T> {
 

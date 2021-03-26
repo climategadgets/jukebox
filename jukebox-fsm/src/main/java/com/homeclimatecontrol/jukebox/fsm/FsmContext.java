@@ -5,7 +5,7 @@ package com.homeclimatecontrol.jukebox.fsm;
  *
  * Contains the state independent information pertinent to the machine as a whole.
  *
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a>
  */
 public interface FsmContext {
 }

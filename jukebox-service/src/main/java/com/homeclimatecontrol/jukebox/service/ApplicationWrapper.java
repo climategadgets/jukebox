@@ -17,7 +17,7 @@ import org.apache.logging.log4j.core.LoggerContext;
  * {@link #main(String[])} method is invoked, first argument is parsed as the name class to instantiate and run, the rest are treated as a command line for the target.
  * 
  * @since Jukebox v2
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2018
  */
 public class ApplicationWrapper {
   

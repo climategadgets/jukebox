@@ -5,7 +5,7 @@ import java.util.concurrent.BlockingQueue;
 /**
  * The Finite State Machine state handler.
  *
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a>
  */
 public interface FsmStateHandler<Tcontext extends FsmContext, Tstate extends FsmState, Tevent extends FsmEvent, Toutput> {
 

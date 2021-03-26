@@ -17,7 +17,7 @@ import com.homeclimatecontrol.jukebox.util.Interval;
  * that starts (observing some preconditions at startup), passively serves some
  * requests, and then shuts down (observing some post-conditions at shutdown).
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2018
  * @see ActiveService
  */
 public abstract class PassiveService extends LogAware implements Service, PassiveServiceMXBean, JmxAware {

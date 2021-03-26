@@ -15,7 +15,7 @@ import com.homeclimatecontrol.jukebox.sem.EventSemaphore;
  * <ul>
  * Such notification is supported with the semaphores.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-1999
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-1999
  * @since J5
  * @see com.homeclimatecontrol.jukebox.sem.EventSemaphore
  */

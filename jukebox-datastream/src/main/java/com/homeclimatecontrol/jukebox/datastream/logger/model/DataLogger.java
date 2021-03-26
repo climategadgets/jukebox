@@ -14,7 +14,7 @@ import com.homeclimatecontrol.jukebox.datastream.signal.model.DataSink;
  *
  * @param <E> Data type to log.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2008
  */
 public interface DataLogger<E extends Number> extends DataSink<E> {
 

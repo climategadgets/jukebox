@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 /**
  * The Finite State Machine implementation.
  *
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a>
  */
 public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate extends Enum & FsmState, Tevent extends FsmEvent, Toutput> {
 

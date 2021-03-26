@@ -22,7 +22,7 @@ import java.util.Set;
  * (given the limited usage scope), it may be a good idea to just create yet
  * another class to do it.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2008
  * @see EventListener
  */
 public class Multicaster {

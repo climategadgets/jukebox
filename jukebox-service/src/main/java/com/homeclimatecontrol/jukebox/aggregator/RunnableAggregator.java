@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 /**
  * Object implementing scatter/gather, or aggregation algorithm for trivial {@link Runnable} workers.
  * 
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2007-2018
  */
 public class RunnableAggregator {
     

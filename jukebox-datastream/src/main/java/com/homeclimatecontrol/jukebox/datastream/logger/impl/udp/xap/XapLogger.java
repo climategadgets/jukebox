@@ -12,7 +12,7 @@ import com.homeclimatecontrol.jukebox.jmx.JmxDescriptor;
  * notifications and broadcasts them using xAP.
  *
  * @param <E> Data type to log.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2009
  */
 public class XapLogger<E extends Number> extends UdpLogger<E> {
 

@@ -17,7 +17,7 @@ import com.homeclimatecontrol.jukebox.service.PassiveService;
  * Common implementation base for different data loggers.
  * @param <E> Data type to log.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2018
  */
 public abstract class AbstractLogger<E extends Number> extends PassiveService implements DataLogger<E> {
 

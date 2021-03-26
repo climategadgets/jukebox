@@ -4,7 +4,7 @@ package com.homeclimatecontrol.jukebox.datastream.signal.model;
  * A data source. An entity capable of producing a {@link DataSample data sample}.
  *
  * @param <E> Data type to handle.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2009
  */
 public interface DataSource<E> {
 

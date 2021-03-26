@@ -16,7 +16,7 @@ import com.homeclimatecontrol.jukebox.sem.EventListener;
  * preserve the former documentation for it.
  * </dl>
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1996-1999
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1996-1999
  * @see Idle
  * @see Idle#OUT
  * @see Alarm

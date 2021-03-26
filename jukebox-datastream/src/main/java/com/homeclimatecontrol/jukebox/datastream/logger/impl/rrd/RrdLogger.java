@@ -19,7 +19,7 @@ import com.homeclimatecontrol.jukebox.jmx.JmxDescriptor;
  * <a href="http://people.ee.ethz.ch/~oetiker/webtools/rrdtool/">RRDTool</a> data logger.
  * 
  * @param <E> Data type to log.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2018
  */
 public final class RrdLogger<E extends Number> extends AbstractRrdLogger<E, File> {
 

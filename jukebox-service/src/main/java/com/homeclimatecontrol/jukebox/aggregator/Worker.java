@@ -5,7 +5,7 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Object implementing scatter/gather, or aggregation algorithm for homogenous {@link Runnable} workers.
  * 
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2007-2008
  */
 abstract public class Worker<Request, Response, ErrorTarget, T extends Throwable> {
     

@@ -23,7 +23,7 @@ import com.homeclimatecontrol.jukebox.jmx.JmxAttribute;
  * 
  * @param <E> Data type to log.
  * @see RrdLogger
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2018
  */
 public abstract class AbstractRrdLogger<E extends Number, RRD> extends AbstractLogger<E> {
 

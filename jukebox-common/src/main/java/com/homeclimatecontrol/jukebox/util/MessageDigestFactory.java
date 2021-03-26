@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * A simple utility class to produce a message digest of a message.
  * 
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2001-2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2001-2009
  */
 public class MessageDigestFactory {
 

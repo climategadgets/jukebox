@@ -4,7 +4,7 @@ package com.homeclimatecontrol.jukebox.datastream.signal.model;
  * A data sink. An entity capable of consuming a {@link DataSample data sample}.
  *
  * @param <E> Data type to handle.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2009
  */
 public interface DataSink<E> {
 

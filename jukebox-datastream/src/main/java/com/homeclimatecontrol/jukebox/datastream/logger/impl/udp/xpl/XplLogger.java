@@ -12,7 +12,7 @@ import com.homeclimatecontrol.jukebox.jmx.JmxDescriptor;
  * the notifications and broadcasts them using xPL.
  *
  * @param <E> Data type to log.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2009
  */
 public class XplLogger<E extends Number> extends UdpLogger<E> {
 

@@ -33,7 +33,7 @@ import com.homeclimatecontrol.jukebox.util.network.HostHelper;
  * Provides a base for {@link XapLogger xAP logger} and {@link XplLogger xPL logger}.
  *
  * @param <E> Data type to log.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2018
  */
 public abstract class UdpLogger<E extends Number> extends AbstractLogger<E> {
 

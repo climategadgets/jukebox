@@ -20,7 +20,7 @@ import org.w3c.dom.Node;
  * have an XML representation into the configuration. Therefore, this object
  * is read only, and will throw an exception on any attempt to modify it.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2000
  */
 public class XmlConfiguration extends TextConfiguration {
 

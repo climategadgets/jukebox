@@ -20,7 +20,7 @@ import com.homeclimatecontrol.jukebox.sem.EventListener;
  * {@code System.err.println} instead of logging things, as I normally do. Need
  * to remember why.
  *
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a>
  */
 public final class Idle extends PassiveService implements EventListener {
 

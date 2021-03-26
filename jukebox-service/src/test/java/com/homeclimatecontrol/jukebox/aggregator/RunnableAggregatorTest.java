@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 /**
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2007-2008
  */
 public class RunnableAggregatorTest extends TestCase {
 

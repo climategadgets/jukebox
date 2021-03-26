@@ -28,7 +28,7 @@ import com.homeclimatecontrol.jukebox.jmx.JmxWrapper;
 import org.apache.logging.log4j.LogManager;
 
 /**
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2018
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2000-2018
  */
 public class JmxWrapperTest extends TestCase {
 

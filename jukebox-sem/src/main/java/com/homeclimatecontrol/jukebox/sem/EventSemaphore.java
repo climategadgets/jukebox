@@ -60,7 +60,7 @@ import java.util.LinkedList;
  * </dl>
  * </dl>
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2007
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2007
  * @see SemaphoreGroup
  */
 public class EventSemaphore extends Semaphore {

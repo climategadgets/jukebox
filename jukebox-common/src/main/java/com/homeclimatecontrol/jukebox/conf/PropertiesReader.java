@@ -9,7 +9,7 @@ import java.io.Reader;
  * This class reads UNIX-like config files and loads the properties into the
  * given configuration object.
  * <p>
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1998
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1998
  * @author Significant influence from <a href="http://java.apache.org" target=_top>Java-Apache
  * Project</a> in general and code written by <a
  * href="mailto:mazzocch@systemy.it">Stefano Mazzocchi</a> in particular.

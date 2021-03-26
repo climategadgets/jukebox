@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * For simplicity, this attribute is allowed only on an accessor ({@code get*()} or {@code is*()}) method.
  * However, if there is a mutator ({@code set*()}) method of a matching type, a proper JMX support should be provided.
  *
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2004-2009
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2004-2009
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

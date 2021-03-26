@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Utility class to perform common network operations.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2001-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2001-2008
  */
 public class HostHelper {
 

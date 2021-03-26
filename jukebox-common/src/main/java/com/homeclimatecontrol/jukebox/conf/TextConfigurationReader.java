@@ -15,7 +15,7 @@ import java.io.Reader;
  * have any time right now, and the implementation satisfies its primary goal:
  * read the UNIX config files.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim
  * Tkachenko</a> 1998
  * @author Significant influence from <a href="http://java.apache.org"
  * target=_top>Java-Apache Project</a> in general and code written by <a

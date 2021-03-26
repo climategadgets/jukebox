@@ -1,7 +1,7 @@
 package com.homeclimatecontrol.jukebox.jmx;
 
 /**
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2007-2009
  */
 public class JmxDescriptor {
     public final String domainName;

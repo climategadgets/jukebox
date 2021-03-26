@@ -3,7 +3,7 @@ package com.homeclimatecontrol.jukebox.util;
 /**
  * ANSI color ESCAPE sequence support.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2007
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2007
  */
 public enum ANSI {
 

@@ -1,7 +1,7 @@
 package com.homeclimatecontrol.jukebox.service;
 
 /**
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a>
  */
 public interface ServiceStatus {
   boolean isActive();

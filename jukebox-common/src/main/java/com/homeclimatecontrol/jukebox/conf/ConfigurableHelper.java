@@ -37,7 +37,7 @@ package com.homeclimatecontrol.jukebox.conf;
  * inheritance (this is one of those rare cases where I would have really,
  * really welcomed it), there's no viable option.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2000
  */
 public class ConfigurableHelper implements Configurable {
 

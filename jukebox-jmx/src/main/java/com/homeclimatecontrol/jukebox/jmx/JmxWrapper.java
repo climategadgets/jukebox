@@ -35,7 +35,7 @@ import org.apache.logging.log4j.ThreadContext;
 /**
  * A facility to expose objects presented to it via JMX.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2008-2020
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2008-2020
  */
 public final class JmxWrapper {
 

@@ -4,7 +4,7 @@ package com.homeclimatecontrol.jukebox.sem;
  * Objects which implement this interface will be able to receive the event
  * notification asynchronously, as opposed to the active listening to the
  * event.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2008
  * @see Multicaster
  * @see Semaphore
  */

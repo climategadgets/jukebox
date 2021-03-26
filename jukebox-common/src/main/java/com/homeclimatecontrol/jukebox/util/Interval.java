@@ -4,7 +4,7 @@ package com.homeclimatecontrol.jukebox.util;
  * Provide different time-related conversions from the value range to the
  * string representations.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-1998
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-1998
  */
 public class Interval {
 

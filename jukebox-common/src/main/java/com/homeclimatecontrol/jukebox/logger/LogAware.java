@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * Basic log aware object.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1998-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1998-2018
  */
 public abstract class LogAware {
 

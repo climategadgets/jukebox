@@ -11,7 +11,7 @@ package com.homeclimatecontrol.jukebox.sem;
  * In addition, this implementation provides the asynchronous notification
  * and optional callback.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2008
  */
 public class ACT extends EventSemaphore {
 

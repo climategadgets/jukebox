@@ -14,7 +14,7 @@ package com.homeclimatecontrol.jukebox.jmx;
  * and support "write once, run everywhere" (even when using NOP JMX library)than to rip the JMX support
  * out of the code base.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2012
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2007-2012
  */
 public interface JmxAware {
 

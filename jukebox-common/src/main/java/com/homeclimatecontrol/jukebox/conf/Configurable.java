@@ -26,7 +26,7 @@ package com.homeclimatecontrol.jukebox.conf;
  * of this interface and can be used to make the configurable object less
  * cumbersome.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1998-2000
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1998-2000
  *
  * @deprecated Self-aware object configuration model is being retired in favor of dependency injection.
  */

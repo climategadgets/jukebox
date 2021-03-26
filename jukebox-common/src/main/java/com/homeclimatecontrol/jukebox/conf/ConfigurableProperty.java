@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  *
  * The value addressed by this annotation will be applied to the method the annotation is found on.
  *
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

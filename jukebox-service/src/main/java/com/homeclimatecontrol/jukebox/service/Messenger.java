@@ -20,7 +20,7 @@ import com.homeclimatecontrol.jukebox.util.Interval;
  * remnants of the safety net are present - this class will not blow up and
  * disappear without leaving a trace.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2018
  */
 public abstract class Messenger extends LogAware {
 

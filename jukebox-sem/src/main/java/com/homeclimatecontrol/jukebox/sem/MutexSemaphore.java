@@ -25,7 +25,7 @@ package com.homeclimatecontrol.jukebox.sem;
  * have to do is just to keep track about the number of lock acquisition
  * attempts (stack depth, in other words).
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2008
  * @deprecated Consider using {@link java.util.concurrent.Semaphore} instead.
  */
 @Deprecated

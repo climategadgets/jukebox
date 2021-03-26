@@ -19,7 +19,7 @@ import com.homeclimatecontrol.jukebox.sem.SemaphoreTimeoutException;
  * again. <br>
  * You may also replace the notification object at any time.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-1999
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-1999
  * @see EventSemaphore
  */
 public class Alarm extends LogAware implements Runnable {

@@ -3,7 +3,7 @@ package com.homeclimatecontrol.jukebox.util;
 /**
  * Utility class to strip the package components off a class name.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-1999
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-1999
  */
 public class PackageNameStripper {
 

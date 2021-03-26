@@ -5,7 +5,7 @@ package com.homeclimatecontrol.jukebox.service;
  * JVM shutdown. This is possible only with JDK 1.3 and up.
  * 
  * @since Jukebox v2
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2009
  */
 public class ShutdownHandler extends Thread {
 

@@ -5,7 +5,7 @@ import com.homeclimatecontrol.jukebox.sem.EventSemaphore;
 /**
  * Opposite of {@link RunnableService RunnableService}.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2008
  * @since J5
  */
 public interface StoppableService extends RunnableService {

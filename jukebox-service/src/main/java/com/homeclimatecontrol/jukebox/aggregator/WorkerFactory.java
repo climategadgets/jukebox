@@ -4,7 +4,7 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2007-2008
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2007-2008
  */
 public interface WorkerFactory<Request, Response, T extends Throwable> {
 

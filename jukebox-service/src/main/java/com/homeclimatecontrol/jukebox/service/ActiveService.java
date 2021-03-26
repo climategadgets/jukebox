@@ -9,7 +9,7 @@ import org.apache.logging.log4j.ThreadContext;
  * (observing some preconditions at startup), doing something, and then shuts
  * down (observing some post-conditions at shutdown).
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-2018
  * @see PassiveService
  */
 public abstract class ActiveService extends PassiveService {

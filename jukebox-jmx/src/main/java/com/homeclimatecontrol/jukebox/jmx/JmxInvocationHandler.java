@@ -5,7 +5,7 @@ import javax.management.DynamicMBean;
 /**
  * The template definition for the handler that handles the {@link DynamicMBean#invoke(String, Object[], String[])} method.
  *
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2000-2009
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2000-2009
  * @since Jukebox 2.0p5
  */
 abstract public class JmxInvocationHandler {

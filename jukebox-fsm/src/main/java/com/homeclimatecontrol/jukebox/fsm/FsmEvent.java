@@ -7,7 +7,7 @@ import java.util.EventObject;
  *
  * This is a wrapper for {@link EventObject} to allow multiple bound type for {@link FiniteStateMachine}.
  *
- * @author <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a>
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a>
  */
 public class FsmEvent<T extends Enum> extends EventObject {
 

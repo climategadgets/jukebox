@@ -10,7 +10,7 @@ import java.util.Date;
  * along with its description.
  * 
  * @param <E> Data type of the sample.
- * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2012
+ * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2005-2012
  */
 public final class DataSample<E> implements Serializable {
 
