@@ -18,7 +18,7 @@ public class MessageDigestFactory {
      * 
      * @param message Message to get MD5 digest for.
      * @return A string representation of the message digest.
-     * @throws NoSuchAlgorithmException if by some miracle SHA algorithm is not
+     * @throws IllegalStateException if by some miracle SHA algorithm is not
      * available.
      */
     public String getMD5(String message) {
@@ -41,7 +41,7 @@ public class MessageDigestFactory {
      * 
      * @param message Message to get SHA digest for.
      * @return A string representation of the message digest.
-     * @throws NoSuchAlgorithmException if by some miracle SHA algorithm is not
+     * @throws IllegalStateException if by some miracle SHA algorithm is not
      * available.
      */
     public String getSHA(String message) {
@@ -65,7 +65,6 @@ public class MessageDigestFactory {
      * @param md MessageDigest instance to use.
      * @param message Message to get message digest for.
      * @return A string representation of the message digest.
-     * @throws NoSuchAlgorithmException if by some miracle the algorithm is not available.
      */
     public String getDigest(MessageDigest md, String message) {
 
