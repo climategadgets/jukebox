@@ -9,7 +9,7 @@ subprojects {
     apply plugin: 'maven-publish'
     apply plugin: 'jacoco'
 
-    group = 'net.sf.jukebox'
+    group = 'com.homeclimatecontrol.jukebox'
     version = '7.0.0-SNAPSHOT'
 
     spotbugs {
