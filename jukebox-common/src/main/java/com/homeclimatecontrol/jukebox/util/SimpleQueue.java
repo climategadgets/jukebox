@@ -3,8 +3,7 @@ package com.homeclimatecontrol.jukebox.util;
 import java.util.LinkedList;
 
 /**
- * This class is primarily intended to be used by the {@link
- * com.homeclimatecontrol.jukebox.logger.Logger Logger} and therefore does not implement
+ * This class is primarily intended to be used by the Logger and therefore does not implement
  * any collection interfaces.
  *
  * @param <E> Type to use for the queue.

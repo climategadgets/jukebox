@@ -22,12 +22,12 @@ public class RunnableAggregator {
     /**
      * Process the queue with the number of threads equal to the queue size.
      * 
-     * @param requestQueue Queue of workers to run.
+     * @param workerQueue Queue of workers to run.
      * 
-     * @param error Queue containing errors, if any. If this queue is null on entry, no error reporting will be available
+     * @param errors Queue containing errors, if any. If this queue is null on entry, no error reporting will be available
      * other than via {@link #logger}.
      * 
-     * @see #process(int, java.util.concurrent.BlockingQueue)
+     * @see #process(BlockingQueue, BlockingQueue)
      */
     public void process(BlockingQueue<Runnable> workerQueue, BlockingQueue<Error<Runnable>> errors) {
         
@@ -48,10 +48,10 @@ public class RunnableAggregator {
      * 
      * @param threadCount Number of threads to dedicate to processing.
      * 
-     * @param error Queue containing errors, if any. If this queue is null on entry, no error reporting will be available
-     * other than via {@link #logger}.
+     * @param workerQueue Queue of workers to run.
      * 
-     * @param requestQueue Queue of workers to run.
+     * @param errors Queue containing errors, if any. If this queue is null on entry, no error reporting will be available
+     * other than via {@link #logger}.
      */
     public void process(final int threadCount, BlockingQueue<Runnable> workerQueue, BlockingQueue<Error<Runnable>> errors) {
         

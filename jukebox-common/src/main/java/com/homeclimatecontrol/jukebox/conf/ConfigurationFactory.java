@@ -142,9 +142,7 @@ public class ConfigurationFactory {
      *
      * @param reader The reader to read the configuration from.
      * @param targetURL URL to base on. This value is declarative, it is never
-     * used by the configuration itself, however, it is used by the {@link
-     * ConfigurationWatcher ConfigurationWatcher} and {@link
-     * ConfigurationChangeListener ConfigurationChangeListener}.
+     * used by the configuration itself (the entities that used to use it are now gone).
      * @return The configuration object.
      * @exception IOException if nested method throws it.
      */
@@ -190,9 +188,7 @@ public class ConfigurationFactory {
      *
      * @param reader The reader to read the text configuration from.
      * @param targetURL URL to base on. This value is declarative, it is never
-     * used by the configuration itself, however, it is used by the {@link
-     * ConfigurationWatcher ConfigurationWatcher} and {@link
-     * ConfigurationChangeListener ConfigurationChangeListener}.
+     * used by the configuration itself (the entities that used to use it are now gone).
      * @return The configuration object.
      * @exception IOException if nested method throws it.
      */
@@ -224,9 +220,7 @@ public class ConfigurationFactory {
      *
      * @param reader The reader to read the text configuration from.
      * @param targetURL URL to base on. This value is declarative, it is never
-     * used by the configuration itself, however, it is used by the {@link
-     * ConfigurationWatcher ConfigurationWatcher} and {@link
-     * ConfigurationChangeListener ConfigurationChangeListener}.
+     * used by the configuration itself (the entities that used to use it are now gone).
      * @return The configuration object.
      * @exception IOException if nested method throws it.
      */

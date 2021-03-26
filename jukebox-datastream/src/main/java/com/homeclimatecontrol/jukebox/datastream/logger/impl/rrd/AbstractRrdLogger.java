@@ -22,7 +22,6 @@ import com.homeclimatecontrol.jukebox.jmx.JmxAttribute;
  * An abstract class supporting RRD logging implementations.
  * 
  * @param <E> Data type to log.
- * @see JRobinLogger
  * @see RrdLogger
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2018
  */

@@ -94,8 +94,8 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
     private Object userObject = null;
 
     /**
-     * True if the service is enabled. Becomes true in the {@code start()}>,
-     * false again in {@code stop()}> or upon completion.
+     * True if the service is enabled. Becomes true in the {@link #start()},
+     * false again in {@link #stop()} or upon completion.
      *
      * @see #isEnabled
      * @see #ready
@@ -106,8 +106,8 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
     protected boolean enabled;
 
     /**
-     * True if the service is ready. Becomes true if {@code startup()}> is
-     * successfully completed, false again in {@code stop()}> or upon
+     * True if the service is ready. Becomes true if {link #startup()} is
+     * successfully completed, false again in {@link #stop()} or upon
      * completion.
      *
      * @see #isReady
@@ -119,8 +119,8 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
     protected boolean ready;
 
     /**
-     * True if the service is active. Becomes true in the {@code start()}>,
-     * false again in {@code stop()}> or upon completion.
+     * True if the service is active. Becomes true in the {@link #start()},
+     * false again in {@link #stop()} or upon completion.
      *
      * @see #isActive
      * @see #enabled
@@ -404,8 +404,8 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
     }
 
     /**
-     * Method wrapper for {@code startup()}> call. It will be reused in
-     * {@code ActiveService}> class.
+     * Method wrapper for {@link PassiveService#startup()} call. It will be reused in
+     * {@link ActiveService} class.
      */
     protected class StartupWrapper extends MethodWrapper {
 
@@ -423,7 +423,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
          * Execute the startup sequence for the target service.
          * <ol>
          * <li>Call the target's {@link PassiveService#startup() startup()} method.
-         * <li>If it returns {@code true}> and the target service implements
+         * <li>If it returns {@code true} and the target service implements
          * the {@link IdleClient IdleClient} interface, {@link Idle#register
          * register it}. <br>
          * Thoughts to myself: not every service needs to be declared idle-able,
@@ -478,8 +478,8 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
     }
 
     /**
-     * Method wrapper for {@code shutdown()}> call. It will be reused in
-     * {@code ActiveService}> class.
+     * Method wrapper for {@link PassiveService#shutdown()} call. It will be reused in
+     * {@link ActiveService} class.
      */
     protected class ShutdownWrapper extends MethodWrapper {
 
@@ -547,7 +547,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
 
     /**
      * Start the service. Service is started asynchronously, posting
-     * {@code semStarted}> before calling the target service's
+     * {@link #semStarted} before calling the target service's
      * {@link #startup startup()}, and triggering the {@link #semUp semUp}
      * semaphore when the startup is complete.
      *

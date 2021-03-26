@@ -23,7 +23,7 @@ abstract public class Worker<Request, Response, ErrorTarget, T extends Throwable
     /**
      * Process the {@link #rq request}.
      * 
-     * @param rsp Queue to put the result[s] into.
+     * @param responseQueue Queue to put the result[s] into.
      * 
      * @throws T if things go sour.
      */

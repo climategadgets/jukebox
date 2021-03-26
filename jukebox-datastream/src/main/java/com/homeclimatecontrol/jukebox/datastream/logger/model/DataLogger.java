@@ -1,5 +1,6 @@
 package com.homeclimatecontrol.jukebox.datastream.logger.model;
 
+import com.homeclimatecontrol.jukebox.datastream.logger.impl.AbstractLogger;
 import com.homeclimatecontrol.jukebox.datastream.signal.model.DataSink;
 
 /**

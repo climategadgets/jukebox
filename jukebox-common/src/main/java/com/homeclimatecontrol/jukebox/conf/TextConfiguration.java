@@ -64,9 +64,7 @@ public class TextConfiguration implements Configuration {
      *
      * @param defaultConf Default configuration.
      * @param baseURL URL to base on. This value is declarative, it is never
-     * used by the configuration itself, however, it is used by the {@link
-     * ConfigurationWatcher ConfigurationWatcher} and {@link
-     * ConfigurationChangeListener ConfigurationChangeListener}.
+     * used by the configuration itself (the entities that used to use it are now gone).
      */
     public TextConfiguration(Configuration defaultConf, URL baseURL) {
 

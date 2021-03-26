@@ -5,9 +5,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Utility class to help solve <a
- * href="http://sourceforge.net/tracker/index.php?func=detail&aid=1166395&group_id=52647&atid=467669">bug
- * #1166395</a> in a more or less elegant way.
+ * Utility class to help solve a problem the ticket for which is long gone, in a more or less elegant way.
+ *
+ * Probably obsolete by now.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 2005-2009
  */

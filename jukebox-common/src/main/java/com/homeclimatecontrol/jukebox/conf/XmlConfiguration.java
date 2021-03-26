@@ -66,9 +66,7 @@ public class XmlConfiguration extends TextConfiguration {
      * @param conf XML document to use as a configuration source.
      *
      * @param baseURL URL to base on. This value is declarative, it is never
-     * used by the configuration itself, however, it is used by the {@link
-     * ConfigurationWatcher ConfigurationWatcher} and {@link
-     * ConfigurationChangeListener ConfigurationChangeListener}.
+     * used by the configuration itself (the entities that used to use it are now gone).
      */
     public XmlConfiguration(Document conf, URL baseURL) {
 
