@@ -10,9 +10,8 @@ import java.io.Reader;
  * given configuration object.
  * <p>
  * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1998
- * @author Significant influence from <a href="http://java.apache.org" target=_top>Java-Apache
- * Project</a> in general and code written by <a
- * href="mailto:mazzocch@systemy.it">Stefano Mazzocchi</a> in particular.
+ * @author Significant influence from Java-Apache Project in general and code written by
+ * Stefano Mazzocchi in particular.
  */
 public class PropertiesReader extends TextConfigurationReader {
 

@@ -8,7 +8,7 @@ import com.homeclimatecontrol.jukebox.datastream.signal.model.DataSource;
 import com.homeclimatecontrol.jukebox.jmx.JmxDescriptor;
 
 /**
- * The <a link href="http://www.xplproject.org.uk/">xPL</a> logger. Listens to
+ * The <a href="http://www.xplproject.org.uk/">xPL</a> logger. Listens to
  * the notifications and broadcasts them using xPL.
  *
  * @param <E> Data type to log.

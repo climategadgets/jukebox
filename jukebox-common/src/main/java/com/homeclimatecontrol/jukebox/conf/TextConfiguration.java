@@ -15,9 +15,8 @@ import java.util.Set;
  * provides a convenient way to load and extract it.
  *
  * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1998-2008
- * @author Significant influence from <a href="http://java.apache.org/"
- * target=_top>Java-Apache Project</a> in general and code written by <a
- * href="mailto:stefano@apache.org">Stefano Mazzocchi</a> in particular.
+ * @author Significant influence from Java-Apache Project in general and code written by
+ * Stefano Mazzocchi in particular.
  */
 public class TextConfiguration implements Configuration {
 

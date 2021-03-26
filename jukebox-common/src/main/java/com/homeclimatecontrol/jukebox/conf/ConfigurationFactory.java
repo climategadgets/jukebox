@@ -344,7 +344,7 @@ public class ConfigurationFactory {
      * @exception IOException if there was an I/O error.
      * @exception UnsupportedOperationException if the protocol of the URL given
      * as a parameter is not supported. Currently, the only one supported is
-     * {@codefile:} protocol.
+     * {@code file:} protocol.
      * @see #store
      * @see #storeXml
      */
@@ -370,7 +370,7 @@ public class ConfigurationFactory {
      * @param target URL to store the configuration into.
      * @exception UnsupportedOperationException if the protocol of the URL given
      * as a parameter is not supported. Currently, the only one supported is
-     * {@codefile:} protocol.
+     * {@code file:} protocol.
      * @see #store
      * @see #storeText
      */

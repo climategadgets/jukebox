@@ -8,7 +8,7 @@ import com.homeclimatecontrol.jukebox.datastream.signal.model.DataSource;
 import com.homeclimatecontrol.jukebox.jmx.JmxDescriptor;
 
 /**
- * The <a link href="http://xapautomation.org/">xAP</a> logger. Listens to the
+ * The <a href="http://xapautomation.org/">xAP</a> logger. Listens to the
  * notifications and broadcasts them using xAP.
  *
  * @param <E> Data type to log.
