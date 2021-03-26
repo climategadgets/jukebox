@@ -16,37 +16,6 @@ import com.homeclimatecontrol.jukebox.util.Interval;
  * Describes the concept of a passive service. The passive service is the one
  * that starts (observing some preconditions at startup), passively serves some
  * requests, and then shuts down (observing some post-conditions at shutdown).
- * <hr>
- * Formerly known as {@code tt.server.GenericService}>. <br>
- * Significant changes:
- * <ul>
- * <li>{@code RunnableService}> interface is gone as it used to be, as too
- * complicated.
- * <li>{@code execute()}> is gone. It turned out that a lot of services are
- * passive (have active {@link #startup startup()} and {@link #shutdown
- * shutdown()} and just sleep in between), or re-active, so the {@link
- * ActiveService ActiveService} now implements the pro-active behavior.
- * <li>Implementation is rewritten from scratch.
- * </ul>
- * <h3>Reusability note</h3>
- * Upon careful examination, it turnes out that this class is actually a good
- * example of 'design by contract', which among other things uses language
- * constructs like <b>require</b> and <b>ensure</b>. In any subclasses, please
- * pay close attention to the {@link #startup startup()} and
- * {@link #shutdown shutdown()} methods, which are actually the pre-condition
- * and post-condition checkers. And, a good reading about this is the article
- * about <a
- * href="http://archive.eiffel.com/doc/manuals/technology/contract/ariane/page.html"
- * target="_top">$500 million mistake</a>.
- * <h3>Refactoring note (Oct 2005)</h3>
- * Turned out that the {@code shutdown()} never needed the concept of the
- * 'shutdown cause' in reality, it was all wishful thinking. It is still
- * possible to get to the shutdown cause should it ever be required, so the
- * framework is left in place, inactive.
- * <p/>
- * Same fate applied to the concept of dependant services - it was only
- * applicable in to a specific task within American Express and was never used
- * beyond that.
  *
  * @author Copyright &copy; <a href="mailto:vt@freehold.crocodile.org">Vadim Tkachenko</a> 1995-2018
  * @see ActiveService
