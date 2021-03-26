@@ -82,6 +82,8 @@ public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate ext
      * Process the input event.
      *
      * @param event Event to process.
+     * 
+     * @throws Throwable if things go sour.
      */
     public synchronized void process(Tevent event) throws Throwable {
 

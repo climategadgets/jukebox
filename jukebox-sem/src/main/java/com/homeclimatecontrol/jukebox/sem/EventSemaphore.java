@@ -13,7 +13,7 @@ import java.util.LinkedList;
  * OS/2, except different system call names, and the most important, I've had a
  * time to think it over and reimplement it by myself as I see it, because of
  * Java principle - "write once, run everywhere".
- * <p>
+ *
  * Thus, the semaphore behaviour may be described as follows:
  * <dl>
  * <dt>Semaphore posting/clearing.
@@ -83,7 +83,7 @@ public class EventSemaphore extends Semaphore {
 
     /**
      * Triggered status.
-     * <p>
+     *
      * False until first status change, true later. All the threads which issue
      * the {@link #waitFor() waitFor()} call for a semaphore which hadn't been
      * triggered yet, will wait.
@@ -96,7 +96,7 @@ public class EventSemaphore extends Semaphore {
      * Threads that have already requested status after last status change. In
      * reality, thread hash codes stores rather the thread references, to help
      * the garbage collector.
-     * <p>
+     *
      * (September 10 98) With the introduction of the weak references in JDK
      * 1.2, the hash code will be probably replaced by the weak reference.
      */
@@ -113,7 +113,7 @@ public class EventSemaphore extends Semaphore {
 
     /**
      * Creates named EventSemaphore.
-     * <p>
+     *
      * Note that there may be more than one semaphore with the same name, mostly
      * because (as I mentioned before) Java environment model significantly
      * differs from one in other operating systems. Ther'll never be such a
@@ -132,7 +132,7 @@ public class EventSemaphore extends Semaphore {
 
     /**
      * Creates named EventSemaphore with default name.
-     * <p>
+     *
      * The default name is
      * <code>owner.getClass().getName()+"/"+Integer.toHexString(owner.hashCode())</code>
      *
@@ -171,7 +171,6 @@ public class EventSemaphore extends Semaphore {
 
     /**
      * Can the current thread receive the actual status?
-     * <p>
      *
      * @return true if this method is called first time after semaphore
      * creation/posting/clearing, false otherwise.
@@ -238,7 +237,7 @@ public class EventSemaphore extends Semaphore {
 
     /**
      * Wait forever for the semaphore to be triggered.
-     * <p>
+     *
      * Note: each thread will get "true" for a semaphore triggering just once.
      * Any subsequent call will wait again.
      *
@@ -309,7 +308,7 @@ public class EventSemaphore extends Semaphore {
 
     /**
      * Had the semaphore been triggered.
-     * <p>
+     *
      * Answers positive on request if the semaphore had been triggered. Note
      * that the answer is positive JUST ONCE FOR EACH REQUESTING THREAD. Any
      * subsequent answer is false, as well as if the semaphore hadn't been
@@ -326,7 +325,7 @@ public class EventSemaphore extends Semaphore {
 
     /**
      * Get the semaphore status.
-     * <p>
+     *
      * Note that the real-time status may be obtained at the any moment without
      * any limitations.
      *

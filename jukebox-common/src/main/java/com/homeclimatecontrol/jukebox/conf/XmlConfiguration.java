@@ -14,8 +14,6 @@ import org.w3c.dom.Node;
  * Successor to the classical {@link Configuration Configuration} that
  * supports the XML configuration files and objects.
  *
- * <p>
- *
  * So far, there's one unresolved issue: how to add the values that do not
  * have an XML representation into the configuration. Therefore, this object
  * is read only, and will throw an exception on any attempt to modify it.
@@ -79,8 +77,6 @@ public class XmlConfiguration extends TextConfiguration {
     /**
      * @return The XML document object, for those who are not lazy to walk
      * it.
-     *
-     * <p>
      *
      * <strong>NOTE:</strong> we return a <strong>clone</strong>, not a reference.
      */
@@ -303,8 +299,6 @@ public class XmlConfiguration extends TextConfiguration {
 
     /**
      * Add a mapping from the key to the value.
-     *
-     * <p>
      *
      * <strong>NOTE:</strong> Changing the XML document has not been yet
      * implemented, and since there's no real demand, is unlikely to be

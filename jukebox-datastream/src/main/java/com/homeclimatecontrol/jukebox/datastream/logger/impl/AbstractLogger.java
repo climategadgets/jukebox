@@ -93,7 +93,7 @@ public abstract class AbstractLogger<E extends Number> extends PassiveService im
 
   /**
    * Create a new logging channel.
-   * <p>
+   *
    * <strong>NOTE:</strong> Invocation of this method doesn't necessarily
    * mean that the persistent media for this channel doesn't exist. It merely
    * means that this channel wasn't yet encountered since the logger was

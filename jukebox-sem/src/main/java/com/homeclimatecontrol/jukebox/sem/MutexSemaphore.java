@@ -2,14 +2,14 @@ package com.homeclimatecontrol.jukebox.sem;
 
 /**
  * Mutual exclusive, or mutex, semaphore.
- * <p>
+ *
  * Frankly speaking, not required at all, because Java already has a mechanism
  * which is <b>absolutely identical</b> to what the mutex semaphores use,
  * <code>synchronized</code> blocks. But on the other hand, it's sometimes
  * very painful to think about those things all the time, and, besides, the
  * concept of a mutex semaphore allows to engage the object-oriented approach in
  * a more clear, readable and understandable way than the synchronized blocks.
- * <p>
+ *
  * <h3>Behavior Description</h3>
  * Mutex Semaphore (<b>mutex</b> hereinafter), from a logical standpoint, has
  * two main methods:
@@ -20,7 +20,7 @@ package com.homeclimatecontrol.jukebox.sem;
  * Implementation complications are that the threads come into play, and every
  * thread may request the lock more than once, so I have to keep the record
  * about those who requested (and acquired) the lock.
- * <p>
+ *
  * Fortunately, only one thread may acquire the lock simultaneously, so all I
  * have to do is just to keep track about the number of lock acquisition
  * attempts (stack depth, in other words).
@@ -122,7 +122,7 @@ public class MutexSemaphore extends Semaphore {
 
     /**
      * Acquire the lock within a specified timeout.
-     * <p>
+     *
      * Multiple lock acquisition by the same thread is possible, the lock will
      * be released when the <code>release()</code> method will be called the
      * same number of times as the <code>waitFor()</code> and/or

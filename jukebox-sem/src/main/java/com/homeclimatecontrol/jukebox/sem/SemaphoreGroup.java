@@ -57,7 +57,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
     /**
      * Creates named SemaphoreGroup with default name.
-     * <p>
+     *
      * The default name is
      * {@code owner.getClass().getName()+"/"+Integer.toHexString(owner.hashCode())}.
      *
@@ -135,7 +135,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
     /**
      * Wait forever for all semaphores in the group to trigger.
-     * <p>
+     *
      * The semaphores which were {@link EventSemaphore#isTriggered triggered}
      * before this method was called take part in the group wait, too. In other
      * words, if all the semaphores in the group were triggered before the call,
@@ -176,10 +176,10 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
     /**
      * Check if some semaphores from the group were already triggered.
-     * <p>
+     *
      * This method is to be called from <code>waitForAll(..)</code> methods
      * only.
-     * <p>
+     *
      * <strong>Side effect:</code> <code>localGroup</code> parameter is by
      * reference, not by value, and gets modified if required - the semaphores
      * that were already triggered with the right value are removed from it.
@@ -237,7 +237,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
     /**
      * Wait forever for all semaphores in the group to trigger with a specified
      * value.
-     * <p>
+     *
      * This method is equivalent to {@link #waitForAll(boolean, boolean)
      * waitForAll(value, true)}.
      *
@@ -254,7 +254,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
     /**
      * Wait forever for all semaphores in the group to trigger with a specified
      * value.
-     * <p>
+     *
      * The semaphores which were {@link EventSemaphore#isTriggered triggered}
      * before this method was called take part in the group wait, too. In other
      * words, if all the semaphores in the group were triggered before the call,
@@ -329,7 +329,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
     /**
      * Wait forever for the first semaphore from the group to be triggered.
-     * <p>
+     *
      * Unlike the {@link #waitForAll() waitForAll()} behavior, this method waits
      * for the first semaphore {@link EventSemaphore#isTriggered triggered}
      * <b>after</b> the method was called.
@@ -365,7 +365,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
      * a desired status. <br>
      * Good to use in cases when "one of many" condition means success, as
      * opposed to "all of them".
-     * <p>
+     *
      * Unlike the {@link #waitForAll() waitForAll()} behavior, this method waits
      * for the first semaphore {@link EventSemaphore#isTriggered triggered}
      * <b>after</b> the method was called.
@@ -444,7 +444,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
      * that's why the implementation is so cruel: throwing the unchecked
      * exception. If this happens, it means that there's been some programming
      * error, not a normal condition.
-     * <p>
+     *
      * This method is intended to be used only from within {@code wait*}
      * methods.
      *
@@ -486,7 +486,7 @@ public class SemaphoreGroup extends Semaphore implements EventListener {
 
     /**
      * Receive the notification about the semaphore triggered.
-     * <p>
+     *
      * It doesn't make a sense to make this method synchronized because the
      * {@link #posted underlying queue} access is already synchronized, and all
      * that happens before is just a couple of sanity checks.

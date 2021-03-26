@@ -16,6 +16,8 @@ public interface FsmStateHandler<Tcontext extends FsmContext, Tstate extends Fsm
      * @param event Event to process.
      * @param outputQueue Queue to put output objects into, if any.
      * @return State FSM must transition itself to. {@code null} means no state change is required.
+     *
+     * @throws Throwable if things go sour.
      */
     Tstate process(Tcontext context, Tevent event, BlockingQueue<Toutput> outputQueue) throws Throwable;
 
@@ -24,6 +26,8 @@ public interface FsmStateHandler<Tcontext extends FsmContext, Tstate extends Fsm
      *
      * @param context Finite state machine context.
      * @param outputQueue Queue to put output objects into, if any.
+     *
+     * @throws Throwable if things go sour.
      */
     void enterState(Tcontext context, BlockingQueue<Toutput> outputQueue) throws InterruptedException, Throwable;
 
@@ -32,12 +36,14 @@ public interface FsmStateHandler<Tcontext extends FsmContext, Tstate extends Fsm
      *
      * @param context Finite state machine context.
      * @param outputQueue Queue to put output objects into, if any.
+     *
+     * @throws Throwable if things go sour.
      */
     void leaveState(Tcontext context, BlockingQueue<Toutput> outputQueue) throws Throwable;
 
     /**
      * @return The state this handler is associated with.
-     * @param context
+     * @param context Finite state machine context.
      */
     Tstate getState(Tcontext context);
 }

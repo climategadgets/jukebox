@@ -18,8 +18,6 @@ public class CollectionSynchronizer<T> {
      *
      * @param source Collection to copy.
      *
-     * <p>
-     *
      * In order to properly utilize the functionality, the original
      * collection must be protected by {@code synchronized} block.
      *

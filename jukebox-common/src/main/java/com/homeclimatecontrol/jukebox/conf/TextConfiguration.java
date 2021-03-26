@@ -480,7 +480,7 @@ public class TextConfiguration implements Configuration {
     /**
      * Add a mapping from the key to the value. If there's already existing
      * value[s], the value is added into the sequence of values.
-     * <p>
+     *
      * <strong>NOTE:</strong> it is not possible to distinguish between the
      * {@code List} that is a value itself and the {@code List} that is a
      * collection of other values. Caveat emptor.

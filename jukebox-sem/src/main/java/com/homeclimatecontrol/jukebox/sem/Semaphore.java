@@ -6,7 +6,7 @@ import com.homeclimatecontrol.jukebox.util.PackageNameStripper;
  * Basic semaphore class, which is currently a base for the {@link
  * EventSemaphore EventSemaphore}, {@link SemaphoreGroup SemaphoreGroup} and
  * {@link MutexSemaphore MutexSemaphore}.
- * <p>
+ *
  * Note that this class is a generalization of <code>EventSemaphore</code> and
  * <code>SemaphoreGroup</code> (former <code>EventSemaphoreGroup</code>)
  * classes, so it is documented more briefly - it you need clarifications, you
@@ -19,7 +19,7 @@ public abstract class Semaphore extends Multicaster {
 
     /**
      * The semaphore name.
-     * <p>
+     *
      * May be empty. Note that there's no limitations on the name, as well as
      * requirement of unique name to each semaphore. <br>
      * Also note that the name plays the one and only role here so far: make

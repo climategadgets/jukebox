@@ -2,12 +2,10 @@ package com.homeclimatecontrol.jukebox.sem;
 
 /**
  * Asynchronous Completion Token.
- * <p/>
+ *
  * A.k.a. "Magic Cookie". Associates state object with the completion of
  * asynchronous operation.
- * <p/>
- * <br>
- * <p/>
+ *
  * In addition, this implementation provides the asynchronous notification
  * and optional callback.
  *
@@ -119,7 +117,7 @@ public class ACT extends EventSemaphore {
 
     /**
      * Trigger the completion.
-     * <p/>
+     *
      * For the clarity reasons, shouldn't be used directly - use {@link
      * #complete(boolean) complete()} instead.
      *

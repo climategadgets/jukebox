@@ -4,13 +4,9 @@ package com.homeclimatecontrol.jukebox.conf;
  * An object that implements the basic requirements of {@link Configurable
  * Configurable}.
  *
- * <p>
- *
  * Implementation of a configurable object is quite tedious, and it has to
  * be uniform across multiple classes implementing the
  * <code>Configurable</code> interface.
- *
- * <p>
  *
  * Since Java doesn't have multiple inheritance, ordinarily the
  * implementation has to be copied and pasted into multiple locations,
@@ -22,16 +18,12 @@ package com.homeclimatecontrol.jukebox.conf;
  * short-circuit all the methods of <code>Configurable</code> to call this
  * object's methods.
  *
- * <p>
- *
  * This way is not ideal either. Another way would be to copy and paste this
  * class into the target class, or, if there are multiple classes having the
  * same base class, copy this implementation into that base class and make
  * {@link #configure() configure()} an abstract method, or make it final and
  * introduce another abstract method called from within
  * <code>configure</code>.
- *
- * <p>
  *
  * Honestly, all the ways suck, but given the absence of multiple
  * inheritance (this is one of those rare cases where I would have really,

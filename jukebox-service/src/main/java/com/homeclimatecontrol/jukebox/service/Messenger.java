@@ -11,10 +11,10 @@ import com.homeclimatecontrol.jukebox.util.Interval;
 /**
  * Entity supposed to carry on the task and deliver the message produced as a
  * result.
- * <p/>
+ *
  * This is a simplified version of the {@link ActiveService ActiveService},
  * which does not require a complicated startup - execute - shutdown procedure.
- * <p/>
+ *
  * In the process of evolution it turned out that there are indeed services so
  * simple that the safety net is a nuisance rather than a help. However, some
  * remnants of the safety net are present - this class will not blow up and
@@ -40,15 +40,15 @@ public abstract class Messenger extends LogAware {
      *
      * @return The asynchronous completion token associated with the completion
      *         of the given task.
-     *         <p/>
+     *
      *         This object has to be treated carefully: its {@link
      *         ACT#getUserObject getUserObject()} method must
      *         be called in order to retrieve the result of the messenger's operation.
      *         It is up to the derived class implementor to outline the usage for such
      *         an object.
-     *         <p/>
+     * 
      *         This token will be {@link ACT#complete(boolean,
-     *Object) complete()}d with a status of <code>true</code> if
+     *         Object) complete()}d with a status of <code>true</code> if
      *         the execution has completed normally, and <code>false</code> if it
      *         threw the exception. In this case the completion token will contain the
      *         exception, instead of the intended result (and of course, it could be the

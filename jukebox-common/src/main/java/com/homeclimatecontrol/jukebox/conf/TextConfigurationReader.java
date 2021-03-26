@@ -7,7 +7,7 @@ import java.io.Reader;
 /**
  * This class reads UNIX-like config files and filters out the comments and
  * blank lines.
- * <p>
+ *
  * In the current implementation API users are strongly discouraged from using
  * any methods other than {@link #readLine readLine} - results are
  * unpredictable. <br>

@@ -7,14 +7,14 @@ import java.util.Set;
 
 /**
  * Abstract notion of a configuration with a reasonable minimum of access methods.
- * <p>
+ *
  * This interface denotes a concept of a configuration chaining ("defaults") to
  * improve the flexibility and support the discretionary control inside of the
  * complex application.
- * <p>
+ *
  * This interface deliberately does not define any references to the
  * configuration persistence.
- * <p>
+ *
  * Another difference between this package and the other configuration packages
  * is that it is not tolerant to missing configuration values - it will not
  * return defaults, but will throw <code>NoSuchElementException</code>
@@ -28,7 +28,7 @@ public interface Configuration {
 
   /**
    * Set the default configuration.
-   * <p>
+   *
    * If the configuration value for any specific item is not found in this
    * object, it will be searched for in the default configuration,
    * recursively, until a configuration object with no default will be found.
@@ -44,7 +44,7 @@ public interface Configuration {
 
   /**
    * Get this configuration's base URL.
-   * <p>
+   *
    * Without the default configurations URLs, that is.
    *
    * @return Configuration base URL.

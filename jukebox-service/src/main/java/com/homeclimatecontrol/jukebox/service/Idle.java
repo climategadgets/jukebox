@@ -7,7 +7,7 @@ import com.homeclimatecontrol.jukebox.sem.EventListener;
 /**
  * The goal of this object is to observe the idle time for another services and
  * shut it down should the idle timeout expire.
- * <p>
+ *
  * Note that there's no need to start this service - use the static methods
  * instead.
  * <h3>BugTrack</h3>

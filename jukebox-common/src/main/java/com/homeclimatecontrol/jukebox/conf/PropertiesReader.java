@@ -8,7 +8,7 @@ import java.io.Reader;
 /**
  * This class reads UNIX-like config files and loads the properties into the
  * given configuration object.
- * <p>
+ *
  * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1998
  * @author Significant influence from Java-Apache Project in general and code written by
  * Stefano Mazzocchi in particular.
@@ -37,7 +37,6 @@ public class PropertiesReader extends TextConfigurationReader {
 
     /**
      * Read the properties into the given target.
-     * <p>
      *
      * This method reads the input stream lines one by one, and tries to
      * parse them according to the rules at the top of the page.

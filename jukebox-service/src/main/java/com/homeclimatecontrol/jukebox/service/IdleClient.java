@@ -5,7 +5,7 @@ import com.homeclimatecontrol.jukebox.sem.EventListener;
 /**
  * Every service which wants to watch for its idle time should implement this
  * interface.
- * <p>
+ *
  * When the client idles out, it receives the notification with null producer
  * and the status equal to <code>Idle.OUT</code>.
  * <h3>BugTrack</h3>

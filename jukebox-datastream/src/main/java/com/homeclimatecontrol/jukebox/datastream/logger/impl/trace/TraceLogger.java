@@ -20,7 +20,7 @@ import com.homeclimatecontrol.jukebox.jmx.JmxDescriptor;
 
 /**
  * Trace file logger. Writes data received into a trace file.
- * <p>
+ *
  * There will be many trace files, one per channel. The file format will is as
  * follows:
  * <ul>

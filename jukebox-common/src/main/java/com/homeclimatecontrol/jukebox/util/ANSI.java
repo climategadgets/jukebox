@@ -40,14 +40,14 @@ public enum ANSI {
 
   /**
    * Color sequence.
-   * <p/>
+   *
    * Responsible for rendering a required color.
    */
   private String sequence;
 
   /**
    * Create the ANSI sequence.
-   * <p/>
+   *
    * The sequence is a parameter prepended by the <b>Esc</b> code
    * (<code>0x1b</code>).
    *

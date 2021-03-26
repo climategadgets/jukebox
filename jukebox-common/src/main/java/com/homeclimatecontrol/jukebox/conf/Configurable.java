@@ -3,20 +3,14 @@ package com.homeclimatecontrol.jukebox.conf;
 /**
  * General definition of a configurable object.
  *
- * <p>
- *
  * Generally speaking, there's one serious problem with the configuration
  * per se: the chicken and egg problem, or the bootstrap sequence.
- *
- * <p>
  *
  * For example, every configurable object has to be able to tell what
  * exactly part of the original configuration is responsible for its
  * configuration, and it is not easy to determine. Thus, in order to
  * facilitate this, every configurable object has to export its own {@link
  * #getConfigurationRoot identifier} within a configuration name space.
- *
- * <p>
  *
  * For the flexibility reasons, this is an interface, not a class, despite
  * the fact that there's a lot of logic embedded into this interface.

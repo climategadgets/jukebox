@@ -23,7 +23,7 @@ import org.xml.sax.InputSource;
 /**
  * This object provides the means necessary to instantiate the configuration
  * object given the URL to read it from.
- * <p>
+ *
  * Strictly speaking, this object is a singleton, but given all the troubles
  * with the singletons in the application server environment, I'd rather leave
  * it an instance entity - little overhead, great flexibility.
@@ -69,7 +69,7 @@ public class ConfigurationFactory {
      * Create the configuration chain from the given set of URLs. Each
      * configuration in the set is a default configuration for the next, and the
      * last configuration is the one returned.
-     * <p>
+     *
      * If the configuration can't be created from the set entry, it is ignored
      * unless all of the entries resulted in a failure.
      *

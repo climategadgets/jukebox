@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * Notification multicaster.
- * <p/>
+ *
  * Mutated from {@link EventSemaphore EventSemaphore}/{@link SemaphoreGroup
  * SemaphoreGroup} interaction, now is being used to broadcast the event
  * notification by calling the callback methods.
@@ -15,7 +15,7 @@ import java.util.Set;
  * notifying the listeners. If any of them throws an exception, the rest are
  * left without a notification. If any of them deadlocks, the rest are left
  * hanging, as well as the notifying thread.
- * <p/>
+ *
  * The proper fix to this problem is the asynchronous multicaster that will
  * process the notifications a) from a different thread b) with the guaranteed
  * delivery. Since this implementation works for many years without any problems

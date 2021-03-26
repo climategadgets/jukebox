@@ -17,6 +17,8 @@ public class FsmEvent<T extends Enum> extends EventObject {
      * Constructs a prototypical Event.
      *
      * @param source The object on which the Event initially occurred.
+     * 
+     * @param eventType Event type.
      *
      * @throws IllegalArgumentException if source is null.
      */

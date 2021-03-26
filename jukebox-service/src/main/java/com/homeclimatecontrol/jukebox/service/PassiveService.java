@@ -138,7 +138,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
     /**
      * "Service has just been started" semaphore. This allows other services to
      * monitor this service and to take appropriate actions.
-     * <p/>
+     *
      * Always posted.
      *
      * @see #semUp
@@ -171,7 +171,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
     /**
      * Get the {@link #semUp semaphore} that is triggered upon the {@link
      * #startup startup()} completion.
-     * <p/>
+     *
      * Ideally, the semaphore returned by this method should be an immutable
      * clone of the actual semaphore.
      *
@@ -197,7 +197,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
 
     /**
      * @return The semaphore that gets triggered when the service is being stopped.
-     * <p/>
+     *
      * Ideally, the semaphore returned by this method should be an immutable clone of the actual semaphore.
      *
      * @see #semStopped
@@ -222,7 +222,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
 
     /**
      * Get the semaphore that gets triggered upon {@link #shutdown shutdown()}* completion.
-     * <p/>
+     *
      * Ideally, the semaphore returned by this method should be an immutable clone of the actual semaphore.
      *
      * @return The semaphore that gets triggered when the service has shut down.
@@ -235,7 +235,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
 
     /**
      * A default constructor.
-     * <p/>
+     *
      * This will create an object with no logger attached, default thread group
      * and default thread factory.
      */
@@ -626,7 +626,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
 
     /**
      * Wrapper for the startup, execution and shutdown threads.
-     * <p/>
+     *
      * All of above share the common features:
      * <ol>
      * <li>Specific method on the target object should be called.
