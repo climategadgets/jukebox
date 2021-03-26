@@ -12,7 +12,7 @@ import com.homeclimatecontrol.jukebox.sem.EventSemaphore;
  * <li> The moment the service is stopped or has completed execution, either
  * successfully or unsuccessfully;
  * <li> Service shutdown sequence completion.
- * <ul>
+ * </ul>
  * Such notification is supported with the semaphores.
  *
  * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 1995-1999

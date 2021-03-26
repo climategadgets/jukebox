@@ -45,6 +45,8 @@ public abstract class FiniteStateMachine<Tcontext extends FsmContext, Tstate ext
      * Create an instance.
      *
      * @param context The context. May be {@code null}.
+     *
+     * @throws Throwable if things go sour.
      */
     protected FiniteStateMachine(Tcontext context) throws Throwable {
 

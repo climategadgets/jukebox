@@ -65,7 +65,9 @@ public abstract class Messenger extends LogAware {
      * Start the messenger in a new thread.
      * 
      * It is the responsibility of the caller to properly set up the {@code executor}.
-     * 
+     *
+     * @param executor Executor to use.
+     *
      * @return The asynchronous completion token associated with the completion
      * of the given task.
      * 

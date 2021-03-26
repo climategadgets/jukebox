@@ -24,7 +24,9 @@ abstract public class Worker<Request, Response, ErrorTarget, T extends Throwable
      * Process the {@link #rq request}.
      * 
      * @param responseQueue Queue to put the result[s] into.
-     * 
+     *
+     * @param errors Queue to put the error[s] into.
+     *
      * @throws T if things go sour.
      */
     abstract public void process(BlockingQueue<Response> responseQueue, BlockingQueue<RunnableAggregator.Error<ErrorTarget>> errors) throws T;

@@ -25,7 +25,7 @@ public class ShutdownHandler extends Thread {
   /**
    * Create an instance.
    * 
-   * @param target
+   * @param target Service to stop.
    */
   public ShutdownHandler(StoppableService target) {
 

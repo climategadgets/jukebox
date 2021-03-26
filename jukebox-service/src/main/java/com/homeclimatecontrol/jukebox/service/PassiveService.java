@@ -398,7 +398,7 @@ public abstract class PassiveService extends LogAware implements Service, Passiv
          * Set the proper values for the host's {@link PassiveService#enabled enabled},
          * {@link PassiveService#active active} and {@link PassiveService#ready ready} flags.
          *
-         * @param status {@code call()}> result is passed here.
+         * @param status {@link #call()} result is passed here.
          */
         abstract void setFlags(boolean status);
     }

@@ -27,6 +27,7 @@ public interface FsmStateHandler<Tcontext extends FsmContext, Tstate extends Fsm
      * @param context Finite state machine context.
      * @param outputQueue Queue to put output objects into, if any.
      *
+     * @throws InterruptedException if the thread was interrupted.
      * @throws Throwable if things go sour.
      */
     void enterState(Tcontext context, BlockingQueue<Toutput> outputQueue) throws InterruptedException, Throwable;

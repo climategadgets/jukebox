@@ -22,7 +22,7 @@ import org.apache.logging.log4j.core.LoggerContext;
 public class ApplicationWrapper {
   
   /**
-   * @param args
+   * @param args Command line arguments.
    */
   public static void main(String[] args) {
 
