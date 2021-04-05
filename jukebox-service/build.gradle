@@ -1,5 +1,10 @@
 dependencies {
 
-    api project(':jukebox-sem')
-    api project(':jukebox-jmx')
+    if (rootProject.getName().equals("jukebox-master")) {
+        api project(':jukebox-sem')
+        api project(':jukebox-jmx')
+    } else {
+        api project(':jukebox:jukebox-sem')
+        api project(':jukebox:jukebox-jmx')
+    }
 }
