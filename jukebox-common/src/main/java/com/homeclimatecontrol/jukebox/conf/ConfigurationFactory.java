@@ -118,7 +118,7 @@ public class ConfigurationFactory {
 
         if (current == null) {
 
-            throw new ConfigurationFactoryException("Empty configuration set produced by URL list: " + urlSet, cause);
+            throw new ConfigurationFactoryException("Empty configuration set produced by URL list: " + List.of(urlSet), cause);
         }
 
         return current;
