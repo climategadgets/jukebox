@@ -1,6 +1,8 @@
 Jukebox: a Living Relic
 ==
 [![Build Status](https://travis-ci.com/climategadgets/jukebox.svg?branch=master)](https://travis-ci.com/climategadgets/jukebox)
+[![Build Status](https://github.com/climategadgets/jukebox/actions/workflows/gradle.yml/badge.svg)](https://github.com/climategadgets/jukebox/actions/workflows/gradle.yml)
+[![Build Status](https://github.com/climategadgets/jukebox/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/climategadgets/jukebox/actions/workflows/codeql-analysis.yml)
 
 ## Status
 
