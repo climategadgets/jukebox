@@ -118,7 +118,7 @@ public final class JmxWrapper {
                 }
 
             } catch (Throwable t) { // NOSONAR Consequences have been considered
-                logger.error("Failed for {}", target, t);
+                logger.error("Failed for {} {}", target.getClass().getName(), target, t);
             }
 
         } finally {
