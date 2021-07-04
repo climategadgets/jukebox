@@ -1,125 +1,114 @@
 package com.homeclimatecontrol.jukebox.jmx;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
+import org.junit.jupiter.api.Test;
+
+import javax.management.Attribute;
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
+import javax.management.RuntimeMBeanException;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.Set;
 
-import javax.management.Attribute;
-import javax.management.AttributeNotFoundException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectInstance;
-import javax.management.ObjectName;
-import javax.management.ReflectionException;
-import javax.management.RuntimeMBeanException;
-
-import junit.framework.TestCase;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
-
-import com.homeclimatecontrol.jukebox.jmx.JmxAttribute;
-import com.homeclimatecontrol.jukebox.jmx.JmxAware;
-import com.homeclimatecontrol.jukebox.jmx.JmxDescriptor;
-import com.homeclimatecontrol.jukebox.jmx.JmxWrapper;
-
-import org.apache.logging.log4j.LogManager;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2000-2018
+ * @author <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2000-2021
  */
-public class JmxWrapperTest extends TestCase {
+class JmxWrapperTest {
 
     private final Logger logger = LogManager.getLogger(getClass());
     private final Random rg = new Random();
 
     private ObjectName getObjectName() throws MalformedObjectNameException {
-        Hashtable<String, String> properties = new Hashtable<String, String>();
+        var properties = new Hashtable<String, String>();
 
         properties.put("id", Double.toString(rg.nextGaussian()));
         return new ObjectName("testDomain", properties);
     }
 
-    public void testExposeNull() throws Throwable {
-        
-        try {
-        
-            new JmxWrapper().expose(null, getObjectName(), "null");
-            
-            fail("Should've failed by now");
+    @Test
+    void testExposeNull() throws Throwable {
 
-        } catch (IllegalArgumentException ex) {
-            
-            assertEquals("Wrong exception message", "target can't be null", ex.getMessage());
-        }
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new JmxWrapper().expose(null, getObjectName(), "null"))
+                .withMessage("target can't be null");
     }
 
-    public void testLiteral() throws Throwable {
-        new JmxWrapper().expose(new LiteralAccessor(), getObjectName(), "Literal accessor");
-        assertTrue("We've made it", true);
+    @Test
+    void testLiteral() {
+        assertThatCode(() -> new JmxWrapper().expose(new LiteralAccessor(), getObjectName(), "Literal accessor"))
+                .doesNotThrowAnyException();
     }
 
-    public void testGoodAccessor() throws Throwable {
-        new JmxWrapper().expose(new GoodAccessor(), getObjectName(), "Properly named get* accessor");
-        assertTrue("We've made it", true);
+    @Test
+    void testGoodAccessor() {
+        assertThatCode(() -> new JmxWrapper().expose(new GoodAccessor(), getObjectName(), "Properly named get* accessor"))
+                .doesNotThrowAnyException();
     }
 
-    public void testIsAccessor() throws Throwable {
-        new JmxWrapper().expose(new IsAccessor(), getObjectName(), "Properly named is* accessor");
-        assertTrue("We've made it", true);
+    @Test
+    void testIsAccessor() {
+        assertThatCode(() -> new JmxWrapper().expose(new IsAccessor(), getObjectName(), "Properly named is* accessor"))
+                .doesNotThrowAnyException();
     }
 
-    public void testAccessorMutator() throws Throwable {
-        new JmxWrapper().expose(new AccessorMutator(), getObjectName(), "Accessor & mutator");
-        assertTrue("We've made it", true);
+    @Test
+    void testAccessorMutator() {
+        assertThatCode(() -> new JmxWrapper().expose(new AccessorMutator(), getObjectName(), "Accessor & mutator"))
+                .doesNotThrowAnyException();
     }
 
-    public void testAccessorBadMutator() throws Throwable {
-        new JmxWrapper().expose(new AccessorBadMutator(), getObjectName(), "Good accessor, bad mutator");
-        assertTrue("We've made it", true);
+    @Test
+    void testAccessorBadMutator() {
+        assertThatCode(() -> new JmxWrapper().expose(new AccessorBadMutator(), getObjectName(), "Good accessor, bad mutator"))
+                .doesNotThrowAnyException();
     }
 
-    public void testBadAccessorHasArguments() throws Throwable {
-        try {
-            new JmxWrapper().expose(new BadAccessorHasArguments(), getObjectName(), "Bad accessor signature - takes arguments");
-        } catch (IllegalArgumentException e) {
-            logger.info(e);
-            assertTrue("Null exception message", e.getMessage() != null);
-            assertEquals("Unexpected exception message", "name() is not an accessor (takes arguments)", e.getMessage());
-        }
+    @Test
+    void testBadAccessorHasArguments() {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new JmxWrapper().expose(new BadAccessorHasArguments(), getObjectName(), "Bad accessor signature - takes arguments"))
+                .withMessage("name() is not an accessor (takes arguments)");
     }
 
-    public void testBadAccessorReturnsVoid() throws Throwable {
-        try {
-            new JmxWrapper().expose(new BadAccessorReturnsVoid(), getObjectName(), "Bad accessor signature - returns void");
-        } catch (IllegalArgumentException e) {
-            logger.info(e);
-            assertTrue("Null exception message", e.getMessage() != null);
-            assertEquals("Unexpected exception message", "name() is not an accessor (returns void)", e.getMessage());
-        }
+    @Test
+    void testBadAccessorReturnsVoid() {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new JmxWrapper().expose(new BadAccessorReturnsVoid(), getObjectName(), "Bad accessor signature - returns void"))
+                .withMessage("name() is not an accessor (returns void)");
     }
 
-    public void testBadAccessorWrongName() throws Throwable {
-        try {
-            new JmxWrapper().expose(new BadAccessorWrongName(), getObjectName(), "Bad accessor signature - returns void");
-        } catch (IllegalArgumentException e) {
-            logger.info(e);
-            assertTrue("Null exception message", e.getMessage() != null);
-            assertEquals("Unexpected exception message", "setName(): method name doesn't conform to accessor pattern (need isX or getX)", e.getMessage());
-        }
+    @Test
+    void testBadAccessorWrongName() {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new JmxWrapper().expose(new BadAccessorWrongName(), getObjectName(), "Bad accessor signature - returns void"))
+                .withMessage("setName(): method name doesn't conform to accessor pattern (need isX or getX)");
     }
 
-    public void testInterfaceDefined() throws Throwable {
-        new JmxWrapper().expose(new TheImplementation(), getObjectName(), "Annotation on the interface");
-        assertTrue("We've made it", true);
+    @Test
+    void testInterfaceDefined() {
+        assertThatCode(() -> new JmxWrapper().expose(new TheImplementation(), getObjectName(), "Annotation on the interface"))
+                .doesNotThrowAnyException();
     }
-    
-    public void testCollectionConstructor() {
-        
-        Set<Object> targets = new HashSet<Object>();
-        
+
+    @Test
+    void testCollectionConstructor() {
+
+        var targets = new HashSet<>();
+
         targets.add(new LiteralAccessor());
         targets.add(new GoodAccessor());
         targets.add(new AccessorMutator());
@@ -130,199 +119,167 @@ public class JmxWrapperTest extends TestCase {
         targets.add(new TheConcreteSuperclass());
         targets.add("something that is definitely not @JmxAware");
         targets.add(new SimpleJmxAware());
-        
-        new JmxWrapper(targets);
-        assertTrue("We've made it", true);
-    }
-    
-    public void testRegisterNull() {
-        
-        try {
-        
-            new JmxWrapper().register(null);
-            
-            fail("Should've failed by now");
 
-        } catch (IllegalArgumentException ex) {
-            
-            assertEquals("Wrong exception message", "target can't be null", ex.getMessage());
-        }
-    }
-    
-    public void testRegisterNotJmxAware() {
-        
-        new JmxWrapper().register("something that is definitely not @JmxAware");
-        assertTrue("We've made it", true);
+        assertThatCode(() -> new JmxWrapper(targets)).doesNotThrowAnyException();
     }
 
-    public void testRegisterJmxAware() {
-        
-        new JmxWrapper().register(new SimpleJmxAware());
-        assertTrue("We've made it", true);
+    @Test
+    void testRegisterNull() {
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new JmxWrapper().register(null))
+                .withMessage("target can't be null");
     }
 
-    public void testRegisterTwice() {
-        
-        JmxWrapper w = new JmxWrapper();
-        Object target = new SimpleJmxAware();
-        
-        w.register(target);
-        w.register(target);
-
-        assertTrue("We've made it", true);
-    }
-    
-    public void testLowerFirst() {
-        
-        assertEquals(null, JmxWrapper.lowerFirst(null));
-        assertEquals("", JmxWrapper.lowerFirst(""));
-        assertEquals("a", JmxWrapper.lowerFirst("A"));
-        assertEquals("1", JmxWrapper.lowerFirst("1"));
-        assertEquals("tEST", JmxWrapper.lowerFirst("TEST"));
+    @Test
+    void testRegisterNotJmxAware() {
+        assertThatCode(() -> new JmxWrapper().register("something that is definitely not @JmxAware"))
+                .doesNotThrowAnyException();
     }
 
-    public void testUpperFirst() {
-        
-        assertEquals(null, JmxWrapper.upperFirst(null));
-        assertEquals("", JmxWrapper.upperFirst(""));
-        assertEquals("A", JmxWrapper.upperFirst("a"));
-        assertEquals("1", JmxWrapper.upperFirst("1"));
-        assertEquals("Test", JmxWrapper.upperFirst("test"));
+    @Test
+    void testRegisterJmxAware() {
+        assertThatCode(() -> new JmxWrapper().register(new SimpleJmxAware())).doesNotThrowAnyException();
     }
-    
-    public void testAttributes() throws Throwable {
-        
-        ThreadContext.push("testAttributes");
-        
-        try {
-        
-            MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-            SimpleJmxAware target = new SimpleJmxAware();
+
+    @Test
+    void testRegisterTwice() {
+        assertThatCode(() -> {
             JmxWrapper w = new JmxWrapper();
-            
+            Object target = new SimpleJmxAware();
+
             w.register(target);
-            
+            w.register(target);
+
+        }).doesNotThrowAnyException();
+    }
+
+    @Test
+    void testLowerFirst() {
+        assertThat(JmxWrapper.lowerFirst(null)).isNull();
+        assertThat(JmxWrapper.lowerFirst("")).isEmpty();
+        assertThat(JmxWrapper.lowerFirst("A")).isEqualTo("a");
+        assertThat(JmxWrapper.lowerFirst("1")).isEqualTo("1");
+        assertThat(JmxWrapper.lowerFirst("TEST")).isEqualTo("tEST");
+    }
+
+    @Test
+    void testUpperFirst() {
+        assertThat(JmxWrapper.upperFirst(null)).isNull();
+        assertThat(JmxWrapper.upperFirst("")).isEmpty();
+        assertThat(JmxWrapper.upperFirst("a")).isEqualTo("A");
+        assertThat(JmxWrapper.upperFirst("1")).isEqualTo("1");
+        assertThat(JmxWrapper.upperFirst("test")).isEqualTo("Test");
+    }
+
+    @Test
+    void testAttributes() throws Throwable {
+
+        ThreadContext.push("testAttributes");
+
+        try {
+
+            var mbs = ManagementFactory.getPlatformMBeanServer();
+            var target = new SimpleJmxAware();
+            var jmxWrapper = new JmxWrapper();
+
+            jmxWrapper.register(target);
+
             JmxDescriptor jmxDescriptor = target.getJmxDescriptor();
-            
-            StringBuilder sb = new StringBuilder();
-            
-            sb.append(jmxDescriptor.domainName).append(":");
-            sb.append("name=").append(jmxDescriptor.name).append(",");
-            sb.append("instance=").append(jmxDescriptor.instance);
-    
-            String pattern = sb.toString();
-            logger.info("getAttribute name: " + pattern);
-    
-            ObjectName name = new ObjectName(pattern);
-            
-            Set<ObjectInstance> found = mbs.queryMBeans(name, null);
-            
-            logger.info("found: " + found);
-            
-            assertEquals("Wrong object instance count", 1, found.size());
-            assertEquals("Wrong name found", name, found.iterator().next().getObjectName());
-            
+
+            var pattern = jmxDescriptor.domainName + ":" +
+                    "name=" + jmxDescriptor.name + "," +
+                    "instance=" + jmxDescriptor.instance;
+            logger.info("getAttribute name: {}", pattern);
+
+            var objectName = new ObjectName(pattern);
+
+            var found = mbs.queryMBeans(objectName, null);
+
+            logger.info("found: {}", found);
+
+            assertThat(found).hasSize(1);
+            assertThat(found.iterator().next().getObjectName()).isEqualTo(objectName);
+
             {
                 // The good behavior case
-                
-                Object code = mbs.getAttribute(name, "code");
 
-                logger.info("getAttribute(code): " + code);
+                var code = mbs.getAttribute(objectName, "code");
 
-                assertEquals("Wrong code extracted", target.getCode(), code);
+                logger.info("getAttribute(code): {}", code);
 
-                mbs.setAttribute(name, new Attribute("code", "DUDE"));
+                assertThat(target.getCode()).isEqualTo(code);
 
-                logger.info("setAttribute(code): " + target.getCode());
+                mbs.setAttribute(objectName, new Attribute("code", "DUDE"));
 
-                assertEquals("Wrong code set", target.getCode(), "DUDE");
+                logger.info("setAttribute(code): {}", target.getCode());
+
+                assertThat(target.getCode()).isEqualTo("DUDE");
             }
 
             {
                 // The bad behavior case
-                
-                try {
-                    
-                    // An unexpected exception in an accessor
-                    
-                    mbs.getAttribute(name, "error");
-                    fail("Should've failed by now");
-                    
-                } catch (ReflectionException ex) {
-                    
-                    assertEquals("Wrong exception message", "Nobody expects the Spanish Inquisition!", ex.getCause().getCause().getMessage());
-                }
 
-                try {
-                    
-                    // An unexpected exception in a mutator
-                    
-                    mbs.setAttribute(name, new Attribute("error", "DUDE"));
-                    fail("Should've failed by now");
+                assertThatExceptionOfType(ReflectionException.class)
+                        .isThrownBy(() -> {
 
-                } catch (RuntimeMBeanException ex) {
-                    
-                    assertEquals("Wrong exception message", "NOBODY expects the Spanish Inquisition!", ex.getCause().getCause().getCause().getMessage());
-                }
+                                // An unexpected exception in an accessor
+                                mbs.getAttribute(objectName, "error");
 
-                try {
-                    
-                    // Nonexistent accessor
-                    
-                    mbs.getAttribute(name, "nonexistent");
-                    fail("Should've failed by now");
-                    
-                } catch (AttributeNotFoundException ex) {
-                    
-                    assertEquals("Wrong exception message", "nonexistent", ex.getMessage());
-                }
+                        }).withCause(new InvocationTargetException(new NullPointerException("Nobody expects the Spanish Inquisition!")));
 
-                try {
-                    
-                    // Nonexistent mutator
-                    
-                    mbs.setAttribute(name, new Attribute("nonexistent", "DUDE"));
-                    fail("Should've failed by now");
-                    
-                } catch (AttributeNotFoundException ex) {
-                    
-                    assertEquals("Wrong exception message", "nonexistent", ex.getMessage());
-                }
+                var attribute = new Attribute("error", "DUDE");
+                assertThatExceptionOfType(RuntimeMBeanException.class)
+                        .isThrownBy(() -> {
 
-                try {
-                    
-                    // Inaccessible accessor
-                    
-                    mbs.getAttribute(name, "secret");
-                    fail("Should've failed by now");
-                    
-                } catch (AttributeNotFoundException ex) {
-                    
-                    assertEquals("Wrong exception message", "secret", ex.getMessage());
-                }
+                            // An unexpected exception in a mutator
+                            mbs.setAttribute(objectName, attribute);
 
-                try {
-                    
-                    // Inaccessible mutator
-                    
-                    mbs.setAttribute(name, new Attribute("secret", "DUDE"));
-                    fail("Should've failed by now");
-                    
-                } catch (AttributeNotFoundException ex) {
-                    
-                    assertEquals("Wrong exception message", "secret", ex.getMessage());
-                }
+                        })
+                        .withMessage("java.lang.IllegalStateException: Failed to setAttribute(error = DUDE)")
+                        .withCause(
+                                new IllegalStateException(
+                                        "Failed to setAttribute(error = DUDE)",
+                                        new InvocationTargetException(
+                                                new NullPointerException("NOBODY expects the Spanish Inquisition!"))));
+
+                assertThatExceptionOfType(AttributeNotFoundException.class)
+                        .isThrownBy(() -> {
+
+                            // Nonexistent accessor
+                            mbs.getAttribute(objectName, "nonexistent");
+
+                        }).withMessage("nonexistent");
+
+                assertThatExceptionOfType(AttributeNotFoundException.class)
+                        .isThrownBy(() -> {
+
+                            // Nonexistent mutator
+                            mbs.setAttribute(objectName, new Attribute("nonexistent", "DUDE"));
+
+                        }).withMessage("nonexistent");
+
+                assertThatExceptionOfType(AttributeNotFoundException.class)
+                        .isThrownBy(() -> {
+
+                            // Inaccessible accessor
+                            mbs.getAttribute(objectName, "secret");
+
+                        }).withMessage("secret");
+
+                assertThatExceptionOfType(AttributeNotFoundException.class)
+                        .isThrownBy(() -> {
+
+                            // Inaccessible mutator
+                            mbs.setAttribute(objectName, new Attribute("secret", "DUDE"));
+
+                        }).withMessage("secret");
             }
 
-            try {
-            
-                mbs.invoke(name, "hashCode", null, null);
-            
-            } catch (RuntimeMBeanException ex) {
-                assertEquals("Wrong exception message", "Not Supported Yet: invoke(hashCode)", ex.getCause().getMessage());
-            }
-            
-            
+            assertThatExceptionOfType(RuntimeMBeanException.class)
+                    .isThrownBy(() -> mbs.invoke(objectName, "hashCode", null, null))
+                    .withCause(new UnsupportedOperationException("Not Supported Yet: invoke(hashCode)"));
+
         } finally {
             ThreadContext.pop();
         }
@@ -423,6 +380,7 @@ public class JmxWrapperTest extends TestCase {
 
     class TheImplementation extends TheAbstractSuperclass implements TheInterface {
 
+        @Override
         public String getInterfaceDefined() {
             return "must be exposed though the annotation is present only on the interface";
         }
@@ -437,21 +395,21 @@ public class JmxWrapperTest extends TestCase {
             return "must be exposed through the annotation is present only on the concrete superclass";
         }
     }
-    
+
     class SimpleJmxAware implements JmxAware {
 
         private String code = Integer.toHexString(rg.nextInt());
-                
+
         @Override
         public JmxDescriptor getJmxDescriptor() {
             return new JmxDescriptor("jukebox", getClass().getSimpleName(), Integer.toHexString(hashCode()), "test case");
         }
-        
+
         @JmxAttribute(description = "random code")
         public String getCode() {
             return code;
         }
-        
+
         public void setCode(String code) {
             this.code = code;
         }
@@ -460,7 +418,7 @@ public class JmxWrapperTest extends TestCase {
         public String getError() {
             throw new NullPointerException("Nobody expects the Spanish Inquisition!");
         }
-        
+
         public void setError(String error) {
             throw new NullPointerException("NOBODY expects the Spanish Inquisition!");
         }
@@ -469,8 +427,60 @@ public class JmxWrapperTest extends TestCase {
         private String getSecret() {
             return "secret";
         }
-        
+
         private void setSecret(String secret) {
+        }
+    }
+
+    @Test
+    void testNullJmxDescriptor() {
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new JmxWrapper().register(new NullJmxDescriptor())).withMessage("JMX Descriptor can't be null");
+    }
+
+    class NullJmxDescriptor implements JmxAware {
+
+        @Override
+        public JmxDescriptor getJmxDescriptor() {
+            return null;
+        }
+    }
+
+    @Test
+    void testIspanAndGetAttributes() throws MalformedObjectNameException, ReflectionException, InstanceNotFoundException {
+
+        var mBeanServer = ManagementFactory.getPlatformMBeanServer();
+        var beanCount = mBeanServer.getMBeanCount();
+
+        assertThatCode(() -> new JmxWrapper().register(new FunkyName())).doesNotThrowAnyException();
+        assertThat(mBeanServer.getMBeanCount()).isEqualTo(beanCount + 1);
+
+        // Testing getAttributes separately may create a race condition unless a different name is used,
+        // so let's just test it here
+
+        var name = new ObjectName("jukebox:name=span,instance=instance");
+        var attributes = mBeanServer.getAttributes(name, new String[] { "ispan"});
+
+        assertThat(attributes).hasSize(1);
+
+        logger.info("attributes[0]: {}", attributes.get(0));
+    }
+
+    class FunkyName implements JmxAware {
+
+        @JmxAttribute(description = "get Ispan")
+        public long getIspan() {
+            return 0;
+        }
+
+        public void setIspan(long Ispan) {
+            // Do nothing
+        }
+
+        @Override
+        public JmxDescriptor getJmxDescriptor() {
+            return new JmxDescriptor("jukebox", "span", "instance", "description");
         }
     }
 }
