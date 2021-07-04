@@ -20,8 +20,8 @@ import java.lang.annotation.Annotation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -151,7 +151,7 @@ public final class JmxWrapper {
 
         try {
 
-            var accessors = new LinkedList<MBeanAttributeInfo>();
+            var accessors = new ArrayList<MBeanAttributeInfo>();
             var accessor2mutator = new HashMap<Method, Method>();
             var targetClass = target.getClass();
 
@@ -194,8 +194,8 @@ public final class JmxWrapper {
             logger.debug("method {}", method);
             logger.debug("annotation {}", annotationClass.getSimpleName());
 
-            {
-                Annotation annotation = method.getAnnotation(annotationClass);
+            { // NOSONAR
+                var annotation = method.getAnnotation(annotationClass);
 
                 if (annotation != null) {
                     // This is the simple case...
@@ -296,7 +296,7 @@ public final class JmxWrapper {
                 accessor2mutator.put(method, mutator);
             }
 
-            accessors.add(exposeJmxAttribute(target, accessorName, annotation.description(), method, mutator));
+            accessors.add(exposeJmxAttribute(accessorName, annotation.description(), method, mutator));
 
         } finally {
             ThreadContext.pop();
@@ -306,7 +306,6 @@ public final class JmxWrapper {
     /**
      * Expose the method[s] via JMX.
      *
-     * @param target Object to expose the method[s] of.
      * @param name Name to expose as.
      * @param description Human readable description.
      * @param accessor Accessor method.
@@ -314,7 +313,7 @@ public final class JmxWrapper {
      *
      * @return Operation signature.
      */
-    private MBeanAttributeInfo exposeJmxAttribute(Object target,
+    private MBeanAttributeInfo exposeJmxAttribute(
             String name,
             String description,
             Method accessor, Method mutator) {
@@ -389,9 +388,7 @@ public final class JmxWrapper {
      */
     private String resolveAccessorName(Method method) {
 
-        if (!isAccessor(method)) {
-            throw new IllegalStateException("Shouldn't have ended up here (see the code");
-        }
+        confirmAsAccessor(method);
 
         String name = method.getName();
 
@@ -417,11 +414,9 @@ public final class JmxWrapper {
      *
      * @param method Method to check.
      *
-     * @return {@code true} if the method is indeed an accessor.
-     *
      * @exception IllegalArgumentException if the method is not an accessor.
      */
-    private boolean isAccessor(Method method) {
+    private void confirmAsAccessor(Method method) {
 
         ThreadContext.push("isAccessor(" + method.getName() + ")");
 
@@ -436,8 +431,6 @@ public final class JmxWrapper {
             if (method.getReturnType().getName().equals("void")) {
                 throw new IllegalArgumentException(method.getName() + "() is not an accessor (returns void)");
             }
-
-            return true;
 
         } finally {
             ThreadContext.pop();
