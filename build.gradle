@@ -38,6 +38,17 @@ subprojects {
         archives javadocJar, sourcesJar
     }
 
+    jacoco {
+        toolVersion = "0.8.6"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            html.enabled true
+        }
+    }
+
     spotbugs {
 
         excludeFilter = file("$rootProject.projectDir/findbugs-exclude.xml")
