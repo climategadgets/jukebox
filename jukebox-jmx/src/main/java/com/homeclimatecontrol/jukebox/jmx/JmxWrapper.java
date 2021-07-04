@@ -543,7 +543,7 @@ public final class JmxWrapper {
                     String attributeName = attributeInstance.getName();
                     logger.debug("Attribute: {}", attributeName);
 
-                    Method accessor = resolve(attributeName, attributeInstance.isIs());
+                    Method accessor = resolve(attributeName, attributeInstance.isIs(), false);
                     name2accessor.put(attributeName, accessor);
 
                     Method mutator = accessor2mutator.get(accessor);
@@ -573,19 +573,20 @@ public final class JmxWrapper {
          *
          * @param methodName Method name.
          * @param isIs Is this method a "isX" method.
+         * @param recurse {@code true} if this is a recursive invocation.
          *
          * @return Method instance.
          *
-         * @exception NoSuchMethodException if a method instance can't be resolved.
+         * @exception UnsupportedOperationException if a method instance can't be resolved.
          */
-        private Method resolve(String methodName, boolean isIs) {
+        private Method resolve(String methodName, boolean isIs, boolean recurse) {
 
             ThreadContext.push("resolve(" + methodName + ')');
 
             try {
 
                 if (isIs) {
-                    return resolve("is" + upperFirst(methodName), false);
+                    return resolve("is" + upperFirst(methodName), false, true);
                 }
 
                 try {
@@ -602,13 +603,13 @@ public final class JmxWrapper {
 
                     // If the name is isX or getX, we're screwed
 
-                    if (methodName.startsWith("is") || methodName.startsWith("get") ) {
-                        throw new IllegalStateException("Unable to find method '" + methodName + "', is* and get* tried too");
+                    if (recurse && (methodName.startsWith("is") || methodName.startsWith("get"))) {
+                        throw new UnsupportedOperationException("Unable to find method '" + methodName + "', is* and get* tried too");
                     }
 
                     // Didn't work, try getX
                     logger.debug("Invocation failed: {}", e.getMessage());
-                    return resolve("get" + upperFirst(methodName), false);
+                    return resolve("get" + upperFirst(methodName), false, true);
                 }
             } finally {
                 ThreadContext.pop();
