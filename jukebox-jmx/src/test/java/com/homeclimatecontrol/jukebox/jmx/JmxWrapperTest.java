@@ -448,22 +448,18 @@ class JmxWrapperTest {
     }
 
     @Test
-    void testIspan() {
+    void testIspanAndGetAttributes() throws MalformedObjectNameException, ReflectionException, InstanceNotFoundException {
 
         var mBeanServer = ManagementFactory.getPlatformMBeanServer();
         var beanCount = mBeanServer.getMBeanCount();
+
         assertThatCode(() -> new JmxWrapper().register(new FunkyName())).doesNotThrowAnyException();
         assertThat(mBeanServer.getMBeanCount()).isEqualTo(beanCount + 1);
-    }
 
-    @Test
-    void testGetAttributes() throws MalformedObjectNameException, ReflectionException, InstanceNotFoundException {
+        // Testing getAttributes separately may create a race condition unless a different name is used,
+        // so let's just test it here
 
-        var jmxWrapper = new JmxWrapper();
-        jmxWrapper.register(new FunkyName());
-        var mBeanServer = ManagementFactory.getPlatformMBeanServer();
         var name = new ObjectName("jukebox:name=span,instance=instance");
-
         var attributes = mBeanServer.getAttributes(name, new String[] { "ispan"});
 
         assertThat(attributes).hasSize(1);
