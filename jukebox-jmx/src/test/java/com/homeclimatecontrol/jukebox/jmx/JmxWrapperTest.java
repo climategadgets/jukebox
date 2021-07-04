@@ -429,4 +429,19 @@ class JmxWrapperTest {
         private void setSecret(String secret) {
         }
     }
+
+    @Test
+    void testNullJmxDescriptor() {
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new JmxWrapper().register(new NullJmxDescriptor())).withMessage("JMX Descriptor can't be null");
+    }
+
+    class NullJmxDescriptor implements JmxAware {
+
+        @Override
+        public JmxDescriptor getJmxDescriptor() {
+            return null;
+        }
+    }
 }

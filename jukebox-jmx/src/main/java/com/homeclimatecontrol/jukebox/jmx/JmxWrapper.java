@@ -83,37 +83,44 @@ public final class JmxWrapper {
 
             var jmxDescriptor = ((JmxAware) target).getJmxDescriptor();
 
-            mBeanServer = ManagementFactory.getPlatformMBeanServer();
-
-            var pattern = jmxDescriptor.domainName + ":" +
-                    "name=" + jmxDescriptor.name + "," +
-                    "instance=" + jmxDescriptor.instance;
-            logger.info("name: {}", pattern);
-
-            name = new ObjectName(pattern);
-
-            expose(target, name, jmxDescriptor.description);
-
-        } catch (InstanceAlreadyExistsException ex) {
-
-            logger.info("Already registered: ", ex);
-
-            ThreadContext.push("again");
-            try {
-
-                // VT: FIXME: Need to change the scope of try/catch to include retrieval of
-                // JmxDescriptor so it can be reused here
-                mBeanServer.unregisterMBean(name);
-                expose(this, name, "FIXME");
-
-            } catch (Throwable t) { // NOSONAR Consequences have been considered
-                logger.error("Failed", t);
-            } finally {
-                ThreadContext.pop();
+            if (jmxDescriptor == null) {
+                throw new IllegalArgumentException("JMX Descriptor can't be null");
             }
 
-        } catch (Throwable t) { // NOSONAR Consequences have been considered
-            logger.error("Failed for {}", target, t);
+            try {
+                mBeanServer = ManagementFactory.getPlatformMBeanServer();
+
+                var pattern = jmxDescriptor.domainName + ":" +
+                        "name=" + jmxDescriptor.name + "," +
+                        "instance=" + jmxDescriptor.instance;
+                logger.info("name: {}", pattern);
+
+                name = new ObjectName(pattern);
+
+                expose(target, name, jmxDescriptor.description);
+
+            } catch (InstanceAlreadyExistsException ex) {
+
+                logger.info("Already registered: ", ex);
+
+                ThreadContext.push("again");
+                try {
+
+                    // VT: FIXME: Need to change the scope of try/catch to include retrieval of
+                    // JmxDescriptor so it can be reused here
+                    mBeanServer.unregisterMBean(name);
+                    expose(this, name, "FIXME");
+
+                } catch (Throwable t) { // NOSONAR Consequences have been considered
+                    logger.error("Failed", t);
+                } finally {
+                    ThreadContext.pop();
+                }
+
+            } catch (Throwable t) { // NOSONAR Consequences have been considered
+                logger.error("Failed for {}", target, t);
+            }
+
         } finally {
             ThreadContext.pop();
         }
