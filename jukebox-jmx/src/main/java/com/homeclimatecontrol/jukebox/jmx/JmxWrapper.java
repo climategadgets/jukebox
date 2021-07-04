@@ -672,6 +672,10 @@ public final class JmxWrapper {
                 for (String attributeName : attributes) {
                     var method = name2accessor.get(attributeName);
 
+                    if (method == null) {
+                        throw new IllegalArgumentException("No accessor for '" + attributeName + "', available: " + name2accessor.keySet());
+                    }
+
                     try {
 
                         Object value = method.invoke(target);
