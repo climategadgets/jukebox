@@ -1,36 +1,32 @@
 package com.homeclimatecontrol.jukebox.jmx;
 
-import java.lang.annotation.Annotation;
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 
 import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
 import javax.management.DynamicMBean;
 import javax.management.InstanceAlreadyExistsException;
-import javax.management.InvalidAttributeValueException;
 import javax.management.MBeanAttributeInfo;
-import javax.management.MBeanException;
 import javax.management.MBeanInfo;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
+import java.lang.annotation.Annotation;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * A facility to expose objects presented to it via JMX.
@@ -40,6 +36,9 @@ import org.apache.logging.log4j.ThreadContext;
 public final class JmxWrapper {
 
     public final Logger logger = LogManager.getLogger(getClass());
+
+    private static final String NULL_TARGET = "target can't be null";
+    private static final String UNSUPPORTED = "Not Supported Yet";
 
     /**
      * Create an instance.
@@ -54,9 +53,8 @@ public final class JmxWrapper {
      * @param targetSet Set of objects to register.
      */
     public JmxWrapper(Set<?> targetSet) {
-
-        for (Iterator<?> i = targetSet.iterator(); i.hasNext(); ) {
-            register(i.next());
+        for (Object o : targetSet) {
+            register(o);
         }
     }
 
@@ -68,32 +66,29 @@ public final class JmxWrapper {
     public void register(Object target) {
 
         if (target == null) {
-            throw new IllegalArgumentException("target can't be null");
+            throw new IllegalArgumentException(NULL_TARGET);
         }
 
         ObjectName name = null;
-        MBeanServer mbs = null;
+        MBeanServer mBeanServer = null;
 
         ThreadContext.push("jmxRegister");
 
         try {
 
             if (!(target instanceof JmxAware)) {
-                logger.warn("Not JmxAware, ignored: " + target);
+                logger.warn("Not JmxAware, ignored: {}", target);
                 return;
             }
 
-            JmxDescriptor jmxDescriptor = ((JmxAware) target).getJmxDescriptor();
+            var jmxDescriptor = ((JmxAware) target).getJmxDescriptor();
 
-            mbs = ManagementFactory.getPlatformMBeanServer();
-            StringBuilder sb = new StringBuilder();
+            mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
-            sb.append(jmxDescriptor.domainName).append(":");
-            sb.append("name=").append(jmxDescriptor.name).append(",");
-            sb.append("instance=").append(jmxDescriptor.instance);
-
-            String pattern = sb.toString();
-            logger.info("name: " + pattern);
+            var pattern = jmxDescriptor.domainName + ":" +
+                    "name=" + jmxDescriptor.name + "," +
+                    "instance=" + jmxDescriptor.instance;
+            logger.info("name: {}", pattern);
 
             name = new ObjectName(pattern);
 
@@ -108,16 +103,17 @@ public final class JmxWrapper {
 
                 // VT: FIXME: Need to change the scope of try/catch to include retrieval of
                 // JmxDescriptor so it can be reused here
-                mbs.unregisterMBean(name);
+                mBeanServer.unregisterMBean(name);
                 expose(this, name, "FIXME");
-            } catch (Throwable t) {
+
+            } catch (Throwable t) { // NOSONAR Consequences have been considered
                 logger.error("Failed", t);
             } finally {
                 ThreadContext.pop();
             }
 
-        } catch (Throwable t) {
-            logger.error("Failed for " + target, t);
+        } catch (Throwable t) { // NOSONAR Consequences have been considered
+            logger.error("Failed for {}", target, t);
         } finally {
             ThreadContext.pop();
         }
@@ -141,41 +137,41 @@ public final class JmxWrapper {
     public void expose(Object target, ObjectName name, String description) throws NotCompliantMBeanException, MBeanRegistrationException, InstanceAlreadyExistsException {
 
         if (target == null) {
-            throw new IllegalArgumentException("target can't be null");
+            throw new IllegalArgumentException(NULL_TARGET);
         }
 
         ThreadContext.push("expose(" + target.getClass().getSimpleName() + ')');
 
         try {
 
-            List<MBeanAttributeInfo> accessors = new LinkedList<MBeanAttributeInfo>();
-            Map<Method, Method> accessor2mutator = new HashMap<Method, Method>();
-            Class<?> targetClass = target.getClass();
+            var accessors = new LinkedList<MBeanAttributeInfo>();
+            var accessor2mutator = new HashMap<Method, Method>();
+            var targetClass = target.getClass();
 
             for (Method method : targetClass.getMethods()) {
 
-                logger.debug("analyzing " + method);
+                logger.debug("analyzing {}", method);
 
-                Annotation annotation = getAnnotation(targetClass, method, JmxAttribute.class);
+                var annotation = getAnnotation(targetClass, method, JmxAttribute.class);
 
                 if (annotation != null) {
                     exposeMethod(target, method, (JmxAttribute) annotation, accessors, accessor2mutator);
                 }
             }
 
-            MBeanAttributeInfo[] attributeArray = accessors.toArray(new MBeanAttributeInfo[] {});
-            MBeanInfo mbInfo = new MBeanInfo(target.getClass().getName(),
+            var attributeArray = accessors.toArray(new MBeanAttributeInfo[] {});
+            var mbInfo = new MBeanInfo(target.getClass().getName(),
                     description,
                     attributeArray,
                     null,
                     null,
                     null,
                     null);
-            Proxy proxy = new Proxy(target, mbInfo, accessor2mutator);
+            var proxy = new Proxy(target, mbInfo, accessor2mutator);
 
-            MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+            var mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
-            mbs.registerMBean(proxy, name);
+            mBeanServer.registerMBean(proxy, name);
 
         } finally {
             ThreadContext.pop();
@@ -188,8 +184,8 @@ public final class JmxWrapper {
 
         try {
 
-            logger.debug("method " + method);
-            logger.debug("annotation " + annotationClass.getSimpleName());
+            logger.debug("method {}", method);
+            logger.debug("annotation {}", annotationClass.getSimpleName());
 
             {
                 Annotation annotation = method.getAnnotation(annotationClass);
@@ -207,23 +203,22 @@ public final class JmxWrapper {
             // c) it is not present at all.
 
             logger.debug("Checking interfaces");
-            Class<?>[] interfaces = targetClass.getInterfaces();
+            var interfaces = targetClass.getInterfaces();
 
-            for (int offset = 0; offset < interfaces.length; offset++) {
+            for (var anInterface : interfaces) {
 
-                Class<?> anInterface = interfaces[offset];
-                logger.debug("Checking interface " + anInterface.getSimpleName());
-                Annotation annotation = getAnnotation(anInterface, method.getName(), annotationClass);
+                logger.debug("Checking interface {}", anInterface.getSimpleName());
+                var annotation = getAnnotation(anInterface, method.getName(), annotationClass);
 
                 if (annotation != null) {
                     return annotation;
                 }
             }
 
-            Class<?> superClass = targetClass.getSuperclass();
+            var superClass = targetClass.getSuperclass();
 
             if (superClass != null) {
-                logger.info("Checking superclass:" + superClass.getSimpleName());
+                logger.info("Checking superclass: {}", superClass.getSimpleName());
             }
 
             return superClass == null ? null : getAnnotation(superClass, method.getName(), annotationClass);
@@ -266,14 +261,14 @@ public final class JmxWrapper {
 
         ThreadContext.push("exposeMethod");
 
-        logger.debug(target.getClass().getName() + '#' + method.getName() + " found to be JmxAttribute");
+        logger.debug("{}#{} found to be JmxAttribute", target.getClass().getName(), method.getName());
 
         try {
 
             String accessorName = resolveAccessorName(method);
 
-            logger.info(target.getClass().getName() + '#' + method.getName() + ": exposed as " + accessorName);
-            logger.info("Description: " + annotation.description());
+            logger.debug("{}#{} exposed as {}", target.getClass().getName(), method.getName(), accessorName);
+            logger.info("Description: {}", annotation.description());
             Method mutator = resolveMutator(target, method, accessorName);
 
             if (mutator != null) {
@@ -307,12 +302,12 @@ public final class JmxWrapper {
 
         try {
 
-            logger.info("name:     " + name);
-            logger.info("type:     " + accessor.getReturnType().getName());
-            logger.info("accessor: " + accessor);
-            logger.info("mutator:  " + mutator);
+            logger.info("name:     {}", name);
+            logger.info("type:     {}", accessor.getReturnType().getName());
+            logger.info("accessor: {}", accessor);
+            logger.info("mutator:  {}", mutator);
 
-            MBeanAttributeInfo accessorInfo = new MBeanAttributeInfo(
+            var accessorInfo = new MBeanAttributeInfo(
                     name,
                     accessor.getReturnType().getName(),
                     description,
@@ -320,7 +315,7 @@ public final class JmxWrapper {
                     mutator != null,
                     accessor.getName().startsWith("is"));
 
-            logger.debug("accessor: " + accessorInfo);
+            logger.debug("accessor: {}", accessorInfo);
 
             return accessorInfo;
 
@@ -345,17 +340,17 @@ public final class JmxWrapper {
             Class<?> returnType = accessor.getReturnType();
             String mutatorName = "set" + upperFirst(name);
 
-            logger.debug("Trying " + mutatorName + '(' + returnType.getSimpleName() + ')');
+            logger.debug("Trying {}({})", mutatorName, returnType.getSimpleName());
 
-            Method mutator = target.getClass().getMethod(mutatorName, returnType);
+            var mutator = target.getClass().getMethod(mutatorName, returnType);
 
-            logger.debug("Found: " + mutator);
+            logger.debug("Found: {}", mutator);
 
             return mutator;
 
         } catch (NoSuchMethodException e) {
             // This is normal
-            logger.info("No mutator found: " + e.getMessage());
+            logger.info("No mutator found: {}", e.getMessage());
             return null;
         } finally {
             ThreadContext.pop();
@@ -391,7 +386,7 @@ public final class JmxWrapper {
             throw new IllegalArgumentException(name + "(): method name doesn't conform to accessor pattern (need isX or getX)");
         }
 
-        logger.warn("Non-standard method name '" + name + "' (better be isX or getX)");
+        logger.warn("Non-standard method name '{}' (better be isX or getX)", name);
 
         return name;
     }
@@ -415,7 +410,7 @@ public final class JmxWrapper {
                 throw new IllegalArgumentException(method.getName() + "() is not an accessor (takes arguments)");
             }
 
-            logger.debug("returns " + method.getReturnType().getName());
+            logger.debug("returns {}", method.getReturnType().getName());
 
             if (method.getReturnType().getName().equals("void")) {
                 throw new IllegalArgumentException(method.getName() + "() is not an accessor (returns void)");
@@ -498,12 +493,12 @@ public final class JmxWrapper {
         /**
          * Mapping of the attribute name to the accessor method.
          */
-        private final Map<String, Method> name2accessor = new TreeMap<String, Method>();
+        private final Map<String, Method> name2accessor = new TreeMap<>();
 
         /**
          * Mapping of the attribute name to the mutator method.
          */
-        private final Map<String, Method> name2mutator = new TreeMap<String, Method>();
+        private final Map<String, Method> name2mutator = new TreeMap<>();
 
         private Proxy(Object target, MBeanInfo mbInfo, Map<Method, Method> accessor2mutator) {
 
@@ -512,7 +507,7 @@ public final class JmxWrapper {
             try {
 
                 if (target == null) {
-                    throw new IllegalArgumentException("target can't be null");
+                    throw new IllegalArgumentException(NULL_TARGET);
                 }
 
                 this.target = target;
@@ -522,11 +517,10 @@ public final class JmxWrapper {
 
                 MBeanAttributeInfo[] attributes = mbInfo.getAttributes();
 
-                for (int offset = 0; offset < attributes.length; offset++) {
+                for (MBeanAttributeInfo attributeInstance : attributes) {
 
-                    MBeanAttributeInfo attributeInstance = attributes[offset];
                     String attributeName = attributeInstance.getName();
-                    logger.debug("Attribute: " + attributeName);
+                    logger.debug("Attribute: {}", attributeName);
 
                     Method accessor = resolve(attributeName, attributeInstance.isIs());
                     name2accessor.put(attributeName, accessor);
@@ -538,16 +532,14 @@ public final class JmxWrapper {
                     }
                 }
 
-                for (Iterator<Entry<String, Method>> i = name2accessor.entrySet().iterator(); i.hasNext(); ) {
+                for (Entry<String, Method> entry : name2accessor.entrySet()) {
 
-                    Entry<String, Method> entry = i.next();
-                    logger.debug("Accessor resolved for " + entry.getKey() + ": " + entry.getValue());
+                    logger.debug("Accessor resolved for {}: {}", entry.getKey(), entry.getValue());
                 }
 
-                for (Iterator<Entry<String, Method>> i = name2mutator.entrySet().iterator(); i.hasNext(); ) {
+                for (Entry<String, Method> entry : name2mutator.entrySet()) {
 
-                    Entry<String, Method> entry = i.next();
-                    logger.debug("Mutator resolved for " + entry.getKey() + ": " + entry.getValue());
+                    logger.debug("Mutator resolved for {}: {}", entry.getKey(), entry.getValue());
                 }
 
             } finally {
@@ -579,18 +571,11 @@ public final class JmxWrapper {
 
                     // Try straight (this is the last resort for the case of getX)
 
-                    try {
+                    var targetMethod = targetClass.getMethod(methodName);
 
-                        Method targetMethod = targetClass.getMethod(methodName);
+                    logger.debug("Resolved {}", targetMethod);
 
-                        logger.debug("Resolved " + targetMethod);
-
-                        return targetMethod;
-
-                    } catch (NoSuchMethodException e) {
-
-                        throw e;
-                    }
+                    return targetMethod;
 
                 } catch (NoSuchMethodException e) {
 
@@ -601,7 +586,7 @@ public final class JmxWrapper {
                     }
 
                     // Didn't work, try getX
-                    logger.debug("Invocation failed: " + e.getMessage());
+                    logger.debug("Invocation failed: {}", e.getMessage());
                     return resolve("get" + upperFirst(methodName), false);
                 }
             } finally {
@@ -610,12 +595,12 @@ public final class JmxWrapper {
         }
 
         @Override
-        public Object getAttribute(String attribute) throws AttributeNotFoundException, MBeanException, ReflectionException {
+        public Object getAttribute(String attribute) throws AttributeNotFoundException, ReflectionException {
 
             ThreadContext.push("getAttribute(" + attribute + ')');
             try {
 
-                Method method = name2accessor.get(attribute);
+                var method = name2accessor.get(attribute);
 
                 if (method == null) {
                     throw new AttributeNotFoundException(attribute);
@@ -623,9 +608,7 @@ public final class JmxWrapper {
 
                 return method.invoke(target);
 
-            } catch (IllegalAccessException e) {
-                throw new ReflectionException(e, "Oops");
-            } catch (InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new ReflectionException(e, "Oops");
             } finally {
                 ThreadContext.pop();
@@ -633,15 +616,15 @@ public final class JmxWrapper {
         }
 
         @Override
-        public void setAttribute(Attribute attribute) throws AttributeNotFoundException, InvalidAttributeValueException, MBeanException, ReflectionException {
+        public void setAttribute(Attribute attribute) throws AttributeNotFoundException {
 
             ThreadContext.push("setAttribute(" + attribute + ")");
 
             try {
 
-                Method method = name2mutator.get(attribute.getName());
+                var method = name2mutator.get(attribute.getName());
 
-                logger.debug("Mutator for " + attribute.getName() + ": " + method);
+                logger.debug("Mutator for {}: {}", attribute.getName(), method);
 
                 if (method == null) {
                     throw new AttributeNotFoundException(attribute.getName());
@@ -651,10 +634,10 @@ public final class JmxWrapper {
 
                     method.invoke(target, attribute.getValue());
 
-                } catch (Throwable t) {
+                } catch (Throwable t) { // NOSONAR Consequences have been considered
 
                     // It's OK to log *and* rethrow, it'll only show up in jconsole
-                    logger.error("Failed to setAttribute(" + attribute + ")", t);
+                    logger.error("Failed to setAttribute({})", attribute, t);
 
                     throw new IllegalStateException("Failed to setAttribute(" + attribute + ")", t);
                 }
@@ -669,23 +652,20 @@ public final class JmxWrapper {
             ThreadContext.push(getAttributeListString(attributes));
             try {
 
-                AttributeList attributeList = new AttributeList();
+                var attributeList = new AttributeList();
 
-                for (int offset = 0; offset < attributes.length; offset++) {
-                    String attributeName = attributes[offset];
-                    Method method = name2accessor.get(attributeName);
+                for (String attributeName : attributes) {
+                    var method = name2accessor.get(attributeName);
 
                     try {
 
                         Object value = method.invoke(target);
                         attributeList.add(new Attribute(attributeName, value));
 
-                        logger.debug(attributeName + ": " + value);
+                        logger.debug("{}: {}", attributeName, value);
 
-                    } catch (IllegalAccessException e) {
-                        logger.error("invocation failed, attribute skipped: " + attributeName, e);
-                    } catch (InvocationTargetException e) {
-                        logger.error("invocation failed, attribute skipped: " + attributeName, e);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        logger.error("invocation failed, attribute skipped: {}", attributeName, e);
                     }
                 }
 
@@ -718,34 +698,34 @@ public final class JmxWrapper {
 
             try {
 
-                for (Iterator<Attribute> i = attributes.asList().iterator(); i.hasNext(); ) {
-
-                    Attribute a = i.next();
+                for (Attribute a : attributes.asList()) {
 
                     try {
 
-                    } catch (Throwable t) {
-                        logger.error("setAttribute(" + a + ") failed, moving on", t);
+                        // VT: FIXME: Implement this one day, eh?
+
+                    } catch (Throwable t) { // NOSONAR Consequences have been considered
+                        logger.error("setAttribute({}) failed, moving on", a, t);
                     }
                 }
 
-                logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
+                logger.error("Not Implemented", new UnsupportedOperationException(UNSUPPORTED));
 
             } finally {
                 ThreadContext.pop();
             }
 
-            throw new UnsupportedOperationException("Not Supported Yet");
+            throw new UnsupportedOperationException(UNSUPPORTED);
         }
 
         @Override
-        public Object invoke(String actionName, Object[] params, String[] signature) throws MBeanException, ReflectionException {
+        public Object invoke(String actionName, Object[] params, String[] signature) {
 
             ThreadContext.push("invoke(" + actionName + ")");
 
             try {
 
-                logger.error("Not Implemented", new UnsupportedOperationException("Not Supported Yet"));
+                logger.error("Not Implemented", new UnsupportedOperationException(UNSUPPORTED));
 
             } finally {
                 ThreadContext.pop();
