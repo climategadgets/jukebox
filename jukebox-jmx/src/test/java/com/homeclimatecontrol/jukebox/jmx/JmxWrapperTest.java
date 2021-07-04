@@ -445,4 +445,30 @@ class JmxWrapperTest {
             return null;
         }
     }
+
+    @Test
+    void testIspan() {
+
+        var mBeanServer = ManagementFactory.getPlatformMBeanServer();
+        var beanCount = mBeanServer.getMBeanCount();
+        assertThatCode(() -> new JmxWrapper().register(new FunkyName())).doesNotThrowAnyException();
+        assertThat(mBeanServer.getMBeanCount()).isEqualTo(beanCount + 1);
+    }
+
+    class FunkyName implements JmxAware {
+
+        @JmxAttribute(description = "get Ispan")
+        public long getIspan() {
+            return 0;
+        }
+
+        public void setIspan(long Ispan) {
+            // Do nothing
+        }
+
+        @Override
+        public JmxDescriptor getJmxDescriptor() {
+            return new JmxDescriptor("jukebox", "span", "instance", "description");
+        }
+    }
 }

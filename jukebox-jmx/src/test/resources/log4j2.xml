@@ -6,6 +6,7 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="com.homeclimatecontrol.jukebox.jmx" level="debug" />
         <Root level="DEBUG">
             <AppenderRef ref="CONSOLE"/>
         </Root>
