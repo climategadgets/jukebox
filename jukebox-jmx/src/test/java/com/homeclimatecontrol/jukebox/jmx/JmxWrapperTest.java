@@ -227,11 +227,12 @@ class JmxWrapperTest {
 
                         }).withCause(new InvocationTargetException(new NullPointerException("Nobody expects the Spanish Inquisition!")));
 
+                var attribute = new Attribute("error", "DUDE");
                 assertThatExceptionOfType(RuntimeMBeanException.class)
                         .isThrownBy(() -> {
 
                             // An unexpected exception in a mutator
-                            mbs.setAttribute(objectName, new Attribute("error", "DUDE"));
+                            mbs.setAttribute(objectName, attribute);
 
                         })
                         .withMessage("java.lang.IllegalStateException: Failed to setAttribute(error = DUDE)")
