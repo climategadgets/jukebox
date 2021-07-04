@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.management.Attribute;
 import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
@@ -453,6 +454,21 @@ class JmxWrapperTest {
         var beanCount = mBeanServer.getMBeanCount();
         assertThatCode(() -> new JmxWrapper().register(new FunkyName())).doesNotThrowAnyException();
         assertThat(mBeanServer.getMBeanCount()).isEqualTo(beanCount + 1);
+    }
+
+    @Test
+    void testGetAttributes() throws MalformedObjectNameException, ReflectionException, InstanceNotFoundException {
+
+        var jmxWrapper = new JmxWrapper();
+        jmxWrapper.register(new FunkyName());
+        var mBeanServer = ManagementFactory.getPlatformMBeanServer();
+        var name = new ObjectName("jukebox:name=span,instance=instance");
+
+        var attributes = mBeanServer.getAttributes(name, new String[] { "ispan"});
+
+        assertThat(attributes).hasSize(1);
+
+        logger.info("attributes[0]: {}", attributes.get(0));
     }
 
     class FunkyName implements JmxAware {
