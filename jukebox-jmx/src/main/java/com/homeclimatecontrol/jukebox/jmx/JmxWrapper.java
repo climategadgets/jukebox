@@ -209,12 +209,17 @@ public final class JmxWrapper {
             // b) the annotation is present on the superclass (FIXME: make sure both abstract and concrete are covered);
             // c) it is not present at all.
 
-            logger.debug("Checking interfaces");
             var interfaces = targetClass.getInterfaces();
+            logger.debug("Checking {} interface[s]", interfaces.length);
 
             for (var anInterface : interfaces) {
 
-                logger.debug("Checking interface {}", anInterface.getSimpleName());
+                if (anInterface.equals(JmxAware.class)) {
+                    // Skip without further ado
+                    continue;
+                }
+
+                logger.debug("Checking interface {}", anInterface.getName());
                 var annotation = getAnnotation(anInterface, method.getName(), annotationClass);
 
                 if (annotation != null) {
@@ -224,11 +229,20 @@ public final class JmxWrapper {
 
             var superClass = targetClass.getSuperclass();
 
-            if (superClass != null) {
-                logger.info("Checking superclass: {}", superClass.getSimpleName());
+            if (superClass == null) {
+                return null;
             }
 
-            return superClass == null ? null : getAnnotation(superClass, method.getName(), annotationClass);
+            var superName = superClass.getName();
+
+            if (superName.startsWith("java.")) {
+                // Skip without further ado
+                return null;
+            }
+
+            logger.info("Checking superclass: {}", superName);
+
+            return getAnnotation(superClass, method.getName(), annotationClass);
 
         } finally {
             ThreadContext.pop();
