@@ -8,7 +8,7 @@ import com.homeclimatecontrol.jukebox.sem.EventListener;
  *
  * When the client idles out, it receives the notification with null producer
  * and the status equal to <code>Idle.OUT</code>.
- * <h3>BugTrack</h3>
+ * <h2>BugTrack</h2>
  * <dl>
  * <dt>February 23 98
  * <dd>{@code Idle} implementation has been rewritten from scratch, so this
