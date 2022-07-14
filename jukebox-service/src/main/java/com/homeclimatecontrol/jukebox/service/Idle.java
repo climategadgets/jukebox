@@ -1,8 +1,8 @@
 package com.homeclimatecontrol.jukebox.service;
 
-import java.util.HashMap;
-
 import com.homeclimatecontrol.jukebox.sem.EventListener;
+
+import java.util.HashMap;
 
 /**
  * The goal of this object is to observe the idle time for another services and
@@ -10,7 +10,7 @@ import com.homeclimatecontrol.jukebox.sem.EventListener;
  *
  * Note that there's no need to start this service - use the static methods
  * instead.
- * <h3>BugTrack</h3>
+ * <h2>BugTrack</h2>
  * <dl>
  * <dt>February 23 98
  * <dd>Reworked completely to use the timing out event semaphores instead of
@@ -127,6 +127,7 @@ public final class Idle extends PassiveService implements EventListener {
      * @param producer The alarm instance.
      * @param status The client to notify.
      */
+    @Override
     public void eventNotification(Object producer, Object status) {
 
         IdleClient cli = (IdleClient) status;

@@ -3,11 +3,11 @@ package com.homeclimatecontrol.jukebox.sem;
 import java.util.LinkedList;
 
 /**
- * <h3>Behaviour Description</h3>
+ * <h2>Behaviour Description</h2>
  * This semaphore behaves somewhat differently from ones you may have
  * encountered in other operating systems, such as OS/2 or Windows NT. This is
  * so due to several reasons: firstly, I've finished programming for OS/2 more
- * than threey ears ago (to be exact, in December of 94), I've been never
+ * than three years ago (to be exact, in December of 94), I've been never
  * programming for Windows NT in terms of system development, though I'm
  * familiar with its API and sure that the behaviour is much the same as one in
  * OS/2, except different system call names, and the most important, I've had a

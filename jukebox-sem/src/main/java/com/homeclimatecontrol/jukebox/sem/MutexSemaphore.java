@@ -10,7 +10,7 @@ package com.homeclimatecontrol.jukebox.sem;
  * concept of a mutex semaphore allows to engage the object-oriented approach in
  * a more clear, readable and understandable way than the synchronized blocks.
  *
- * <h3>Behavior Description</h3>
+ * <h2>Behavior Description</h2>
  * Mutex Semaphore (<b>mutex</b> hereinafter), from a logical standpoint, has
  * two main methods:
  * <ul>
