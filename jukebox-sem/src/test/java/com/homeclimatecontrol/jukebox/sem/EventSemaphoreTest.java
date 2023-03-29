@@ -1,45 +1,50 @@
 package com.homeclimatecontrol.jukebox.sem;
 
+import com.homeclimatecontrol.jukebox.util.PackageNameStripper;
+import org.junit.jupiter.api.Test;
+
 import java.util.Random;
 
-import com.homeclimatecontrol.jukebox.sem.EventSemaphore;
-import com.homeclimatecontrol.jukebox.sem.SemaphoreTimeoutException;
-import com.homeclimatecontrol.jukebox.util.PackageNameStripper;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import junit.framework.TestCase;
+class EventSemaphoreTest {
 
-public class EventSemaphoreTest extends TestCase {
-    
+    private static final String WRONG_NAME = "Wrong name";
+    private static final String WRONG_STATE = "Wrong state";
+    private static final String WRONG_STATUS = "Wrong status";
+
     private final Random rg = new Random();
 
-    public void testName() {
-        
+    @Test
+    void testName() {
+
         String name = Integer.toHexString(rg.nextInt());
-        
+
         EventSemaphore sem = new EventSemaphore();
         EventSemaphore semEmptyName = new EventSemaphore("");
         EventSemaphore semNamed = new EventSemaphore(name);
         EventSemaphore semOwned = new EventSemaphore(this);
         EventSemaphore semOwnedNamed = new EventSemaphore(this, name);
         EventSemaphore semOwnedByNullNamed = new EventSemaphore(null, name);
-        
-        assertEquals("Wrong name", null, sem.getName());
-        assertEquals("Wrong name", "", semEmptyName.getName());
-        assertEquals("Wrong name", name, semNamed.getName());
-        assertEquals("Wrong name", PackageNameStripper.stripPackage(getClass().getName()) + "/" + Integer.toHexString(hashCode()) + "/", semOwned.getName());
-        assertEquals("Wrong name", PackageNameStripper.stripPackage(getClass().getName()) + "/" + Integer.toHexString(hashCode()) + "/" + name, semOwnedNamed.getName());
-        assertEquals("Wrong name", PackageNameStripper.stripPackage(semOwnedByNullNamed.getClass().getName()) + "/" + Integer.toHexString(semOwnedByNullNamed.hashCode()) + "/" + name, semOwnedByNullNamed.getName());
-        
-        assertEquals("Wrong string representation", toString(sem), sem.toString());
-        assertEquals("Wrong string representation", toString(semEmptyName), semEmptyName.toString());
-        assertEquals("Wrong string representation", toString(semNamed), semNamed.toString());
-        assertEquals("Wrong string representation", toString(semOwned), semOwned.toString());
-        assertEquals("Wrong string representation", toString(semOwnedNamed), semOwnedNamed.toString());
-        assertEquals("Wrong string representation", toString(semOwnedByNullNamed), semOwnedByNullNamed.toString());
+
+        assertThat(sem.getName()).withFailMessage(WRONG_NAME).isNull();
+        assertThat(semEmptyName.getName()).withFailMessage(WRONG_NAME).isEmpty();
+        assertThat(semNamed.getName()).withFailMessage(WRONG_NAME).isEqualTo(name);
+        assertThat(semOwned.getName()).withFailMessage(WRONG_NAME).isEqualTo(PackageNameStripper.stripPackage(getClass().getName()) + "/" + Integer.toHexString(hashCode()) + "/");
+        assertThat(semOwnedNamed.getName()).withFailMessage(WRONG_NAME).isEqualTo(PackageNameStripper.stripPackage(getClass().getName()) + "/" + Integer.toHexString(hashCode()) + "/" + name);
+        assertThat(semOwnedByNullNamed.getName()).withFailMessage(WRONG_NAME).isEqualTo(PackageNameStripper.stripPackage(semOwnedByNullNamed.getClass().getName()) + "/" + Integer.toHexString(semOwnedByNullNamed.hashCode()) + "/" + name);
+
+        assertThat(sem).hasToString(toString(sem));
+        assertThat(semEmptyName).hasToString(toString(semEmptyName));
+        assertThat(semNamed).hasToString(toString(semNamed));
+        assertThat(semOwned).hasToString(toString(semOwned));
+        assertThat(semOwnedNamed).hasToString(toString(semOwnedNamed));
+        assertThat(semOwnedByNullNamed).hasToString(toString(semOwnedByNullNamed));
     }
-    
+
     private String toString(EventSemaphore target) {
-        
+
         StringBuilder sb = new StringBuilder("(EventSem");
         String name = target.getName();
 
@@ -52,78 +57,79 @@ public class EventSemaphoreTest extends TestCase {
 
         return sb.toString();
     }
-    
-    public void testPost() {
+
+    @Test
+    void testPost() {
         testTrigger(true);
     }
 
-    public void testClear() {
+    @Test
+    void testClear() {
         testTrigger(false);
     }
-    
+
     private void testTrigger(boolean value) {
-        
+
         EventSemaphore sem = new EventSemaphore();
-        
-        assertFalse("Wrong state", sem.canGetStatus());
-        assertFalse("Wrong state", sem.isTriggered());
-        
-        assertEquals("Wrong status", false, sem.getStatus());
-        assertEquals("Wrong status", false, sem.getStatus());
+
+        assertThat(sem.canGetStatus()).withFailMessage(WRONG_STATE).isFalse();
+        assertThat(sem.isTriggered()).withFailMessage(WRONG_STATE).isFalse();
+
+        assertThat(sem.getStatus()).withFailMessage(WRONG_STATUS).isFalse();
+        assertThat(sem.getStatus()).withFailMessage(WRONG_STATUS).isFalse();
 
         // Overcomplication to improve the test coverage; trigger(value) would've worked just as fine
-        
+
         if (value) {
             sem.post();
         } else {
             sem.clear();
         }
-        
-        assertEquals("Wrong status", value, sem.getStatus());
-        assertEquals("Wrong status", value, sem.getStatus());
 
-        assertTrue("Wrong state", sem.isTriggered());
-        
+        assertThat(sem.getStatus()).withFailMessage(WRONG_STATUS).isEqualTo(value);
+        assertThat(sem.getStatus()).withFailMessage(WRONG_STATUS).isEqualTo(value);
+
+        assertThat(sem.isTriggered()).withFailMessage(WRONG_STATE).isTrue();
+
         // The 'triggered' state is already cleared by now
-        assertFalse("Wrong state", sem.isTriggered());
-        assertFalse("Wrong state", sem.canGetStatus());
+        assertThat(sem.isTriggered()).withFailMessage(WRONG_STATE).isFalse();
+        assertThat(sem.canGetStatus()).withFailMessage(WRONG_STATE).isFalse();
     }
-    
-    public void testWaitForWithWait() throws InterruptedException {
-        
+
+    @Test
+    void testWaitForWithWait() throws InterruptedException {
+
         testWaitForWithWait(false);
         testWaitForWithWait(true);
     }
-    
+
     private void testWaitForWithWait(final boolean value) throws InterruptedException {
-        
+
         final EventSemaphore sem = new EventSemaphore();
-        
-        Runnable r = new Runnable() {
 
-            @Override
-            public void run() {
-                
-                try {
-                
-                    Thread.sleep(100);
-                    sem.trigger(value);
+        Runnable r = () -> {
 
-                } catch (InterruptedException e) {
-                    
-                    fail("Unexpected exception: " + e.toString());
-                }
+            try {
+
+                Thread.sleep(100);
+                sem.trigger(value);
+
+            } catch (InterruptedException e) {
+
+                fail("Unexpected exception: " + e);
             }
         };
-        
+
         new Thread(r).start();
-        
+
         sem.waitFor();
-        assertEquals("Wrong status", value, sem.getStatus());
+
+        assertThat(sem.getStatus()).withFailMessage(WRONG_STATUS).isEqualTo(value);
     }
 
-    public void testWaitForNoWait() throws InterruptedException {
-        
+    @Test
+    void testWaitForNoWait() throws InterruptedException {
+
         testWaitForNoWait(false);
         testWaitForNoWait(true);
     }
@@ -131,63 +137,66 @@ public class EventSemaphoreTest extends TestCase {
     private void testWaitForNoWait(boolean value) throws InterruptedException {
 
         EventSemaphore sem = new EventSemaphore();
-        
+
         sem.trigger(value);
-        assertEquals("Wrong status", value, sem.waitFor());
+        assertThat(sem.waitFor()).withFailMessage(WRONG_STATUS).isEqualTo(value);
     }
 
-    public void testWaitForMillisWithWait() throws InterruptedException, SemaphoreTimeoutException {
-        
+    @Test
+    void testWaitForMillisWithWait() throws InterruptedException, SemaphoreTimeoutException {
+
         testWaitForMillisWithWait(false, 100, 150);
         testWaitForMillisWithWait(true, 100, 150);
     }
-    
-    public void testWaitForMillisWithTimeout() throws InterruptedException, SemaphoreTimeoutException {
+
+    @Test
+    void testWaitForMillisWithTimeout() throws InterruptedException {
 
         Boolean[] values = new Boolean[] { false, true };
 
-        for (int offset = 0; offset < values.length; offset++) {
-            
+        for (var value : values) {
+
             try {
-                
-                testWaitForMillisWithWait(values[offset], 100, 50);
+
+                testWaitForMillisWithWait(value, 100, 50);
                 fail("Should've been off with exception by now");
-            
+
             } catch (SemaphoreTimeoutException ex) {
-                assertEquals("Wrong exception message", "50", ex.getMessage());
+
+                assertThat(ex.getMessage())
+                        .withFailMessage("Wrong exception message")
+                        .isEqualTo("50");
             }
         }
     }
-    
+
     private void testWaitForMillisWithWait(final boolean value, final int sleep, final int millis) throws InterruptedException, SemaphoreTimeoutException {
-        
+
         final EventSemaphore sem = new EventSemaphore();
-        
-        Runnable r = new Runnable() {
 
-            @Override
-            public void run() {
-                
-                try {
-                
-                    Thread.sleep(sleep);
-                    sem.trigger(value);
+        Runnable r = () -> {
 
-                } catch (InterruptedException e) {
-                    
-                    fail("Unexpected exception: " + e.toString());
-                }
+            try {
+
+                Thread.sleep(sleep);
+                sem.trigger(value);
+
+            } catch (InterruptedException e) {
+
+                fail("Unexpected exception: " + e);
             }
         };
-        
+
         new Thread(r).start();
-        
+
         sem.waitFor(millis);
-        assertEquals("Wrong status", value, sem.getStatus());
+
+        assertThat(sem.getStatus()).withFailMessage(WRONG_STATUS).isEqualTo(value);
     }
 
-    public void testWaitForMillisNoWait() throws InterruptedException, SemaphoreTimeoutException {
-        
+    @Test
+    void testWaitForMillisNoWait() throws InterruptedException, SemaphoreTimeoutException {
+
         testWaitForMillisNoWait(false);
         testWaitForMillisNoWait(true);
     }
@@ -195,8 +204,8 @@ public class EventSemaphoreTest extends TestCase {
     private void testWaitForMillisNoWait(boolean value) throws InterruptedException, SemaphoreTimeoutException {
 
         EventSemaphore sem = new EventSemaphore();
-        
+
         sem.trigger(value);
-        assertEquals("Wrong status", value, sem.waitFor(50));
+        assertThat(sem.waitFor(50)).withFailMessage(WRONG_STATUS).isEqualTo(value);
     }
 }
