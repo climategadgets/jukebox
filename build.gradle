@@ -24,14 +24,9 @@ subprojects {
     group = 'com.homeclimatecontrol.jukebox'
     version = '8.0.1-SNAPSHOT'
 
-    task javadocJar(type: Jar) {
-        classifier = 'javadoc'
-        from javadoc
-    }
-
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
+    java {
+        withSourcesJar()
+        withJavadocJar()
     }
 
     artifacts {
