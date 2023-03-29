@@ -1,5 +1,7 @@
 package com.homeclimatecontrol.jukebox.aggregator;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -7,17 +9,17 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.homeclimatecontrol.jukebox.aggregator.RunnableAggregator;
-
-import junit.framework.TestCase;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  *
  * @author Copyright &copy; <a href="mailto:vt@homeclimatecontrol.com">Vadim Tkachenko</a> 2007-2008
  */
-public class RunnableAggregatorTest extends TestCase {
+class RunnableAggregatorTest {
 
-    public void testEmptyQueue() {
+    @Test
+    void testEmptyQueue() {
 
         RunnableAggregator aggregator = new RunnableAggregator();
 
@@ -26,23 +28,25 @@ public class RunnableAggregatorTest extends TestCase {
         // We simply have to arrive at this point
     }
 
-    public void testProducerScarce() {
-        
+    @Test
+    void testProducerScarce() {
+
         for (int count = 0; count < 500; count++) {
             testProducer(100, 10);
         }
     }
 
-    public void testProducerAbundant() {
-        
+    @Test
+    void testProducerAbundant() {
+
         // VT: NOTE: This will likely fail on hardware limited platforms, @Ignore it.
         testProducer(100, 1000);
     }
 
     private void testProducer(int objectLimit, int threadCount) {
-        
+
         try {
-            
+
             RunnableAggregator aggregator = new RunnableAggregator();
             BlockingQueue<Runnable> requestQueue = new LinkedBlockingQueue<Runnable>();
 
@@ -55,7 +59,7 @@ public class RunnableAggregatorTest extends TestCase {
 
             aggregator.process(threadCount, requestQueue, null);
 
-            assertEquals("Wrong count", objectLimit, result.size());
+            assertThat(result.size()).withFailMessage("Wrong count").isEqualTo(objectLimit);
 
         } catch (InterruptedException ex) {
             fail(ex.getMessage());
@@ -70,6 +74,7 @@ public class RunnableAggregatorTest extends TestCase {
             this.collector = collector;
         }
 
+        @Override
         public void run() {
             collector.add(Integer.valueOf(hashCode()));
         }
