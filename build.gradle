@@ -1,5 +1,4 @@
 plugins {
-    id 'com.github.spotbugs'
     id 'net.ltgt.errorprone' apply false
     id 'org.sonarqube'
 }
@@ -42,12 +41,6 @@ subprojects {
             xml.required = true
             html.required = true
         }
-    }
-
-    spotbugs {
-
-        excludeFilter = file("$rootProject.projectDir/findbugs-exclude.xml")
-        ignoreFailures = true
     }
 
     repositories {
